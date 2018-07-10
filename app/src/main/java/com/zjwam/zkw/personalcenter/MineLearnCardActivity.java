@@ -1,14 +1,12 @@
 package com.zjwam.zkw.personalcenter;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
@@ -19,11 +17,14 @@ import com.zjwam.zkw.customview.ActivationDialog;
 import com.zjwam.zkw.customview.ActivationFailedDialog;
 import com.zjwam.zkw.customview.LearnCardSuccessDialog;
 import com.zjwam.zkw.entity.EmptyBean;
+import com.zjwam.zkw.entity.MineLearnCardBean;
 import com.zjwam.zkw.entity.ResponseBean;
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.MyException;
 import com.zjwam.zkw.util.ZkwPreference;
 import com.zjwam.zkw.webview.WebViewActivity;
+
+import java.util.List;
 
 import static com.lzy.okgo.OkGo.post;
 
@@ -31,11 +32,13 @@ public class MineLearnCardActivity extends BaseActivity {
 
     private ImageView learncard_nodata,mine_learncard_back;
     private TextView learncard_buy, learncard_activation;
-    private LRecyclerView learncard_recyclerview;
+    private ExpandableListView learncard_listview;
     private ActivationDialog activationDialog;
     private ActivationFailedDialog activationFailedDialog;
     private LearnCardSuccessDialog learnCardSuccessDialog;
     private String uid = "", error_msg = "";
+    private List<MineLearnCardBean.getLearnCard> learnCards;
+    private MineLearnCardBean.getLearnCardItems card;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +101,35 @@ public class MineLearnCardActivity extends BaseActivity {
             }
         });
 
+        getLearnCardMsg();
+
     }
+
+    private void getLearnCardMsg() {
+        OkGo.<ResponseBean<MineLearnCardBean>>post(Config.URL+"api/user/combo_list ")
+                .params("uid",uid)
+                .tag(this)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new JsonCallback<ResponseBean<MineLearnCardBean>>() {
+                    @Override
+                    public void onSuccess(Response<ResponseBean<MineLearnCardBean>> response) {
+                        ResponseBean<MineLearnCardBean> data = response.body();
+                        card  = data.data.getCard();
+                        if (card.getOn().size()>0){
+                            learnCards.addAll(card.getOn());
+                        }
+                        if (card.getStart().size()>0){
+                            learnCards.addAll(card.getStart());
+                        }
+                        if (card.getEnd().size()>0){
+                            learnCards.addAll(card.getEnd());
+                        }
+                    }
+                });
+    }
+
+
+
 
     private void getActivationMsg(String card_num, String card_pwd) {
         OkGo.<ResponseBean<EmptyBean>>post(Config.URL + "api/user/combo")
@@ -145,7 +176,7 @@ public class MineLearnCardActivity extends BaseActivity {
         learncard_nodata = findViewById(R.id.learncard_nodata);
         learncard_buy = findViewById(R.id.learncard_buy);
         learncard_activation = findViewById(R.id.learncard_activation);
-        learncard_recyclerview = findViewById(R.id.learncard_recyclerview);
+        learncard_listview = findViewById(R.id.learncard_listview);
         mine_learncard_back = findViewById(R.id.mine_learncard_back);
     }
 }

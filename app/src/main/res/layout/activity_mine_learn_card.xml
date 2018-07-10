@@ -31,8 +31,8 @@
             android:textSize="18sp" />
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/learncard_recyclerview"
+    <ExpandableListView
+        android:id="@+id/learncard_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
