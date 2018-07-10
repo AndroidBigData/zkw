@@ -31,7 +31,7 @@ public class MineLearnCardActivity extends BaseActivity {
 
     private ImageView learncard_nodata,mine_learncard_back;
     private TextView learncard_buy, learncard_activation;
-    private LRecyclerView learncard_recyclervier;
+    private LRecyclerView learncard_recyclerview;
     private ActivationDialog activationDialog;
     private ActivationFailedDialog activationFailedDialog;
     private LearnCardSuccessDialog learnCardSuccessDialog;
@@ -145,7 +145,7 @@ public class MineLearnCardActivity extends BaseActivity {
         learncard_nodata = findViewById(R.id.learncard_nodata);
         learncard_buy = findViewById(R.id.learncard_buy);
         learncard_activation = findViewById(R.id.learncard_activation);
-        learncard_recyclervier = findViewById(R.id.learncard_recyclervier);
+        learncard_recyclerview = findViewById(R.id.learncard_recyclerview);
         mine_learncard_back = findViewById(R.id.mine_learncard_back);
     }
 }
