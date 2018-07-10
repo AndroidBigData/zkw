@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".videoplayer.Video2PlayActivity">
+
+    <RelativeLayout
+        android:id="@+id/video_top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <RelativeLayout
+            android:id="@+id/video_back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/title_back_black" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/video_title_name"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:ellipsize="middle"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="课程详情"
+            android:textColor="@color/text_color_gray"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/video_sc"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/video_sc" />
+
+        <ImageView
+            android:id="@+id/video_jump_shopcard"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_toStartOf="@+id/video_sc"
+            android:scaleType="centerInside"
+            android:src="@drawable/jumpshopcard" />
+
+        <TextView
+            android:id="@+id/video_card_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/video_jump_shopcard"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/round_msg"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/white"
+            android:textSize="8sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <com.zjwam.zkw.videoplayer.LandLayoutVideo
+        android:id="@+id/ad_player"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/video_tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:tabIndicatorColor="@color/colorAccent"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/colorAccent"
+        app:tabTextColor="@color/black" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/video_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/register_choice_background" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/video_buyover"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/video_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="￥1288"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/video_price">
+
+                <TextView
+                    android:id="@+id/video_old_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="原价￥1688"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="12sp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_alignEnd="@+id/video_old_price"
+                    android:layout_centerVertical="true"
+                    android:background="@color/text_color_gray" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/video_buy"
+            android:layout_width="126dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:text="立即购买"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/video_shopcart"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="#FFB23C"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/video_buy"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/shoppingcart" />
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

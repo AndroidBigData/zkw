@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">"沃易学"</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <item name="item1" type="id" />
+    <item name="item2" type="id" />
+    <item name="item3" type="id" />
+    <item name="item4" type="id" />
+    <item name="item5" type="id" />
+    <item name="item6" type="id" />
+    <item name="item7" type="id" />
+    <item name="item8" type="id" />
+    <item name="tag_glide" type="id" />
+
+</resources>

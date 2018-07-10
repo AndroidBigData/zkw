@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.VideoPlayer.CommentFragment"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+    <LinearLayout
+        android:paddingLeft="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:background="@drawable/ggmm_shape"
+        android:gravity="center_vertical">
+        <TextView
+            android:textSize="16sp"
+            android:id="@+id/comment_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="综合评分：5"
+            android:textColor="@color/text_color_gray"/>
+        <RatingBar
+            android:layout_marginLeft="5dp"
+            android:id="@+id/comment_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1"
+            android:rating="5"
+            android:progressTint="#FC5100"
+            style="?android:attr/ratingBarStyleSmall"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:padding="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/comment_shape">
+        <com.github.jdsjlzx.recyclerview.LRecyclerView
+            android:id="@+id/comment_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:id="@+id/comment_nodata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/no_data"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

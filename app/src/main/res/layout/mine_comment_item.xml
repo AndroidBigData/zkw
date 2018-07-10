@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="14dp"
+        android:background="@drawable/personal_header_bg"
+        android:layout_marginTop="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/mine_comment_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="14sp"
+                android:text="classNickName"
+                android:textColor="@color/video_introdece_title"/>
+
+            <TextView
+                android:id="@+id/mine_comment_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="2018.5.1  10:00"
+                android:textSize="10sp"
+                android:textColor="@color/gray_personal"/>
+        </RelativeLayout>
+
+        <RatingBar
+            android:id="@+id/mine_comment_rating"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:progressTint="@color/text_color_video_catalog"
+            android:rating="5"
+            android:stepSize="1" />
+
+        <TextView
+            android:id="@+id/mine_comment_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容"
+            android:textSize="12sp"
+            android:textColor="@color/video_introdece_jianjie"/>
+    </LinearLayout>
+</LinearLayout>

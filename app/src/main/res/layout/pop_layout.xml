@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/personal_tx_bg"
+        android:orientation="vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+<com.zjwam.zkw.customview.CurriculumScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none">
+    <LinearLayout
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/item1_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""/>
+        <com.zjwam.zkw.customview.CurriculumGridView
+            android:id="@+id/item1_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnWidth="100dp"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:horizontalSpacing="20dp"
+            android:numColumns="3"
+            android:stretchMode="spacingWidth"
+            android:verticalSpacing="10dp" />
+
+        <TextView
+            android:id="@+id/item2_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""/>
+        <com.zjwam.zkw.customview.CurriculumGridView
+            android:id="@+id/item2_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnWidth="100dp"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:horizontalSpacing="20dp"
+            android:numColumns="3"
+            android:stretchMode="spacingWidth"
+            android:verticalSpacing="10dp" />
+        <TextView
+            android:id="@+id/item3_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""/>
+        <com.zjwam.zkw.customview.CurriculumGridView
+            android:id="@+id/item3_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnWidth="100dp"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:horizontalSpacing="20dp"
+            android:numColumns="3"
+            android:stretchMode="spacingWidth"
+            android:verticalSpacing="10dp" />
+    </LinearLayout>
+</com.zjwam.zkw.customview.CurriculumScrollView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/line_gray"/>
+    <Button
+        android:layout_margin="8dp"
+        android:id="@+id/up_data"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/btn_bule_shap"
+        android:background="@drawable/btn_bule_shap"
+        android:textColor="@color/white"
+        android:text="提交"/>
+    </LinearLayout>
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+</LinearLayout>

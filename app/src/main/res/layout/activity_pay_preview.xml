@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".pay.PayPreviewActivity"
+    android:orientation="vertical"
+    android:background="@color/register_choice_background">
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/preview_back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/title_back_black" />
+
+    <TextView
+        android:id="@+id/preview_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="订单详情"
+        android:textColor="@color/text_color_gray"
+        android:textSize="18sp" />
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/preview_bg"
+        android:layout_width="match_parent"
+        android:layout_height="196dp"
+        android:src="@drawable/homepage_background"
+        android:scaleType="fitXY"
+        android:layout_margin="10dp"/>
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:id="@+id/preview_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"/>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imageView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ali_pay"
+            app:layout_constraintBottom_toBottomOf="@+id/zfb_check"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/zfb_check" />
+
+        <CheckBox
+            android:id="@+id/zfb_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            android:button="@drawable/check_bok_selector"
+            android:background="@color/white"/>
+
+        <ImageView
+            android:id="@+id/imageView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/wx_check"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/wx_check"
+            app:srcCompat="@drawable/wx_pay"
+
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/wx_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/zfb_check"
+            android:button="@drawable/check_bok_selector"
+            android:background="@color/white"/>
+
+    </android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/preview_pay"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorAccent"
+        android:text="去支付"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textSize="18sp"/>
+
+</LinearLayout>

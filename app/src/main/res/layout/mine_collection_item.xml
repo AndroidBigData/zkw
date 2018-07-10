@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="@color/white">
+
+        <include layout="@layout/class_search_item"
+            android:id="@+id/mine_collection_include"/>
+
+        <TextView
+            android:id="@+id/off_collection"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginBottom="5dp"
+            android:text="    取消收藏    "
+            android:textSize="12dp"
+            android:gravity="center"
+            android:layout_below="@id/mine_collection_include"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/curriculun_checked_item_shape"/>
+    </RelativeLayout>
+</LinearLayout>

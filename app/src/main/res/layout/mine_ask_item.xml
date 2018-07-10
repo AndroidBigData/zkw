@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/personal_header_bg">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/mine_answer_img"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@mipmap/zkw_f" />
+
+            <TextView
+                android:id="@+id/mine_answer_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="6dp"
+                android:layout_toEndOf="@+id/mine_answer_img"
+                android:text="nickName"
+                android:textSize="16sp"
+                android:textColor="@color/black_personal_nickname"/>
+
+            <TextView
+                android:id="@+id/mine_answer_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="2018.6.25 11:31"
+                android:textSize="12sp"
+                android:textColor="@color/gray_personal"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/mine_answer_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="42dp"
+            android:text="考研一对一"
+            android:textColor="@color/colorAccent"/>
+
+        <TextView
+            android:id="@+id/mine_answer_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="42dp"
+            android:text="提问内容"
+            android:textSize="12sp"
+            android:textColor="@color/gray_personal"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="42dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/mine_ask_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="13"
+                android:textSize="12sp"
+                android:textColor="@color/colorAccent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="条回答"
+                android:textColor="@color/gray_personal"
+                android:textSize="12sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

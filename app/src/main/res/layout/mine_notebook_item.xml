@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/personal_header_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/mine_notebook_name"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="考研政治一对一"
+            android:textColor="@color/black_personal_nickname"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/mine_notebook_vname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="第一讲：2018考研大纲解析"
+            android:textColor="@color/gray_personal"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/mine_notebook_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="笔记内容"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/text_color_gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/mine_notebook_vtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="课程时间：30:36"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/text_gray"
+            android:textSize="10sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp">
+
+            <TextView
+                android:id="@+id/mine_notebook_addtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="记录时间：2018.6.21 10:11"
+                android:textColor="@color/text_gray"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/mine_notebook_del"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/curriculun_checked_item_shape"
+                android:gravity="center"
+                android:text="    删除    "
+                android:textColor="@color/text_gray"
+                android:textSize="10sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

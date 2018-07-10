@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#CCCCCC</color>
+    <color name="colorPrimaryDark">#CCCCCC</color>
+    <color name="colorAccent">#4492E7</color>
+
+
+    <color name="main_blue">#4391E7</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="line_gray">#ECECEC</color>
+    <color name="btn_bule_shap">#4492E7</color>
+    <color name="register_choice_background">#F2F2F2</color>
+    <color name="text_color_hint">#CCCCCC</color>
+    <color name="text_color_gray">#737373</color>
+    <color name="text_gray">#999999</color>
+    <color name="text_color_toptitle">#656565</color>
+    <color name="text_color_video_catalog">#FB5100</color>
+    <color name="black_personal_nickname">#323232</color>
+    <color name="gray_personal">#666666</color>
+    <color name="homepage_text">#414141</color>
+    <color name="kctj_text_color">#434343</color>
+    <color name="kctj_text_title">#323232</color>
+    <color name="homepage_dh_text">#4b4b4b</color>
+    <color name="personal_header">#292929</color>
+    <color name="personal_list">#414141</color>
+    <color name="video_introdece_title">#333333</color>
+    <color name="video_introdece_abs">#656565</color>
+    <color name="video_introdece_class">#343434</color>
+    <color name="video_introdece_jianjie">#676767</color>
+    <color name="search_abs">#6f6f6f</color>
+    <color name="search_classnum">#808080</color>
+    <color name="end_color">#0BBBE0</color>
+    <color name="learncard_msg">#22AD38</color>
+
+</resources>

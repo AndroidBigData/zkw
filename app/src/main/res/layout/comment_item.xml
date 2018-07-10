@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <ImageView
+            android:id="@+id/comment_item_tx"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@mipmap/zkw_f"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:id="@+id/comment_item_nick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="用户昵称"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_toEndOf="@+id/comment_item_tx"
+            android:layout_centerVertical="true"/>
+        <RatingBar
+            android:id="@+id/comment_item_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1"
+            android:rating="5"
+            android:progressTint="#FC5100"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_toEndOf="@+id/comment_item_nick"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/comment_item_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="2018.5.1  10:00"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/comment_item_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="49dp"
+        android:layout_marginEnd="8dp"
+        android:layout_below="@+id/comment_item_tx"
+        android:layout_alignStart="@+id/comment_item_nick"
+        android:text="评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容"
+        android:paddingBottom="14dp"/>
+
+</LinearLayout>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp">
+
+        <ImageView
+            android:id="@+id/learnover_img"
+            android:layout_width="150dp"
+            android:layout_height="90dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/homepage_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/learnover_type"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="官方"
+            android:textColor="@color/white"
+            android:background="@drawable/class_item_text_bg"
+            app:layout_constraintStart_toStartOf="@+id/learnover_img"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="vertical"
+        android:layout_weight="3"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/learnover_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="考研英语"
+            android:textSize="15sp"
+            android:textColor="#333333"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/learnover_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="名师讲解干货"
+            android:textColor="@color/text_color_gray"
+            android:textSize="13sp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/class_learnover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30课时  共2000分钟"
+            android:textColor="@color/text_color_gray"
+            android:textSize="12sp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/learnover_pro_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已完成 100%"
+            android:textSize="12sp"
+            android:layout_weight="1"
+            android:textColor="@color/text_color_toptitle"/>
+        <TextView
+            android:id="@+id/learnover_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="完成时间：2018.6.13 17:40"
+            android:textSize="12sp"
+            android:layout_weight="1"
+            android:textColor="@color/text_color_toptitle"/>
+    </LinearLayout>
+</LinearLayout>
