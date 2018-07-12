@@ -4,6 +4,11 @@ import java.util.List;
 
 public class MineLearnCardBean {
     private getLearnCardItems card;
+    private getBugMsg ad;
+
+    public getBugMsg getAd() {
+        return ad;
+    }
 
     public getLearnCardItems getCard() {
         return card;
@@ -28,7 +33,7 @@ public class MineLearnCardBean {
     }
 
     public class getLearnCard {
-        private String card_num,card_pwd,overtime,username;
+        private String card_num,card_pwd,overtime,username,img;
         private int id,type;
 
         public String getCard_num() {
@@ -53,6 +58,21 @@ public class MineLearnCardBean {
 
         public int getType() {
             return type;
+        }
+
+        public String getImg() {
+            return img;
+        }
+    }
+    public class getBugMsg{
+        private String url,title;
+
+        public String getUrl() {
+            return url;
+        }
+
+        public String getTitle() {
+            return title;
         }
     }
 }

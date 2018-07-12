@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".personalcenter.MineLearnCardActivity">
+    tools:context=".personalcenter.MineLearnCardActivity"
+    android:background="@color/register_choice_background">
 
     <RelativeLayout
         android:id="@+id/relativeLayout2"
@@ -37,7 +38,10 @@
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="40dp"
+        android:divider="@color/register_choice_background"
+        android:groupIndicator="@null"
+        android:listSelector="@android:color/transparent" />
 
     <ImageView
         android:id="@+id/learncard_nodata"

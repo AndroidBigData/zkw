@@ -9,22 +9,22 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zjwam.zkw.R;
 
-public class ActivationDialog extends Dialog {
+public class LearnCardingDialog extends Dialog {
     private Context context;
-    private ImageView dialog_close;
-    private TextView make_go;
-    private EditText learncard_num, learncard_world;
+    private TextView learncarding_num,learncarding_world,learncarding_tel,learncarding_time,learncarding_close;
+    private String num,world,tel,time;
     private ClickListenerInterface clickListenerInterface;
-
-    public ActivationDialog(@NonNull Context context) {
+    public LearnCardingDialog(@NonNull Context context, String num, String world, String tel, String time) {
         super(context, R.style.dialog);
         this.context = context;
+        this.num = num;
+        this.world = world;
+        this.tel = tel;
+        this.time = time;
     }
 
     @Override
@@ -34,28 +34,23 @@ public class ActivationDialog extends Dialog {
     }
 
     private void init() {
-        View view = LayoutInflater.from(context).inflate(R.layout.activation_dialog, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.learncarding_dialog,null);
         setContentView(view);
-        dialog_close = view.findViewById(R.id.learncard_close);
-        make_go = view.findViewById(R.id.make_go);
-        learncard_num = view.findViewById(R.id.learncard_num);
-        learncard_world = view.findViewById(R.id.learncard_world);
-
-        dialog_close.setOnClickListener(new View.OnClickListener() {
+        learncarding_num = view.findViewById(R.id.learncarding_num);
+        learncarding_world = view.findViewById(R.id.learncarding_world);
+        learncarding_tel = view.findViewById(R.id.learncarding_tel);
+        learncarding_time = view.findViewById(R.id.learncarding_time);
+        learncarding_close = view.findViewById(R.id.learncarding_close);
+        learncarding_num.setText(num);
+        learncarding_world.setText(world);
+        learncarding_tel.setText(tel);
+        learncarding_time.setText(time);
+        learncarding_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListenerInterface.doConfirm(view);
+                clickListenerInterface.doCancel(view);
             }
         });
-        make_go.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String num = learncard_num.getText().toString().trim();
-                String world = learncard_world.getText().toString().trim();
-                clickListenerInterface.makeGo(num, world);
-            }
-        });
-
     }
 
     public void setClickListener(ClickListenerInterface clickListenerInterface) {
@@ -63,9 +58,7 @@ public class ActivationDialog extends Dialog {
     }
 
     public interface ClickListenerInterface {
-        public void doConfirm(View view);
-
-        public void makeGo(String num, String world);
+        void doCancel(View view);
     }
 
     @Override
@@ -76,7 +69,6 @@ public class ActivationDialog extends Dialog {
          */
         WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
         layoutParams.gravity = Gravity.CENTER;
-
         DisplayMetrics d = context.getResources().getDisplayMetrics(); // 获取屏幕宽、高用
         layoutParams.width = (int) (d.widthPixels * 0.8); // 宽度度设置为屏幕的0.8
         layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -85,5 +77,4 @@ public class ActivationDialog extends Dialog {
 
         getWindow().setAttributes(layoutParams);
     }
-
 }

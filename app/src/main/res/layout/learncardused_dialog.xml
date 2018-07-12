@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout2"
@@ -22,7 +21,7 @@
             android:layout_marginBottom="4dp"
             android:layout_marginTop="4dp"
             android:gravity="center"
-            android:text="激活"
+            android:text="已失效"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
@@ -30,22 +29,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <android.support.constraint.ConstraintLayout
+        <LinearLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:orientation="vertical"
             android:background="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/make_go"
+            app:layout_constraintBottom_toTopOf="@+id/learncardused_buy"
             app:layout_constraintTop_toBottomOf="@+id/textView">
 
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_marginTop="32dp"
-                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:paddingTop="22dp"
                 android:orientation="horizontal"
+                android:layout_marginStart="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -53,52 +53,77 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="卡号： "
+                    android:text="卡         号： "
                     android:textSize="14sp"
                     android:textColor="@color/personal_header"/>
 
-                <EditText
-                    android:id="@+id/learncard_num"
-                    android:layout_width="200dp"
+                <TextView
+                    android:id="@+id/learncardused_num"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:background="@drawable/edittext_shape" />
+                    android:textSize="14sp"
+                    android:textColor="@color/personal_header"/>
             </LinearLayout>
-
             <LinearLayout
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:gravity="center"
+                android:paddingTop="22dp"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="密码： "
+                    android:text="密         码： "
                     android:textSize="14sp"
                     android:textColor="@color/personal_header"/>
 
-                <EditText
-                    android:id="@+id/learncard_world"
-                    android:layout_width="200dp"
-                    android:inputType="number"
+                <TextView
+                    android:id="@+id/learncardused_world"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edittext_shape" />
+                    android:textSize="14sp"
+                    android:textColor="@color/personal_header"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="22dp"
+                android:paddingBottom="22dp"
+                android:orientation="horizontal"
+                android:layout_marginStart="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="使用帐号： "
+                    android:textSize="14sp"
+                    android:textColor="@color/personal_header"/>
+
+                <TextView
+                    android:id="@+id/learncardused_tel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/personal_header"/>
             </LinearLayout>
 
-        </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/make_go"
+            android:id="@+id/learncardused_buy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="确认激活"
+            android:text="购买学习卡"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -108,7 +133,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/learncard_close"
+        android:id="@+id/learncardused_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"

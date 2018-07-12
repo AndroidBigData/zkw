@@ -32,5 +32,7 @@
     <color name="search_classnum">#808080</color>
     <color name="end_color">#0BBBE0</color>
     <color name="learncard_msg">#22AD38</color>
+    <color name="learncarding">#8BCA01</color>
+    <color name="learncardover">#F40000</color>
 
 </resources>

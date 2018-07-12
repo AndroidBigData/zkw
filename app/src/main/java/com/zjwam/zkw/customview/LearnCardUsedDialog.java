@@ -9,22 +9,23 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zjwam.zkw.R;
 
-public class ActivationDialog extends Dialog {
+public class LearnCardUsedDialog extends Dialog {
     private Context context;
-    private ImageView dialog_close;
-    private TextView make_go;
-    private EditText learncard_num, learncard_world;
+    private TextView learncardused_num,learncardused_world,learncardused_tel,learncardused_buy;
+    private ImageView learncardused_close;
+    private String num,world,tel;
     private ClickListenerInterface clickListenerInterface;
-
-    public ActivationDialog(@NonNull Context context) {
+    public LearnCardUsedDialog(@NonNull Context context,String num,String world,String tel) {
         super(context, R.style.dialog);
         this.context = context;
+        this.num = num;
+        this.world = world;
+        this.tel = tel;
     }
 
     @Override
@@ -34,28 +35,28 @@ public class ActivationDialog extends Dialog {
     }
 
     private void init() {
-        View view = LayoutInflater.from(context).inflate(R.layout.activation_dialog, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.learncardused_dialog,null);
         setContentView(view);
-        dialog_close = view.findViewById(R.id.learncard_close);
-        make_go = view.findViewById(R.id.make_go);
-        learncard_num = view.findViewById(R.id.learncard_num);
-        learncard_world = view.findViewById(R.id.learncard_world);
-
-        dialog_close.setOnClickListener(new View.OnClickListener() {
+        learncardused_num = view.findViewById(R.id.learncardused_num);
+        learncardused_world = view.findViewById(R.id.learncardused_world);
+        learncardused_tel = view.findViewById(R.id.learncardused_tel);
+        learncardused_buy = view.findViewById(R.id.learncardused_buy);
+        learncardused_close = view.findViewById(R.id.learncardused_close);
+        learncardused_num.setText(num);
+        learncardused_world.setText(world);
+        learncardused_tel.setText(tel);
+        learncardused_buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 clickListenerInterface.doConfirm(view);
             }
         });
-        make_go.setOnClickListener(new View.OnClickListener() {
+        learncardused_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String num = learncard_num.getText().toString().trim();
-                String world = learncard_world.getText().toString().trim();
-                clickListenerInterface.makeGo(num, world);
+                clickListenerInterface.doCancel(view);
             }
         });
-
     }
 
     public void setClickListener(ClickListenerInterface clickListenerInterface) {
@@ -63,9 +64,8 @@ public class ActivationDialog extends Dialog {
     }
 
     public interface ClickListenerInterface {
-        public void doConfirm(View view);
-
-        public void makeGo(String num, String world);
+        void doCancel(View view);
+        void doConfirm(View view);
     }
 
     @Override
@@ -76,7 +76,6 @@ public class ActivationDialog extends Dialog {
          */
         WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
         layoutParams.gravity = Gravity.CENTER;
-
         DisplayMetrics d = context.getResources().getDisplayMetrics(); // 获取屏幕宽、高用
         layoutParams.width = (int) (d.widthPixels * 0.8); // 宽度度设置为屏幕的0.8
         layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -85,5 +84,4 @@ public class ActivationDialog extends Dialog {
 
         getWindow().setAttributes(layoutParams);
     }
-
 }
