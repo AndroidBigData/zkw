@@ -312,6 +312,7 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
                         video = response.body();
                         url = video.getAddress();
                         title = video.getVname();
+                        ZkwPreference.getInstance(getBaseContext()).setVideoId(String.valueOf(video.getId()));
                         if (1 == video.getHold()){
                             isSC = 1;
                             video_sc.setImageResource(R.drawable.video_sc_over);
@@ -470,6 +471,7 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
                 .setVideoTitle(title)
                 .build(detailPlayer);
         detailPlayer.startPlayLogic();
+
     }
 
     @Override
@@ -489,6 +491,8 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
     @Override
     protected void onPause() {
         getCurPlay().onVideoPause();
+        int time = getCurPlay().getCurrentPositionWhenPlaying();
+        ZkwPreference.getInstance(getBaseContext()).setViteoTime(String.valueOf(time));
         super.onPause();
         isPause = true;
     }

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".videoplayer.more.CommmentActivity"
+    android:background="@color/register_choice_background">
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/comment_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/title_back_black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="评价"
+            android:textColor="@color/text_color_gray"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/comment_save"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="发布"
+            android:gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:textSize="14sp"
+            android:textColor="@color/btn_bule_shap"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/relativeLayout"
+        android:gravity="center_vertical"
+        android:layout_marginTop="1dp"
+        android:background="@color/white">
+        <TextView
+            android:id="@+id/textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="星级评价："
+            android:textSize="14sp"
+            android:layout_marginStart="10dp"/>
+        <RatingBar
+            android:layout_marginLeft="5dp"
+            android:id="@+id/comment_rat_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1"
+            android:rating="5"
+            android:progressTint="#FC5100"
+            android:isIndicator="false"
+            style="?android:attr/ratingBarStyleSmall"/>
+    </LinearLayout>
+    <EditText
+        android:id="@+id/comment_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:layout_below="@+id/linearLayout"
+        android:textSize="14sp"
+        android:textColor="@color/personal_header"
+        android:hint="请输入评价内容"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"/>
+
+</RelativeLayout>

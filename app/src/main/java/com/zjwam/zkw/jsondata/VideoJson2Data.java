@@ -23,7 +23,7 @@ public class VideoJson2Data {
             for (int i = 0 ; i < items.length() ; i++){
                 ClassBean classBean = new ClassBean();
                 JSONObject item = items.getJSONObject(i);
-                classBean.setId(item.getString("id"));
+                classBean.setId(item.getInt("id"));
                 classBean.setVname((i+1)+"."+item.getString("vname"));
                 classBean.setAddress(item.getString("address"));
                 classItems.add(classBean);

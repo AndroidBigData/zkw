@@ -11,6 +11,8 @@ public class ZkwPreference {
     private static final String UID = "uid"; //记录用户id
     private static final String REGISTER_TYPE = "registerType";//记录用户类型
     private static final String CHOICE_INFO = "choiceInfo";//完善个人信息页面，记录用户选择的信息；
+    private static final String VIDEO_TIME = "videoTime";//记录播放时长
+    private static final String VIDEO_ID = "videoId";//记录当前播放那个的章节id
 
     private static ZkwPreference preference = null;
     private SharedPreferences sharedPreference;
@@ -92,7 +94,7 @@ public class ZkwPreference {
     }
 
     public String getRegisterType(){
-        String type = sharedPreference.getString(REGISTER_TYPE, null);
+        String type = sharedPreference.getString(REGISTER_TYPE, "");
         return type;
     }
     public void SetRegisterType(String type){
@@ -101,4 +103,23 @@ public class ZkwPreference {
         editor.commit();
     }
 
+    public String getViteoTime() {
+        String time = sharedPreference.getString(VIDEO_TIME,"");
+        return time;
+    }
+
+    public void setViteoTime(String time){
+        SharedPreferences.Editor editor = sharedPreference.edit();
+        editor.putString(VIDEO_TIME, time);
+        editor.commit();
+    }
+    public String getVideoId(){
+        String id = sharedPreference.getString(VIDEO_ID,"");
+        return id;
+    }
+    public void setVideoId (String id){
+        SharedPreferences.Editor editor = sharedPreference.edit();
+        editor.putString(VIDEO_ID, id);
+        editor.commit();
+    }
 }

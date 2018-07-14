@@ -101,6 +101,7 @@ public class LoginFragment extends BaseActivity {
                 case R.id.register_name:
                     Intent intent = new Intent(getBaseContext(), RegisterChoiceActivity.class);
                     startActivity(intent);
+                    finish();
                     break;
                 case R.id.see_passworld:
                     if (isSee) {

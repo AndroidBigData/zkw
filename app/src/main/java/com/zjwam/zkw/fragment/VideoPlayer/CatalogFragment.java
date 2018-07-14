@@ -96,6 +96,7 @@ public class CatalogFragment extends Fragment {
             public void onItemClick(View view, int position) {
                 String path = data.get(position).getAddress();
                 String title = data.get(position).getVname();
+                ZkwPreference.getInstance(getActivity()).setVideoId(String.valueOf(data.get(position).getId()));
                 if (ZkwPreference.getInstance(getActivity()).IsFlag()) {
                     if ("1".equals(code)) {
                         listterner.process(path, title);

@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.VideoPlayer.AnswerFragment">
+    tools:context=".fragment.VideoPlayer.AnswerFragment"
+    android:background="@color/register_choice_background">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:id="@+id/video_answer_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="问答" />
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"/>
 
-</FrameLayout>
+    <RelativeLayout
+        android:id="@+id/more_msg"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingTop="10dp"
+        android:visibility="gone"
+        android:background="@color/white">
+        <GridView
+            android:id="@+id/video_more_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnWidth="90dp"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:numColumns="auto_fit"
+            android:layout_marginBottom="86dp"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dp"
+            android:listSelector="@android:color/transparent"/>
+    </RelativeLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/answer_plus"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/colorAccent"
+        android:layout_marginBottom="5dp"/>
+</RelativeLayout>

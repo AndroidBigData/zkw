@@ -2,7 +2,7 @@ package com.zjwam.zkw.entity;
 
 public class VideoMainMsgBean {
     private String vname,address;
-    private int price,old_price,buy,car,hold;
+    private int price,old_price,buy,car,hold,id;
 
     public String getVname() {
         return vname;
@@ -30,5 +30,9 @@ public class VideoMainMsgBean {
 
     public int getHold() {
         return hold;
+    }
+
+    public int getId() {
+        return id;
     }
 }

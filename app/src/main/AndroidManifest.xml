@@ -115,7 +115,9 @@
             android:screenOrientation="portrait" />
         <activity android:name=".webview.WebViewActivity" />
         <activity android:name=".pay.PayPreviewActivity" />
-        <activity android:name=".personalcenter.MineLearnCardActivity"></activity>
+        <activity android:name=".personalcenter.MineLearnCardActivity" />
+        <activity android:name=".videoplayer.more.WriteNoteActivity" />
+        <activity android:name=".videoplayer.more.CommmentActivity"></activity>
     </application>
 
 </manifest>

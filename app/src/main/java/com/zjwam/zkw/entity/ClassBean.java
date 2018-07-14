@@ -3,13 +3,14 @@ package com.zjwam.zkw.entity;
 import java.io.Serializable;
 
 public class ClassBean implements Serializable{
-    private String id,vname,address;
+    private String vname,address;
+    private int id;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

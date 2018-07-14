@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".videoplayer.more.WriteNoteActivity"
+    android:background="@color/register_choice_background">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/write_note_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/title_back_black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="记笔记"
+            android:textColor="@color/text_color_gray"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/write_note_save"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="保存"
+            android:gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:textSize="14sp"
+            android:textColor="@color/btn_bule_shap"/>
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/write_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        android:background="@null"
+        android:textColor="@color/personal_header"
+        android:hint="请输入笔记内容"
+        android:textSize="14sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -267,6 +267,8 @@ public class MineLearnCardActivity extends BaseActivity {
                             activationDialog.dismiss();
                         }
                         learnCardSuccessDialog.show();
+                        getLearnCardMsg();
+
                     }
 
                     @Override
