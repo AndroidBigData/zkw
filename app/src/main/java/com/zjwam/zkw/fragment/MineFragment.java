@@ -1,6 +1,8 @@
 package com.zjwam.zkw.fragment;
 
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,6 +28,7 @@ import android.widget.Toast;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
+import com.zjwam.zkw.HttpUtils.MainActivityHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.callback.Json2Callback;
 import com.zjwam.zkw.customview.CustomToast;
@@ -75,9 +78,17 @@ public class MineFragment extends Fragment {
     private RelativeLayout personal_footer_item1, personal_footer_item2;
     private String uid = "";
     private CustomToast customToast;
+    private PersoanlMessage persoanlMessage;
+    private Context context;
+    private MainActivityHttp mainActivityHttp;
 
     public MineFragment() {
         // Required empty public constructor
+    }
+
+    @SuppressLint("ValidFragment")
+    public MineFragment(Context context) {
+        this.context = context;
     }
 
     @Override
@@ -95,6 +106,7 @@ public class MineFragment extends Fragment {
     }
 
     private void initData() {
+        mainActivityHttp = new MainActivityHttp(context);
         data = new ArrayList<>();
         item = new HashMap<>();
         item.put("img", R.drawable.personal_jifen);
@@ -161,35 +173,36 @@ public class MineFragment extends Fragment {
                 switch (i) {
                     case 1:
 //                        Toast.makeText(getActivity(),"我的积分",Toast.LENGTH_SHORT).show();
-                        if (isFlag){
+                        if (isFlag) {
                             startActivity(new Intent(getActivity(), MineIntegralActivity.class));
                         } else {
-                            showDialog();}
+                            showDialog();
+                        }
 
                         break;
                     case 2:
 //                        Toast.makeText(getActivity(),"我的订单",Toast.LENGTH_SHORT).show();
-                        if (isFlag){
+                        if (isFlag) {
                             startActivity(new Intent(getActivity(), MineOrderActivity.class));
-                        }else {
+                        } else {
                             showDialog();
                         }
 
                         break;
                     case 3:
 //                        Toast.makeText(getActivity(),"购物车",Toast.LENGTH_SHORT).show();
-                        if (isFlag){
+                        if (isFlag) {
                             startActivity(new Intent(getActivity(), MineShopCartActivity.class));
-                        }else {
+                        } else {
                             showDialog();
                         }
 
                         break;
                     case 4:
 //                        Toast.makeText(getActivity(),"课程答疑",Toast.LENGTH_SHORT).show();
-                        if (isFlag){
+                        if (isFlag) {
                             startActivity(new Intent(getActivity(), CourseAnswerActivity.class));
-                        }else {
+                        } else {
                             showDialog();
                         }
 
@@ -199,17 +212,17 @@ public class MineFragment extends Fragment {
 //                        break;
                     case 5:
 //                        Toast.makeText(getActivity(),"我的评价",Toast.LENGTH_SHORT).show();
-                        if (isFlag){
+                        if (isFlag) {
                             startActivity(new Intent(getActivity(), MineCommentActivity.class));
-                        }else {
+                        } else {
                             showDialog();
                         }
 
                         break;
                     case 6:
-                        if (isFlag){
+                        if (isFlag) {
                             startActivity(new Intent(getActivity(), MineLearnCardActivity.class));
-                        }else {
+                        } else {
                             showDialog();
                         }
                         break;
@@ -236,10 +249,10 @@ public class MineFragment extends Fragment {
                 case R.id.personal_num:
                     break;
                 case R.id.personal_qd:
-                    if (isFlag){
-                        qdMessage();
+                    if (isFlag) {
+                        mainActivityHttp.qdMessage(uid);
                         personal_qd.setClickable(false);
-                    }else {
+                    } else {
                         showDialog();
                     }
 
@@ -247,34 +260,34 @@ public class MineFragment extends Fragment {
                 case R.id.personal_message:
                     break;
                 case R.id.personal_mine_class:
-                    if (isFlag){
+                    if (isFlag) {
                         startActivity(new Intent(getActivity(), MineClassActivity.class));
-                    }else {
+                    } else {
                         showDialog();
                     }
 
                     break;
                 case R.id.personal_mine_note_book:
-                    if (isFlag){
+                    if (isFlag) {
                         startActivity(new Intent(getActivity(), MineNoteBookActivity.class));
-                    }else {
+                    } else {
                         showDialog();
                     }
 
                     break;
                 case R.id.personal_mine_error:
-                    if (isFlag){
+                    if (isFlag) {
 
-                    }else {
+                    } else {
                         showDialog();
                     }
                     Toast.makeText(getActivity(), "3333", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.personal_mine_sc:
 //                    Toast.makeText(getActivity(), "4444", Toast.LENGTH_SHORT).show();
-                    if (isFlag){
+                    if (isFlag) {
                         startActivity(new Intent(getActivity(), MineCollectionActivity.class));
-                    }else {
+                    } else {
                         showDialog();
                     }
 
@@ -290,65 +303,38 @@ public class MineFragment extends Fragment {
         }
     };
 
-    private void qdMessage() {
-        OkGo.<PersonalQDBean>get(Config.URL + "api/user/sign?id=" + uid)
-                .cacheMode(CacheMode.NO_CACHE)
-                .tag(this)
-                .execute(new Json2Callback<PersonalQDBean>() {
-                    @Override
-                    public void onSuccess(Response<PersonalQDBean> response) {
-                        PersonalQDBean personalQDBean = response.body();
-                        if ("1".equals(personalQDBean.getCode())) {
-                            customToast = new CustomToast(getActivity());
-                            customToast.setsToast(personalQDBean.getMsg() + ",获得" + personalQDBean.getData().getJifen() + "积分", R.drawable.personal_smile);
-                            personal_num.setText(String.valueOf(Integer.parseInt(personal_num.getText().toString()) + Integer.parseInt(personalQDBean.getData().getJifen())));
-                        } else {
-                            customToast = new CustomToast(getActivity());
-                            customToast.setsToast(personalQDBean.getMsg(), R.drawable.personal_hard);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Response<PersonalQDBean> response) {
-                        super.onError(response);
-                        if (!NetworkUtils.isNetAvailable(getActivity())) {
-                            customToast = new CustomToast(getActivity());
-                            customToast.setsToast("签到失败，网络不可用", R.drawable.personal_hard);
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        personal_qd.setClickable(true);
-                    }
-                });
+    public void qdMessage(Response<PersonalQDBean> response) {
+        PersonalQDBean personalQDBean = response.body();
+        if ("1".equals(personalQDBean.getCode())) {
+            customToast = new CustomToast(getActivity());
+            customToast.setsToast(personalQDBean.getMsg() + ",获得" + personalQDBean.getData().getJifen() + "积分", R.drawable.personal_smile);
+            personal_num.setText(String.valueOf(Integer.parseInt(personal_num.getText().toString()) + Integer.parseInt(personalQDBean.getData().getJifen())));
+        } else {
+            customToast = new CustomToast(getActivity());
+            customToast.setsToast(personalQDBean.getMsg(), R.drawable.personal_hard);
+        }
     }
 
-    private void getPersonalMessage() {
-        OkGo.<PersoanlMessage>get(Config.URL + "api/user/index?uid=" + uid)
-                .tag(this)
-                .cacheKey("MineFragment")
-                .execute(new Json2Callback<PersoanlMessage>() {
-                    @Override
-                    public void onSuccess(Response<PersoanlMessage> response) {
-                        PersoanlMessage persoanlMessage = response.body();
-                        if (!persoanlMessage.getPic().isEmpty()) {
-                            GlideImageUtil.setImageView(getActivity(),persoanlMessage.getPic(),personal_tx,GlideImageUtil.circleTransform());
-                        }
-                        personal_nickname.setText(persoanlMessage.getNickname());
-                        personal_num.setText(String.valueOf(persoanlMessage.getJifen()));
-                    }
+    public void qdMessageError(Response<PersonalQDBean> response) {
+        if (!NetworkUtils.isNetAvailable(context)) {
+            customToast = new CustomToast(getActivity());
+            customToast.setsToast("签到失败，网络不可用", R.drawable.personal_hard);
+        }
+    }
 
-                    @Override
-                    public void onCacheSuccess(Response<PersoanlMessage> response) {
-                        super.onCacheSuccess(response);
-                        if (!isInitCache) {
-                            onSuccess(response);
-                            isInitCache = true;
-                        }
-                    }
-                });
+    public void qdMessageFinish() {
+        personal_qd.setClickable(true);
+    }
+
+    public void getPersonalMessage(Response<PersoanlMessage> response) {
+        persoanlMessage = response.body();
+        if (isFlag) {
+            GlideImageUtil.setImageView(getActivity(), persoanlMessage.getPic(), personal_tx, GlideImageUtil.circleTransform());
+            personal_nickname.setText(persoanlMessage.getNickname());
+            personal_num.setText(String.valueOf(persoanlMessage.getJifen()));
+        } else {
+            GlideImageUtil.setImageView(getActivity(), persoanlMessage.getPic(), personal_tx, GlideImageUtil.circleTransform());
+        }
     }
 
     private void initView() {
@@ -401,14 +387,16 @@ public class MineFragment extends Fragment {
         super.onResume();
         isFlag = ZkwPreference.getInstance(getActivity()).IsFlag();
         uid = ZkwPreference.getInstance(getActivity()).getUid();
+
         if (isFlag && isFlag == isSame) {
-            getPersonalMessage();
+            mainActivityHttp.getPersonalMessage(uid);
             jifen.setVisibility(View.VISIBLE);
             isSame = false;
         } else if (!isFlag) {
             jifen.setVisibility(View.INVISIBLE);
             personal_nickname.setText("点击登录");
-            personal_tx.setImageResource(R.drawable.zkw_r);
+//            personal_tx.setImageResource(R.drawable.zkw_r);
+            mainActivityHttp.getPersonalMessage(uid);
             isSame = true;
         }
     }
@@ -435,4 +423,5 @@ public class MineFragment extends Fragment {
         dialog.show();
 
     }
+
 }

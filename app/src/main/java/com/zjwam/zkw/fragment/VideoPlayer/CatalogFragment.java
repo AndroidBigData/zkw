@@ -1,6 +1,7 @@
 package com.zjwam.zkw.fragment.VideoPlayer;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -22,8 +23,10 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.zjwam.zkw.HttpUtils.VideoPlayerHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.VideoCatalogAdapter;
+import com.zjwam.zkw.entity.VideoCatalogBean;
 import com.zjwam.zkw.util.BadNetWork;
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.ZkwPreference;
@@ -43,9 +46,13 @@ public class CatalogFragment extends Fragment {
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private String code, msg, id;
     private List<ClassBean> data;
+    private Context context;
+    private String uid;
 
     // 2.1 定义用来与外部activity交互，获取到宿主activity
     private FragmentInteraction listterner;
+
+
 
     // 1 定义了所有activity必须实现的接口方法
     public interface FragmentInteraction {
@@ -66,6 +73,10 @@ public class CatalogFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @SuppressLint("ValidFragment")
+    public CatalogFragment(Context context) {
+        this.context = context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,6 +95,7 @@ public class CatalogFragment extends Fragment {
     }
 
     private void init() {
+        uid = ZkwPreference.getInstance(getActivity()).getUid();
         video_class_list = getActivity().findViewById(R.id.video_class_list);
         videoCatalogAdapter = new VideoCatalogAdapter(getActivity(),code);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(videoCatalogAdapter);
@@ -134,29 +146,13 @@ public class CatalogFragment extends Fragment {
             }
         });
 
-        getVideo(id);
-
+        new VideoPlayerHttp(context).getVideoCatalog(id,uid);
     }
 
-    private void getVideo(String id) {
-        String uid = ZkwPreference.getInstance(getActivity()).getUid();
-        OkGo.<String>get(Config.URL + "api/play/index?id=" + id + "&uid=" + uid)
-                .cacheMode(CacheMode.NO_CACHE)
-                .tag(this)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        VideoJson2Data datas = new VideoJson2Data(response.body());
-                        data = datas.getClassItem();
-                        code = datas.getQuanXian();
-                        msg = datas.getMsg();
-                        videoCatalogAdapter.setDataList(data);
-                    }
-
-                    @Override
-                    public void onError(Response<String> response) {
-                        super.onError(response);
-                    }
-                });
+    public void getVideoCatalog(Response<VideoCatalogBean> response) {
+        data = response.body().getVideo();
+        code = String.valueOf(response.body().getCode());
+        msg = response.body().getMsg();
+        videoCatalogAdapter.setDataList(data);
     }
 }

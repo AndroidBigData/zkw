@@ -1,6 +1,8 @@
 package com.zjwam.zkw.fragment;
 
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +29,7 @@ import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
+import com.zjwam.zkw.HttpUtils.MainActivityHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.CurriculumCheckedAdapter;
 import com.zjwam.zkw.adapter.SearchListAdapter;
@@ -55,21 +58,28 @@ public class CurriculumFragment extends Fragment {
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private int page = 1;
     private TabLayout curriculum_tablayout;
-    private String wid = "",id1,id2,id3;
+    private String wid = "", id1, id2, id3;
     private int mCurrentCounter = 0;
     private int max_items;
     private List<CateDatasBean> titles;
     private RelativeLayout curriculum_checked;
     private ImageView curriculum_checked_choice;
     private CurriculumCheckedAdapter curriculumCheckedAdapter;
-    private List<String> classNames ,classIds;
+    private List<String> classNames, classIds;
     private RecyclerView curriculum_checked_recyclerview;
-    private boolean isTitleRefresh = true,isTitleLoadMore = true;
-    private String id = "", getwid = "", getid = "",getname = "";
-    private TextView search_title_curriculum,curriculum_checked_text;
+    private boolean isTitleRefresh = true, isTitleLoadMore = true;
+    private String id = "", getwid = "", getid = "", getname = "";
+    private TextView search_title_curriculum, curriculum_checked_text;
+    private Context context;
+    private MainActivityHttp mainActivityHttp;
 
     public CurriculumFragment() {
         // Required empty public constructor
+    }
+
+    @SuppressLint("ValidFragment")
+    public CurriculumFragment(Context context) {
+        this.context = context;
     }
 
     @Override
@@ -83,7 +93,7 @@ public class CurriculumFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
-        if (bundle != null&&bundle.size()>0){
+        if (bundle != null && bundle.size() > 0) {
             getwid = bundle.getString("wid");
             getid = bundle.getString("id");
             getname = bundle.getString("name");
@@ -104,6 +114,7 @@ public class CurriculumFragment extends Fragment {
     }
 
     private void initData() {
+        mainActivityHttp = new MainActivityHttp(context);
         search_title_curriculum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,7 +124,7 @@ public class CurriculumFragment extends Fragment {
         curriculum_tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         classNames = new ArrayList<>();
         classIds = new ArrayList<>();
-        getInitialization();
+        mainActivityHttp.getInitialization();
         searchListAdapter = new SearchListAdapter(getActivity());
         lRecyclerViewAdapter = new LRecyclerViewAdapter(searchListAdapter);
         curriculum_recyclerview.setAdapter(lRecyclerViewAdapter);
@@ -129,10 +140,10 @@ public class CurriculumFragment extends Fragment {
             public void onRefresh() {
                 page = 1;
                 mCurrentCounter = 0;
-                if (isTitleRefresh){
-                    getData(wid, page);
-                }else {
-                    getChoiceListData(id);
+                if (isTitleRefresh) {
+                    mainActivityHttp.getData(wid, page);
+                } else {
+                    mainActivityHttp.getChoiceListData(id);
                 }
                 searchListAdapter.clear();
             }
@@ -142,10 +153,10 @@ public class CurriculumFragment extends Fragment {
             public void onLoadMore() {
                 if (mCurrentCounter < max_items) {
                     page++;
-                    if (isTitleLoadMore){
-                        getData(wid, page);
-                    }else {
-                        getChoiceListData(id);
+                    if (isTitleLoadMore) {
+                        mainActivityHttp.getData(wid, page);
+                    } else {
+                        mainActivityHttp.getChoiceListData(id);
                     }
                 } else {
                     curriculum_recyclerview.setNoMore(true);
@@ -156,14 +167,14 @@ public class CurriculumFragment extends Fragment {
         curriculum_tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (classNames.size()>0 || classIds.size()>0){
+                if (classNames.size() > 0 || classIds.size() > 0) {
                     classNames.clear();
                     classIds.clear();
                     curriculumCheckedAdapter.notifyDataSetChanged();
                 }
-                if (getwid.length()>0){
+                if (getwid.length() > 0) {
                     wid = getwid;
-                    if (getid.length()>0&&getname.length()>0){
+                    if (getid.length() > 0 && getname.length() > 0) {
                         if ("0".equals(wid)) {
                             curriculum_checked.setVisibility(View.GONE);
                         } else {
@@ -172,15 +183,15 @@ public class CurriculumFragment extends Fragment {
                         classNames.clear();
                         classIds.clear();
                         classNames.add(getname);
-                        classIds.add("first"+getid);
+                        classIds.add("first" + getid);
                         initRefreshData();
                         return;
                     }
-                }else {
+                } else {
                     wid = String.valueOf(titles.get(tab.getPosition()).getId());
-                    if (classNames.size()>0){
+                    if (classNames.size() > 0) {
                         curriculum_checked_text.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         curriculum_checked_text.setVisibility(View.VISIBLE);
                     }
                 }
@@ -202,11 +213,11 @@ public class CurriculumFragment extends Fragment {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                if (getid.length()>0&&getname.length()>0){
+                if (getid.length() > 0 && getname.length() > 0) {
                     classNames.clear();
                     classIds.clear();
                     classNames.add(getname);
-                    classIds.add("first"+getid);
+                    classIds.add("first" + getid);
                     initRefreshData();
                     getid = "";
                     getname = "";
@@ -230,54 +241,45 @@ public class CurriculumFragment extends Fragment {
         curriculum_checked_choice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getChoiceData();
+                mainActivityHttp.getChoiceData(wid);
                 curriculum_checked_choice.setClickable(false);
             }
         });
 
     }
 
-    private void getChoiceData() {
-        OkGo.<ClassSearchBean>get(Config.URL+"api/search/cate_search?wid=" + wid)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new Json2Callback<ClassSearchBean>() {
-                    @Override
-                    public void onSuccess(Response<ClassSearchBean> response) {
-                        ClassSearchBean classSearchBean = response.body();
-                        CurriculumPopupWindow curriculumPopupWindow = new CurriculumPopupWindow(getActivity(),classSearchBean);
-                        curriculumPopupWindow.showAsDropDown(curriculum_tablayout);
-                        curriculumPopupWindow.setOnClickListener(new CurriculumPopupWindow.onClickListener() {
-                            @Override
-                            public void onClick(final List<String> className, List<String> classId) {
-                                Log.i("---className:",className.toString());
-                                Log.i("---classId:",classId.toString());
-                                classNames.clear();
-                                classIds.clear();
-                                classNames = className;
-                                classIds = classId;
-                                initRefreshData();
-                            }
-                        });
-                    }
+    public void getChoiceData(Response<ClassSearchBean> response) {
+        ClassSearchBean classSearchBean = response.body();
+        CurriculumPopupWindow curriculumPopupWindow = new CurriculumPopupWindow(getActivity(), classSearchBean);
+        curriculumPopupWindow.showAsDropDown(curriculum_tablayout);
+        curriculumPopupWindow.setOnClickListener(new CurriculumPopupWindow.onClickListener() {
+            @Override
+            public void onClick(final List<String> className, List<String> classId) {
+                Log.i("---className:", className.toString());
+                Log.i("---classId:", classId.toString());
+                classNames.clear();
+                classIds.clear();
+                classNames = className;
+                classIds = classId;
+                initRefreshData();
+            }
+        });
 
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        curriculum_checked_choice.setClickable(true);
-                    }
-                });
+    }
+
+    public void getChoiceDatFinish() {
+        curriculum_checked_choice.setClickable(true);
     }
 
     private void initRefreshData() {
         isTitleLoadMore = false;
         isTitleRefresh = false;
-        if (classNames.size()>0){
+        if (classNames.size() > 0) {
             curriculum_checked_text.setVisibility(View.GONE);
-        }else {
+        } else {
             curriculum_checked_text.setVisibility(View.VISIBLE);
         }
-        curriculumCheckedAdapter = new CurriculumCheckedAdapter(getActivity(),classNames);
+        curriculumCheckedAdapter = new CurriculumCheckedAdapter(getActivity(), classNames);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         curriculum_checked_recyclerview.setLayoutManager(linearLayoutManager);
@@ -296,78 +298,59 @@ public class CurriculumFragment extends Fragment {
 
     private void getId(List<String> classIds) {
         id = "";
-        if (classIds.size()>0){
-            for(int i = 0;i<classIds.size();i++){
+        if (classIds.size() > 0) {
+            for (int i = 0; i < classIds.size(); i++) {
                 id = id + classIds.get(i) + "_";
             }
             curriculum_recyclerview.refresh();
-        }else {
+        } else {
             isTitleLoadMore = true;
             isTitleRefresh = true;
-            if (classNames.size()>0){
+            if (classNames.size() > 0) {
                 curriculum_checked_text.setVisibility(View.GONE);
-            }else {
+            } else {
                 curriculum_checked_text.setVisibility(View.VISIBLE);
             }
             curriculum_recyclerview.refresh();
         }
     }
 
-    private void getChoiceListData(final String id) {
-        OkGo.<CurriculumLnitializationBean>get(Config.URL+"api/Search/cate_search_class?id=" + id)
-                .cacheMode(CacheMode.NO_CACHE)
-                .tag(this)
-                .execute(new Json2Callback<CurriculumLnitializationBean>() {
-                    @Override
-                    public void onSuccess(Response<CurriculumLnitializationBean> response) {
-                        addItems(response.body().getClass_list());
-                        max_items = response.body().getCount();
-                    }
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        curriculum_recyclerview.refreshComplete(10);
-                        lRecyclerViewAdapter.notifyDataSetChanged();
-                        if (!NetworkUtils.isNetAvailable(getActivity())) {
-                            curriculum_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
-                                @Override
-                                public void reload() {
-                                    getChoiceListData(id);
-                                }
-                            });
-                        }
-                    }
-                });
+    public void getChoiceListData(Response<CurriculumLnitializationBean> response) {
+        addItems(response.body().getClass_list());
+        max_items = response.body().getCount();
+    }
+
+    public void getChoiceListDataFinish() {
+        curriculum_recyclerview.refreshComplete(10);
+        lRecyclerViewAdapter.notifyDataSetChanged();
+        if (!NetworkUtils.isNetAvailable(context)) {
+            curriculum_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                @Override
+                public void reload() {
+                    mainActivityHttp.getChoiceListData(id);
+                }
+            });
+        }
     }
 
 
-    private void getData(final String wid, final int page) {
-        OkGo.<CurriculumLnitializationBean>get(Config.URL + "api/course/class_index?wid=" + wid + "&page=" + page)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new Json2Callback<CurriculumLnitializationBean>() {
-                    @Override
-                    public void onSuccess(Response<CurriculumLnitializationBean> response) {
-                        addItems(response.body().getClass_list());
-                        max_items = response.body().getCount();
-                    }
+    public void getData(Response<CurriculumLnitializationBean> response) {
+        addItems(response.body().getClass_list());
+        max_items = response.body().getCount();
+    }
 
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        curriculum_recyclerview.refreshComplete(10);
-                        lRecyclerViewAdapter.notifyDataSetChanged();
+    public void getDataFinish() {
+        curriculum_recyclerview.refreshComplete(10);
+        lRecyclerViewAdapter.notifyDataSetChanged();
 
-                        if (!NetworkUtils.isNetAvailable(getActivity())) {
-                            curriculum_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
-                                @Override
-                                public void reload() {
-                                    getData(wid, page);
-                                }
-                            });
-                        }
-                    }
-                });
+        if (!NetworkUtils.isNetAvailable(context)) {
+            curriculum_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                @Override
+                public void reload() {
+                    mainActivityHttp.getData(wid, page);
+                }
+            });
+        }
     }
 
     private void addItems(List<ClassInfo> list) {
@@ -376,48 +359,36 @@ public class CurriculumFragment extends Fragment {
         mCurrentCounter += list.size();
     }
 
-    private void getInitialization() {
-        OkGo.<CurriculumLnitializationBean>get(Config.URL + "api/course/class_index")
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new Json2Callback<CurriculumLnitializationBean>() {
-                    @Override
-                    public void onSuccess(Response<CurriculumLnitializationBean> response) {
-                        titles = response.body().getCate();
-                        for (int i = 0; i < titles.size(); i++) {
-                            curriculum_tablayout.addTab(curriculum_tablayout.newTab().setText(titles.get(i).getName()));
-                        }
-                        if (getwid.length()>0){
-                            List<String> ids = new ArrayList<>();
-                            for (int i = 0 ; i < titles.size() ; i++){
-                                ids.add(String.valueOf(titles.get(i).getId()));
-                            }
-                            int position = ids.indexOf(getwid);
-                            curriculum_tablayout.getTabAt(position).select();
-                            getwid = "";
+    public void getInitialization(Response<CurriculumLnitializationBean> response) {
+        titles = response.body().getCate();
+        for (int i = 0; i < titles.size(); i++) {
+            curriculum_tablayout.addTab(curriculum_tablayout.newTab().setText(titles.get(i).getName()));
+        }
+        if (getwid.length() > 0) {
+            List<String> ids = new ArrayList<>();
+            for (int i = 0; i < titles.size(); i++) {
+                ids.add(String.valueOf(titles.get(i).getId()));
+            }
+            int position = ids.indexOf(getwid);
+            curriculum_tablayout.getTabAt(position).select();
+            getwid = "";
 
-                        }
-                    }
-                    @Override
-                    public void onError(Response<CurriculumLnitializationBean> response) {
-                        super.onError(response);
-                    }
-                });
+        }
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden){
+        if (!hidden) {
             Bundle bundle = getArguments();
-            if (bundle != null && bundle.size()>0){
+            if (bundle != null && bundle.size() > 0) {
                 getwid = bundle.getString("wid");
                 getid = bundle.getString("id");
                 getname = bundle.getString("name");
                 bundle.clear();
-                if (getwid.length()>0){
+                if (getwid.length() > 0) {
                     List<String> ids = new ArrayList<>();
-                    for (int i = 0 ; i < titles.size() ; i++){
+                    for (int i = 0; i < titles.size(); i++) {
                         ids.add(String.valueOf(titles.get(i).getId()));
                     }
                     int position = ids.indexOf(getwid);
@@ -426,14 +397,5 @@ public class CurriculumFragment extends Fragment {
                 }
             }
         }
-    }
-
-    public void getNetWork(){
-        curriculum_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
-            @Override
-            public void reload() {
-                getData(wid, page);
-            }
-        });
     }
 }

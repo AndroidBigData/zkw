@@ -2,6 +2,8 @@ package com.zjwam.zkw.fragment.VideoPlayer;
 
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -40,11 +42,16 @@ public class AnswerFragment extends Fragment {
     private boolean isOpen = false;
     private String id = "";
     private Bundle bundle;
+    private Context context;
 
     public AnswerFragment() {
         // Required empty public constructor
     }
 
+    @SuppressLint("ValidFragment")
+    public AnswerFragment(Context context) {
+        this.context = context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,9 +102,9 @@ public class AnswerFragment extends Fragment {
                         startActivity(new Intent(getActivity(), WriteNoteActivity.class).putExtras(bundle));
                         break;
                     case 1:
-                        startActivity(new Intent(getActivity(), CommmentActivity.class).putExtras(bundle));
                         break;
                     case 2:
+                        startActivity(new Intent(getActivity(), CommmentActivity.class).putExtras(bundle));
                         break;
                 }
             }

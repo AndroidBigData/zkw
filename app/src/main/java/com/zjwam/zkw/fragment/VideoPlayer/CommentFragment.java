@@ -1,6 +1,8 @@
 package com.zjwam.zkw.fragment.VideoPlayer;
 
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +24,7 @@ import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
+import com.zjwam.zkw.HttpUtils.VideoPlayerHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.VideoCommentAdapter;
 import com.zjwam.zkw.callback.Json2Callback;
@@ -49,11 +52,17 @@ public class CommentFragment extends Fragment {
     private List<CommentBean.Comment> commentBeans;
     private boolean isLoadMore = false;
     private ImageView comment_nodata;
+    private Context context;
+    private VideoPlayerHttp videoPlayerHttp;
 
     public CommentFragment() {
         // Required empty public constructor
     }
 
+    @SuppressLint("ValidFragment")
+    public CommentFragment(Context context) {
+        this.context = context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,8 +80,8 @@ public class CommentFragment extends Fragment {
     }
 
     private void initData() {
+        videoPlayerHttp = new VideoPlayerHttp(context);
         videoCommentAdapter = new VideoCommentAdapter(getActivity());
-
         lRecyclerViewAdapter = new LRecyclerViewAdapter(videoCommentAdapter);
         comment_list.setAdapter(lRecyclerViewAdapter);
         comment_list.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -86,7 +95,7 @@ public class CommentFragment extends Fragment {
                 videoCommentAdapter.clear();
                 page = 1;
                 mCurrentCounter = 0;
-                getData(page,id);
+                videoPlayerHttp.getVideoComment(id, String.valueOf(page));
             }
         });
         comment_list.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -95,7 +104,7 @@ public class CommentFragment extends Fragment {
                 isLoadMore = true;
                 if (mCurrentCounter < max_items) {
                     page++;
-                    getData(page,id);
+                    videoPlayerHttp.getVideoComment(id, String.valueOf(page));
                 } else {
                     comment_list.setNoMore(true);
                 }
@@ -111,50 +120,42 @@ public class CommentFragment extends Fragment {
         mCurrentCounter += list.size();
     }
 
-    private void getData(final int page, final String id) {
-        OkGo.<CommentBean>get(Config.URL + "api/play/comment?id="+ id + "&page=" + page)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new Json2Callback<CommentBean>() {
-                    @Override
-                    public void onSuccess(Response<CommentBean> response) {
-                        CommentBean commentBean = response.body();
-                        if (!isLoadMore) {
-                            comment_num.setText("综合评分：" + commentBean.getStar());
-                            comment_rating.setNumStars(commentBean.getStar());
-                        }
-                        max_items = commentBean.getCount();
-                        commentBeans = commentBean.getComment();
-                        if (max_items>0){
-                            comment_nodata.setVisibility(View.GONE);
-                            addItems(commentBeans);
-                        }else {
-                            comment_nodata.setVisibility(View.VISIBLE);
-                        }
-                        isLoadMore = false;
-                    }
 
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        comment_list.refreshComplete(10);
-                        lRecyclerViewAdapter.notifyDataSetChanged();
-                        if (!NetworkUtils.isNetAvailable(getActivity())){
-                            comment_list.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
-                                @Override
-                                public void reload() {
-                                    getData(page,id);
-                                }
-                            });
-                        }
-                    }
-                });
-    }
 
     private void initView() {
         comment_num = getActivity().findViewById(R.id.comment_num);
         comment_rating = getActivity().findViewById(R.id.comment_rating);
         comment_list = getActivity().findViewById(R.id.comment_list);
         comment_nodata = getActivity().findViewById(R.id.comment_nodata);
+    }
+
+    public void getVideoComment(Response<CommentBean> response) {
+        CommentBean commentBean = response.body();
+        if (!isLoadMore) {
+            comment_num.setText("综合评分：" + commentBean.getStar());
+            comment_rating.setNumStars(commentBean.getStar());
+        }
+        max_items = commentBean.getCount();
+        commentBeans = commentBean.getComment();
+        if (max_items>0){
+            comment_nodata.setVisibility(View.GONE);
+            addItems(commentBeans);
+        }else {
+            comment_nodata.setVisibility(View.VISIBLE);
+        }
+        isLoadMore = false;
+    }
+
+    public void getVideoCommentFinish() {
+        comment_list.refreshComplete(10);
+        lRecyclerViewAdapter.notifyDataSetChanged();
+        if (!NetworkUtils.isNetAvailable(context)){
+            comment_list.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                @Override
+                public void reload() {
+                    videoPlayerHttp.getVideoComment(id, String.valueOf(page));
+                }
+            });
+        }
     }
 }

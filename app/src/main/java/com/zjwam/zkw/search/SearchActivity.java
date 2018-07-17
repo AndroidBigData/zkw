@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -29,10 +30,12 @@ import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.HttpUtils.SearchViewHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.SearchListAdapter;
 import com.zjwam.zkw.entity.ClassInfo;
 import com.zjwam.zkw.entity.ClassTypeInfo;
+import com.zjwam.zkw.entity.SearchClassBean;
 import com.zjwam.zkw.jsondata.ClassInfoJson2Data;
 import com.zjwam.zkw.util.BadNetWork;
 import com.zjwam.zkw.util.Config;
@@ -55,9 +58,11 @@ public class SearchActivity extends BaseActivity {
     private SearchListAdapter searchListAdapter;
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private int page = 1;
-    private String classId = "";
+    private String classId = "",classname="";
     private List<ClassInfo> data;
-    private boolean isInitCache = false;
+    private boolean isInitCache = false,isRefresh = true;
+    private SearchViewHttp searchHttp;
+    private int mCurrentCounter = 0,max_items;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +72,7 @@ public class SearchActivity extends BaseActivity {
     }
 
     private void initData() {
+        searchHttp = new SearchViewHttp(this);
         all_class.setOnClickListener(onClickListener);
         search_see_all.setOnClickListener(onClickListener);
         search_qx.setOnClickListener(onClickListener);
@@ -77,8 +83,9 @@ public class SearchActivity extends BaseActivity {
                 if (i == EditorInfo.IME_ACTION_SEARCH){
                     KeyboardUtils.hideKeyboard(search_title_text);
                     searchListAdapter.clear();
+                    classname = search_title_text.getText().toString().trim();
                     search_see_all.setText("查看全部课程");
-                    getData(search_title_text.getText().toString().trim(),"",false,false);
+                    searchHttp.searInfo(classname,"", String.valueOf(page));
                 }
                 return false;
             }
@@ -99,16 +106,18 @@ public class SearchActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 page = 1;
-
-                getData(search_title_text.getText().toString().trim(),classId,true,false);
+                mCurrentCounter = 0;
+                classname = search_title_text.getText().toString().trim();
+                searchHttp.searInfo(classname,classId, String.valueOf(page));
             }
         });
         search_recycler.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                page++;
-                getData(search_title_text.getText().toString().trim(),classId,false,true);
-                if (data.size()<10){
+                if (mCurrentCounter < max_items) {
+                    page++;
+                    searchHttp.searInfo(classname,classId, String.valueOf(page));
+                } else {
                     search_recycler.setNoMore(true);
                 }
             }
@@ -134,93 +143,34 @@ public class SearchActivity extends BaseActivity {
 
     private void addItems(List<ClassInfo> list) {
         searchListAdapter.addAll(list);
+        mCurrentCounter += list.size();
     }
 
-    private void getData(String classname, String id, final boolean isRefresh, final boolean isMore) {
 
-        OkGo.<String>post(Config.URL + "api/Search/search_class")
-                .cacheMode(CacheMode.NO_CACHE)
-                .params("classname",classname)
-                .params("id",id)
-                .params("page", String.valueOf(page))
-                .tag(this)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        if (isRefresh){
-                            searchListAdapter.clear();
-                            search_recycler.refreshComplete(10);
-                            lRecyclerViewAdapter.notifyDataSetChanged();
-                        }
-                        if (isMore){
-                            search_recycler.refreshComplete(10);
-                        }
-                        try {
-                            ClassInfoJson2Data json2Data = new ClassInfoJson2Data();
-                            data = json2Data.getClassItem(response.body());
-                            if (!data.isEmpty()||data.size()!=0){
-                                addItems(data);
-                                List<ClassTypeInfo> classType = json2Data.getClassTypeItem(response.body());
-                                setClassType(classType);
-                            }else {
-                                Toast.makeText(getBaseContext(),"没有更多内容啦",Toast.LENGTH_SHORT).show();
-                            }
+    public void getData(Response<SearchClassBean> response){
+        max_items = response.body().getCount();
+        if (isRefresh){
+            searchListAdapter.clear();
+        }
+        data = response.body().getClass_list();
+        addItems(data);
+        if (response.body().getWeb() != null){
+            setClassType(response.body().getWeb());
+        }
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                });
-
-
-//        RequestParams params = new RequestParams(Config.URL + "api/Search/search_class");
-//        params.addBodyParameter("classname",classname);
-//        params.addBodyParameter("id",id);
-//        params.addBodyParameter("page", String.valueOf(page));
-//        x.http().get(params, new Callback.CommonCallback<String>() {
-//            @Override
-//            public void onSuccess(String result) {
-//                Log.i("---result:",result.toString());
-//                if (isRefresh){
-//                    search_recycler.refreshComplete(10);
-//                    lRecyclerViewAdapter.notifyDataSetChanged();
-//                }
-//                if (isMore){
-//                    search_recycler.refreshComplete(10);
-//                }
-//                try {
-//                    ClassInfoJson2Data json2Data = new ClassInfoJson2Data();
-//                    data = json2Data.getClassItem(result);
-//                    if (!data.isEmpty()||data.size()!=0){
-//                        addItems(data);
-//                        List<ClassTypeInfo> classType = json2Data.getClassTypeItem(result);
-//                        setClassType(classType);
-//                    }else {
-//                        Toast.makeText(getBaseContext(),"没有更多内容啦",Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onError(Throwable ex, boolean isOnCallback) {
-//                new BadNetWork().isBadNetWork(getBaseContext());
-//            }
-//
-//            @Override
-//            public void onCancelled(CancelledException cex) {
-//
-//            }
-//
-//            @Override
-//            public void onFinished() {
-//
-//            }
-//        });
+    }
+    public void netError(){
+        search_recycler.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+            @Override
+            public void reload() {
+                searchHttp.searInfo(classname,classId, String.valueOf(page));
+            }
+        });
+    }
+    public void loadFinish(){
+        search_recycler.refreshComplete(10);
+        lRecyclerViewAdapter.notifyDataSetChanged();
+        isRefresh = false;
     }
 
     private void setClassType(final List<ClassTypeInfo> typeInfos) {
@@ -229,7 +179,7 @@ public class SearchActivity extends BaseActivity {
             all_class_listview.setVisibility(View.VISIBLE);
             final List<String> data = new ArrayList<>();
             for (int i = 0;i<typeInfos.size();i++){
-                String item = typeInfos.get(i).getWebname();
+                String item = typeInfos.get(i).getName();
                 data.add(item);
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(),android.R.layout.simple_list_item_1,data);
@@ -241,8 +191,8 @@ public class SearchActivity extends BaseActivity {
                     all_class.setVisibility(View.GONE);
                     searchListAdapter.clear();
                     lRecyclerViewAdapter.notifyDataSetChanged();
-                    classId = typeInfos.get(i).getWebid();
-                    getData(search_title_text.getText().toString().trim(),classId,false,false);
+                    classId = typeInfos.get(i).getId();
+                    searchHttp.searInfo(classname,classId, String.valueOf(page));
                 }
             });
         }

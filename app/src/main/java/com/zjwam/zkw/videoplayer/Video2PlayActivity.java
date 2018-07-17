@@ -35,12 +35,17 @@ import com.shuyu.gsyvideoplayer.utils.Debuger;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.HttpUtils.VideoPlayerHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.callback.Json2Callback;
 import com.zjwam.zkw.callback.JsonCallback;
+import com.zjwam.zkw.entity.CommentBean;
+import com.zjwam.zkw.entity.EmptyBean;
+import com.zjwam.zkw.entity.IntroduceBean;
 import com.zjwam.zkw.entity.PayMsgBean;
 import com.zjwam.zkw.entity.ResponseBean;
 import com.zjwam.zkw.entity.SimpleResponse;
+import com.zjwam.zkw.entity.VideoCatalogBean;
 import com.zjwam.zkw.entity.VideoMainMsgBean;
 import com.zjwam.zkw.fragment.VideoPlayer.AnswerFragment;
 import com.zjwam.zkw.fragment.VideoPlayer.CatalogFragment;
@@ -85,6 +90,12 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
     private ImageView buyImg;// 界面上跑的小图片
     private AniManager mAniManager;//动画
 
+    private VideoPlayerHttp videoPlayerHttp;
+    private IntroduceFragment introduceFragment;
+    private CatalogFragment catalogFragment;
+    private AnswerFragment answerFragment;
+    private CommentFragment commentFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +116,9 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
             video_title_name.setText(class_title);
         }
 
-        getFirstVideo();
+//        getFirstVideo();
+        videoPlayerHttp = new VideoPlayerHttp(this);
+        videoPlayerHttp.getFirstVideo(id,uid);
 
 /**
  * 初始化播放器
@@ -133,24 +146,24 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
         titleList.add("目录");
 
         fragmentList = new ArrayList<>();
-        IntroduceFragment introduceFragment = new IntroduceFragment();
+        introduceFragment = new IntroduceFragment(this);
         introduceFragment.setArguments(bundle);
         fragmentList.add(introduceFragment);
-        CatalogFragment catalogFragment = new CatalogFragment();
+        catalogFragment = new CatalogFragment(this);
         catalogFragment.setArguments(bundle);
         fragmentList.add(catalogFragment);
         if (isBuy){
             titleList.add("问答");
             titleList.add("评价");
-            AnswerFragment answerFragment = new AnswerFragment();
+            answerFragment = new AnswerFragment(this);
             answerFragment.setArguments(bundle);
             fragmentList.add(answerFragment);
-            CommentFragment commentFragment = new CommentFragment();
+            commentFragment = new CommentFragment(this);
             commentFragment.setArguments(bundle);
             fragmentList.add(commentFragment);
         }else {
             titleList.add("评价");
-            CommentFragment commentFragment = new CommentFragment();
+            commentFragment = new CommentFragment(this);
             commentFragment.setArguments(bundle);
             fragmentList.add(commentFragment);
         }
@@ -184,13 +197,18 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
                     break;
                 case R.id.video_sc:
                     if (isLogin){
-                        setSCMsg();
+//                        setSCMsg();
+                        videoPlayerHttp.setSCMsg(id,uid);
                     }else {
                         Toast.makeText(getBaseContext(),"请先登录",Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case R.id.video_shopcart:
-                    setShopCard();
+                    if (isLogin){
+                        videoPlayerHttp.setShopCard(id,uid);
+                }else {
+                    Toast.makeText(getBaseContext(),"请先登录",Toast.LENGTH_SHORT).show();
+                }
                     break;
                 case R.id.video_jump_shopcard:
                     if (isLogin){
@@ -244,179 +262,115 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
         });
     }
 
-    private void setShopCard() {
-        OkGo.<ResponseBean<SimpleResponse>>post(Config.URL + "api/user/car_add")
-                .params("uid",uid)
-                .params("id",id)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new Json2Callback<ResponseBean<SimpleResponse>>() {
-                    @Override
-                    public void onSuccess(Response<ResponseBean<SimpleResponse>> response) {
-                        if (1 == response.body().code){
-                            startAnim(video_shopcart);
-                        }
-                        Toast.makeText(getBaseContext(),response.body().msg,Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onError(Response<ResponseBean<SimpleResponse>> response) {
-                        super.onError(response);
-                        Throwable exception = response.getException();
-                        if (exception instanceof MyException){
-                            Toast.makeText(getBaseContext(),((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+    public void getAddShopSuccess(Response<ResponseBean<EmptyBean>> response){
+        if (1 == response.body().code){
+            startAnim(video_shopcart);
+        }
+        Toast.makeText(getBaseContext(),response.body().msg,Toast.LENGTH_SHORT).show();
+    }
+    public void getAddShopError(Response<ResponseBean<EmptyBean>> response){
+        getSCError(response);
     }
 
-    private void setSCMsg() {
-        OkGo.<ResponseBean<SimpleResponse>>post(Config.URL + "api/user/run_hold")
-                .params("uid",uid)
-                .params("id",id)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new JsonCallback<ResponseBean<SimpleResponse>>() {
-                    @Override
-                    public void onSuccess(Response<ResponseBean<SimpleResponse>> response) {
-                        if (1 == isSC){
-                            isSC = 0;
-                            video_sc.setImageResource(R.drawable.video_sc);
-                            Toast.makeText(getBaseContext(),"取消收藏",Toast.LENGTH_SHORT).show();
-                        }else if (0 == isSC){
-                            isSC = 1;
-                            video_sc.setImageResource(R.drawable.video_sc_over);
-                            Toast.makeText(getBaseContext(),"收藏成功",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    @Override
-                    public void onError(Response<ResponseBean<SimpleResponse>> response) {
-                        super.onError(response);
-                        Throwable exception = response.getException();
-                        if (exception instanceof MyException){
-                            Toast.makeText(getBaseContext(),((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+    public void getSCSuccess(Response<ResponseBean<EmptyBean>> response){
+        if (1 == isSC){
+            isSC = 0;
+            video_sc.setImageResource(R.drawable.video_sc);
+            Toast.makeText(getBaseContext(),"取消收藏",Toast.LENGTH_SHORT).show();
+        }else if (0 == isSC){
+            isSC = 1;
+            video_sc.setImageResource(R.drawable.video_sc_over);
+            Toast.makeText(getBaseContext(),"收藏成功",Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void getSCError(Response<ResponseBean<EmptyBean>> response){
+        Throwable exception = response.getException();
+        if (exception instanceof MyException){
+            Toast.makeText(getBaseContext(),((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void getFirstVideo() {
-        OkGo.<VideoMainMsgBean>get(Config.URL+"api/play/get_first_video")
-                .params("id",id)
-                .params("uid",uid)
-                .cacheMode(CacheMode.NO_CACHE)
-                .tag(this)
-                .execute(new Json2Callback<VideoMainMsgBean>() {
+
+    public void getFistSuccess(Response<VideoMainMsgBean> response){
+        video = response.body();
+        url = video.getAddress();
+        title = video.getVname();
+        ZkwPreference.getInstance(getBaseContext()).setVideoId(String.valueOf(video.getId()));
+        if (1 == video.getHold()){
+            isSC = 1;
+            video_sc.setImageResource(R.drawable.video_sc_over);
+        }
+        if (1 == video.getBuy()){
+            video_buyover.setVisibility(View.GONE);
+        }
+        video_price.setText("￥"+String.valueOf(video.getPrice()));
+        video_old_price.setText("原价 ￥"+String.valueOf(video.getOld_price()));
+        if (video.getCar()>0 && isLogin){
+            video_card_num.setText(String.valueOf(video.getCar()));
+            video_card_num.setVisibility(View.VISIBLE);
+        }else {
+            video_card_num.setVisibility(View.GONE);
+        }
+        if (1 == video.getBuy()){
+            isBuy = true;
+            video_buyover.setVisibility(View.GONE);
+            setView();
+        }else {
+            setView();
+        }
+    }
+
+    public void getFirstFinish(){
+        gsyVideoOption = new GSYVideoOptionBuilder();
+        gsyVideoOption
+                .setIsTouchWiget(true)
+                .setRotateViewAuto(false)
+                .setLockLand(false)
+                .setAutoFullWithSize(true)
+                .setShowFullAnimation(false)
+                .setNeedLockFull(true)
+                .setCacheWithPlay(false)
+                .setUrl(url)
+                .setVideoTitle(title)
+                .setVideoAllCallBack(new GSYSampleCallBack() {
                     @Override
-                    public void onSuccess(Response<VideoMainMsgBean> response) {
-                        video = response.body();
-                        url = video.getAddress();
-                        title = video.getVname();
-                        ZkwPreference.getInstance(getBaseContext()).setVideoId(String.valueOf(video.getId()));
-                        if (1 == video.getHold()){
-                            isSC = 1;
-                            video_sc.setImageResource(R.drawable.video_sc_over);
-                        }
-                        if (1 == video.getBuy()){
-                            video_buyover.setVisibility(View.GONE);
-                        }
-                        video_price.setText("￥"+String.valueOf(video.getPrice()));
-                        video_old_price.setText("原价 ￥"+String.valueOf(video.getOld_price()));
-                        if (video.getCar()>0 && isLogin){
-                            video_card_num.setText(String.valueOf(video.getCar()));
-                            video_card_num.setVisibility(View.VISIBLE);
-                        }else {
-                            video_card_num.setVisibility(View.GONE);
-                        }
-                        if (1 == video.getBuy()){
-                            isBuy = true;
-                            video_buyover.setVisibility(View.GONE);
-                            setView();
-                        }else {
-                            setView();
-                        }
+                    public void onPrepared(String url, Object... objects) {
+                        Debuger.printfError("***** onPrepared **** " + objects[0]);
+                        Debuger.printfError("***** onPrepared **** " + objects[1]);
+                        super.onPrepared(url, objects);
+                        //开始播放了才能旋转和全屏
+                        orientationUtils.setEnable(true);
+                        isPlay = true;
                     }
 
                     @Override
-                    public void onFinish() {
-                        super.onFinish();
-                            gsyVideoOption = new GSYVideoOptionBuilder();
-                            gsyVideoOption
-                                    .setIsTouchWiget(true)
-                                    .setRotateViewAuto(false)
-                                    .setLockLand(false)
-                                    .setAutoFullWithSize(true)
-                                    .setShowFullAnimation(false)
-                                    .setNeedLockFull(true)
-                                    .setCacheWithPlay(false)
-                                    .setUrl(url)
-                                    .setVideoTitle(title)
-                                    .setVideoAllCallBack(new GSYSampleCallBack() {
-                                        @Override
-                                        public void onPrepared(String url, Object... objects) {
-                                            Debuger.printfError("***** onPrepared **** " + objects[0]);
-                                            Debuger.printfError("***** onPrepared **** " + objects[1]);
-                                            super.onPrepared(url, objects);
-                                            //开始播放了才能旋转和全屏
-                                            orientationUtils.setEnable(true);
-                                            isPlay = true;
-                                        }
-
-                                        @Override
-                                        public void onEnterFullscreen(String url, Object... objects) {
-                                            super.onEnterFullscreen(url, objects);
-                                            Debuger.printfError("***** onEnterFullscreen **** " + objects[0]);//title
-                                            Debuger.printfError("***** onEnterFullscreen **** " + objects[1]);//当前全屏player
-                                        }
-
-                                        @Override
-                                        public void onAutoComplete(String url, Object... objects) {
-                                            super.onAutoComplete(url, objects);
-                                        }
-
-                                        @Override
-                                        public void onClickStartError(String url, Object... objects) {
-                                            super.onClickStartError(url, objects);
-                                        }
-
-                                        @Override
-                                        public void onQuitFullscreen(String url, Object... objects) {
-                                            super.onQuitFullscreen(url, objects);
-                                            Debuger.printfError("***** onQuitFullscreen **** " + objects[0]);//title
-                                            Debuger.printfError("***** onQuitFullscreen **** " + objects[1]);//当前非全屏player
-                                            if (orientationUtils != null) {
-                                                orientationUtils.backToProtVideo();
-                                            }
-                                        }
-                                    })
-                                    .setLockClickListener(new LockClickListener() {
-                                        @Override
-                                        public void onClick(View view, boolean lock) {
-                                            if (orientationUtils != null) {
-                                                //配合下方的onConfigurationChanged
-                                                orientationUtils.setEnable(!lock);
-                                            }
-                                        }
-                                    })
-                                    .setGSYVideoProgressListener(new GSYVideoProgressListener() {
-                                        @Override
-                                        public void onProgress(int progress, int secProgress, int currentPosition, int duration) {
-                                            Debuger.printfLog(" progress " + progress + " secProgress " + secProgress + " currentPosition " + currentPosition + " duration " + duration);
-                                        }
-                                    })
-                                    .build(detailPlayer);
-                            detailPlayer.getFullscreenButton().setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    //直接横屏
-                                    orientationUtils.resolveByClick();
-
-                                    //第一个true是否需要隐藏actionbar，第二个true是否需要隐藏statusbar
-                                    detailPlayer.startWindowFullscreen(Video2PlayActivity.this, true, true);
-                                }
-                            });
+                    public void onQuitFullscreen(String url, Object... objects) {
+                        super.onQuitFullscreen(url, objects);
+                        if (orientationUtils != null) {
+                            orientationUtils.backToProtVideo();
+                        }
                     }
-                });
+                })
+                .setLockClickListener(new LockClickListener() {
+                    @Override
+                    public void onClick(View view, boolean lock) {
+                        if (orientationUtils != null) {
+                            //配合下方的onConfigurationChanged
+                            orientationUtils.setEnable(!lock);
+                        }
+                    }
+                })
+                .build(detailPlayer);
+        detailPlayer.getFullscreenButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //直接横屏
+                orientationUtils.resolveByClick();
+
+                //第一个true是否需要隐藏actionbar，第二个true是否需要隐藏statusbar
+                detailPlayer.startWindowFullscreen(Video2PlayActivity.this, true, true);
+            }
+        });
     }
 
     @Override
@@ -517,8 +471,6 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
         GSYVideoManager.releaseAllVideos();
     }
 
-
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -548,4 +500,27 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
         return detailPlayer;
     }
 
+    /**
+     * 课程介绍页面
+     */
+    public void getIntroduceIfo(Response<IntroduceBean> response){
+        introduceFragment.getIntroduceIfo(response);
+    }
+    /**
+     * 目录页面
+     */
+    public void getVideoCatelog(Response<VideoCatalogBean> response){
+        catalogFragment.getVideoCatalog(response);
+    }
+    /**
+     * 评论页面
+     * @param response
+     */
+
+    public void getVideoComment(Response<CommentBean> response){
+        commentFragment.getVideoComment(response);
+    }
+    public void getVideoCommentFinish(){
+        commentFragment.getVideoCommentFinish();
+    }
 }

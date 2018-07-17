@@ -51,9 +51,6 @@
             android:name=".personalcenter.addinformation.AddCompanyInformationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".personalcenter.Main2Activity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".search.SearchActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -113,11 +110,16 @@
         <activity
             android:name=".AdvertisementActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".webview.WebViewActivity" />
-        <activity android:name=".pay.PayPreviewActivity" />
-        <activity android:name=".personalcenter.MineLearnCardActivity" />
-        <activity android:name=".videoplayer.more.WriteNoteActivity" />
-        <activity android:name=".videoplayer.more.CommmentActivity"></activity>
+        <activity android:name=".webview.WebViewActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".pay.PayPreviewActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".personalcenter.MineLearnCardActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".videoplayer.more.WriteNoteActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".videoplayer.more.CommmentActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

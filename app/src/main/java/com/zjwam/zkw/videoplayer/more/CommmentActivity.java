@@ -8,9 +8,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.cache.CacheMode;
+import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.HttpUtils.CommmentActivityHttp;
 import com.zjwam.zkw.R;
+import com.zjwam.zkw.callback.JsonCallback;
+import com.zjwam.zkw.entity.EmptyBean;
+import com.zjwam.zkw.entity.ResponseBean;
+import com.zjwam.zkw.util.Config;
+import com.zjwam.zkw.util.MyException;
+import com.zjwam.zkw.util.ZkwPreference;
 
 public class CommmentActivity extends BaseActivity {
 
@@ -19,7 +30,8 @@ public class CommmentActivity extends BaseActivity {
     private EditText comment_text;
     private ImageView comment_back;
     private float numStars;
-    private String comment;
+    private String comment, uid = "", vid, id;
+    private CommmentActivityHttp commmentActivityHttp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +42,16 @@ public class CommmentActivity extends BaseActivity {
     }
 
     private void initData() {
+        commmentActivityHttp = new CommmentActivityHttp(this);
+        uid = ZkwPreference.getInstance(getBaseContext()).getUid();
+        vid = ZkwPreference.getInstance(getBaseContext()).getVideoId();
+        id = getIntent().getStringExtra("id");
+        numStars = comment_rat_bar.getRating();
         comment_rat_bar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
                 numStars = ratingBar.getRating();
-                if (comment_rat_bar.getNumStars() != numStars){
+                if (comment_rat_bar.getNumStars() != numStars) {
                     comment_rat_bar.setRating(numStars);
                 }
             }
@@ -49,9 +66,30 @@ public class CommmentActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 comment = comment_text.getText().toString();
-                Log.i("---comment:",comment+";"+numStars);
+                if (uid.trim().length() > 0) {
+                    if (comment.trim().length() > 0) {
+                        commmentActivityHttp.upDataMsg(uid, vid, id, comment, String.valueOf(numStars));
+                    } else {
+                        Toast.makeText(getBaseContext(), "请输入内容！", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getBaseContext(), "请先登录！", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    public void upDataMsg(Response<ResponseBean<EmptyBean>> response) {
+        Toast.makeText(getBaseContext(), response.body().msg, Toast.LENGTH_SHORT).show();
+        comment_rat_bar.setRating(5);
+        comment_text.setText("");
+    }
+
+    public void upDataMsgError(Response<ResponseBean<EmptyBean>> response) {
+        Throwable exception = response.getException();
+        if (exception instanceof MyException) {
+            Toast.makeText(getBaseContext(), ((MyException) exception).getErrorBean().msg, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initView() {

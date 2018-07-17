@@ -2,6 +2,7 @@ package com.zjwam.zkw.fragment;
 
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.lzy.okgo.model.Response;
 import com.zhouwei.mzbanner.MZBannerView;
 import com.zhouwei.mzbanner.holder.MZHolderCreator;
 import com.zhouwei.mzbanner.holder.MZViewHolder;
+import com.zjwam.zkw.HttpUtils.MainActivityHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.HomePageClassMoreAdapter;
 import com.zjwam.zkw.adapter.HomePageKCTJAdapter;
@@ -47,7 +49,6 @@ import com.zjwam.zkw.fragment.HomePageYJS.Item2Fragment;
 import com.zjwam.zkw.fragment.HomePageYJS.Iten1Fragment;
 import com.zjwam.zkw.jsondata.HomePageJson2Class;
 import com.zjwam.zkw.search.SearchActivity;
-import com.zjwam.zkw.util.BadNetWork;
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.GlideImageUtil;
 import com.zjwam.zkw.util.ItemCallBack;
@@ -93,9 +94,16 @@ public class HomePageFragment extends Fragment {
     private List<HomePageKCTJItemImgs> itemImgstest;
     private List<HomePageKCTJItemInfo> itemInfostest;
     public RequestOptions options;
+    private Context context;
 
     public HomePageFragment() {
         // Required empty public constructor
+    }
+
+    @SuppressLint("ValidFragment")
+    public HomePageFragment(Context context) {
+        // Required empty public constructor
+        this.context=context;
     }
 
     @Override
@@ -109,7 +117,8 @@ public class HomePageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView();
-        loadData(Config.URL + "api/Index/index");
+//        loadData(Config.URL + "api/Index/index");
+        new MainActivityHttp(context).getHomePageData();
     }
 
     private void initData() {
@@ -679,6 +688,16 @@ private View.OnClickListener onClickListener = new View.OnClickListener() {
     public void setOnJumpListener(onJumpListener onJumpListener){
         this.onJumpListener = onJumpListener;
     }
+
+    public void loadData(Response<HomePageBean> response) {
+        dataes = response.body();
+        initLunbo();
+        initKCTJ();
+//                        initClassMore();
+        initYJS();
+        initData();
+    }
+
     public interface onJumpListener{
         void onClick(String wid,String id,String name);
     }

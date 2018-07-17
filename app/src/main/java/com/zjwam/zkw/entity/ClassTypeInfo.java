@@ -3,21 +3,21 @@ package com.zjwam.zkw.entity;
 import java.io.Serializable;
 
 public class ClassTypeInfo implements Serializable{
-    private String webid,webname;
+    private String id,name;
 
-    public String getWebid() {
-        return webid;
+    public String getId() {
+        return id;
     }
 
-    public void setWebid(String webid) {
-        this.webid = webid;
+    public String getName() {
+        return name;
     }
 
-    public String getWebname() {
-        return webname;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setWebname(String webname) {
-        this.webname = webname;
+    public void setName(String name) {
+        this.name = name;
     }
 }

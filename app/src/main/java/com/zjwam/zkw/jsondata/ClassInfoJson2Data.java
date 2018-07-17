@@ -37,8 +37,8 @@ public class ClassInfoJson2Data {
         for (int i=0;i<typeItem.length();i++){
             JSONObject type = typeItem.getJSONObject(i);
             ClassTypeInfo classTypeInfo = new ClassTypeInfo();
-            classTypeInfo.setWebid(type.getString("id"));
-            classTypeInfo.setWebname(type.getString("name"));
+            classTypeInfo.setId(type.getString("id"));
+            classTypeInfo.setName(type.getString("name"));
             data.add(classTypeInfo);
         }
         return data;

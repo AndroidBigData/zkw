@@ -12,6 +12,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.HttpUtils.WriteNoteActivityHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.callback.JsonCallback;
 import com.zjwam.zkw.entity.EmptyBean;
@@ -25,7 +26,8 @@ public class WriteNoteActivity extends BaseActivity {
     private TextView write_note_save;
     private EditText write_note;
     private int vtime;
-    private String id,uid,vid,note;
+    private String id, uid, vid, note;
+    private WriteNoteActivityHttp writeNoteActivityHttp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,8 @@ public class WriteNoteActivity extends BaseActivity {
         id = getIntent().getStringExtra("id");
         uid = ZkwPreference.getInstance(getBaseContext()).getUid();
         vid = ZkwPreference.getInstance(getBaseContext()).getVideoId();
+
+        writeNoteActivityHttp = new WriteNoteActivityHttp(this);
         write_note_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,44 +55,29 @@ public class WriteNoteActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 note = write_note.getText().toString();
-                if (uid.trim().length()>0){
-                    if (note.length()>0){
-                        getWriteNoteMsg();
-                    }else {
-                        Toast.makeText(getBaseContext(),"输入内容为空！",Toast.LENGTH_SHORT).show();
+                if (uid.trim().length() > 0) {
+                    if (note.length() > 0) {
+                       writeNoteActivityHttp.getWriteNoteMsg(uid,id,vid, String.valueOf(vtime),note);
+                    } else {
+                        Toast.makeText(getBaseContext(), "输入内容为空！", Toast.LENGTH_SHORT).show();
                     }
-                }else {
-                    Toast.makeText(getBaseContext(),"请先登录！",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getBaseContext(), "请先登录！", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void getWriteNoteMsg() {
-        OkGo.<ResponseBean<EmptyBean>>post(Config.URL + "api/play/note ")
-                .params("uid",uid)
-                .params("id" ,id)
-                .params("vid",vid)
-                .params("vtime",vtime)
-                .params("note",note)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new JsonCallback<ResponseBean<EmptyBean>>() {
-                    @Override
-                    public void onSuccess(Response<ResponseBean<EmptyBean>> response) {
-                        write_note.setText("");
-                        Toast.makeText(getBaseContext(),response.body().msg,Toast.LENGTH_SHORT).show();
-                    }
+    public void getWriteNoteMsg(Response<ResponseBean<EmptyBean>> response) {
+        write_note.setText("");
+        Toast.makeText(getBaseContext(), response.body().msg, Toast.LENGTH_SHORT).show();
+    }
 
-                    @Override
-                    public void onError(Response<ResponseBean<EmptyBean>> response) {
-                        super.onError(response);
-                        Throwable exception = response.getException();
-                        if (exception instanceof MyException){
-                            Toast.makeText(getBaseContext(),((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+    public void getWriteNoteMsgError(Response<ResponseBean<EmptyBean>> response) {
+        Throwable exception = response.getException();
+        if (exception instanceof MyException) {
+            Toast.makeText(getBaseContext(), ((MyException) exception).getErrorBean().msg, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private int getTime(String time) {
@@ -104,4 +93,5 @@ public class WriteNoteActivity extends BaseActivity {
         write_note_save = findViewById(R.id.write_note_save);
         write_note = findViewById(R.id.write_note);
     }
+
 }

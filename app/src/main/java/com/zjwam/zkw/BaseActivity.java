@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
@@ -53,4 +54,12 @@ public class BaseActivity extends AppCompatActivity{
         OkGo.getInstance().cancelTag(this);
     }
 
+    public void error() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getBaseContext(), "网络请求失败", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 }
