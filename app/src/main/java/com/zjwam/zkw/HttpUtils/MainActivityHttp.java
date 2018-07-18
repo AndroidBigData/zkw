@@ -129,14 +129,19 @@ public class MainActivityHttp {
     public void getInitialization() {
         OkGo.<CurriculumLnitializationBean>get(Config.URL + "api/course/class_index")
                 .tag(context)
-                .cacheMode(CacheMode.NO_CACHE)
+                .cacheMode(CacheMode.REQUEST_FAILED_READ_CACHE)
+                .cacheKey("getInitialization")
                 .execute(new Json2Callback<CurriculumLnitializationBean>() {
-
                     @Override
                     public void onSuccess(Response<CurriculumLnitializationBean> response) {
                         if (context instanceof MainActivity){
                             ((MainActivity) context).getInitialization(response);
                         }
+                    }
+                    @Override
+                    public void onCacheSuccess(Response<CurriculumLnitializationBean> response) {
+                        super.onCacheSuccess(response);
+                        onSuccess(response);
                     }
                 });
     }
