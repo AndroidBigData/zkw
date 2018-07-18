@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/header_answer_img"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@mipmap/zkw_f" />
+
+            <TextView
+                android:id="@+id/mine_answer_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="6dp"
+                android:layout_toEndOf="@+id/header_answer_img"
+                android:text="nickName"
+                android:textColor="@color/black_personal_nickname"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/header_answer_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="2018.6.25 11:31"
+                android:textColor="@color/gray_personal"
+                android:textSize="12sp" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/header_answer_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="42dp"
+            android:text="提问内容"
+            android:textColor="@color/personal_header"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/header_answer_say"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="回复"
+            android:textSize="12sp"
+            android:gravity="end"
+            android:textColor="@color/colorAccent"/>
+    </LinearLayout>
+</LinearLayout>

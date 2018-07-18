@@ -11,6 +11,7 @@ import com.zjwam.zkw.entity.CommentBean;
 import com.zjwam.zkw.entity.EmptyBean;
 import com.zjwam.zkw.entity.IntroduceBean;
 import com.zjwam.zkw.entity.ResponseBean;
+import com.zjwam.zkw.entity.VideoAskAnswerBean;
 import com.zjwam.zkw.entity.VideoCatalogBean;
 import com.zjwam.zkw.entity.VideoMainMsgBean;
 import com.zjwam.zkw.util.Config;
@@ -158,6 +159,37 @@ public class VideoPlayerHttp {
                         super.onFinish();
                         if (context instanceof Video2PlayActivity){
                             ((Video2PlayActivity) context).getVideoCommentFinish();
+                        }
+                    }
+                });
+    }
+    public void getVideoAnswer (String id,int page){
+        OkGo.<ResponseBean<VideoAskAnswerBean>>post(Config.URL + "api/play/question")
+                .params("id",id)
+                .params("page",page)
+                .tag(context)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new JsonCallback<ResponseBean<VideoAskAnswerBean>>() {
+                    @Override
+                    public void onSuccess(Response<ResponseBean<VideoAskAnswerBean>> response) {
+                        if (context instanceof Video2PlayActivity){
+                            ((Video2PlayActivity) context).getVideoAnswer(response);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<ResponseBean<VideoAskAnswerBean>> response) {
+                        super.onError(response);
+                        if (context instanceof Video2PlayActivity){
+                            ((Video2PlayActivity) context).getVideoAnswerError(response);
+                        }
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        if (context instanceof Video2PlayActivity){
+                            ((Video2PlayActivity) context).getVideoAnswerFinish();
                         }
                     }
                 });

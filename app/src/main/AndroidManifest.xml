@@ -110,15 +110,22 @@
         <activity
             android:name=".AdvertisementActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".webview.WebViewActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".pay.PayPreviewActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".personalcenter.MineLearnCardActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".videoplayer.more.WriteNoteActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".videoplayer.more.CommmentActivity"
+        <activity
+            android:name=".webview.WebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".pay.PayPreviewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".personalcenter.MineLearnCardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".videoplayer.more.WriteNoteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".videoplayer.more.CommmentActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".videoplayer.VideoAnswerActivity"
             android:screenOrientation="portrait"/>
     </application>
 

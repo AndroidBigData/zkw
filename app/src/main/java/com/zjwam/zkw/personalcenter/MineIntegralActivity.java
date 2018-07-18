@@ -82,7 +82,6 @@ public class MineIntegralActivity extends BaseActivity {
         lRecyclerViewAdapter = new LRecyclerViewAdapter(mineIntegralAdapter);
         integral_recyclerview.setAdapter(lRecyclerViewAdapter);
         integral_recyclerview.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-
         integral_recyclerview.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
         integral_recyclerview.setFooterViewColor(R.color.colorAccent, R.color.black, android.R.color.white);
         integral_recyclerview.setFooterViewHint("拼命加载中...", "-----我是有底线的-----", "网络不给力啊，点击再试一次吧");

@@ -91,6 +91,9 @@ public class CommmentActivity extends BaseActivity {
             Toast.makeText(getBaseContext(), ((MyException) exception).getErrorBean().msg, Toast.LENGTH_SHORT).show();
         }
     }
+    public void upDataMsgFinish() {
+        ZkwPreference.getInstance(this).setVideoId("");
+    }
 
     private void initView() {
         comment_rat_bar = findViewById(R.id.comment_rat_bar);

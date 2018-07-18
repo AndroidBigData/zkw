@@ -46,4 +46,10 @@
         android:layout_centerHorizontal="true"
         android:backgroundTint="@color/colorAccent"
         android:layout_marginBottom="5dp"/>
+    <ImageView
+        android:id="@+id/video_answer_nodata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/no_data"
+        android:layout_centerInParent="true"/>
 </RelativeLayout>

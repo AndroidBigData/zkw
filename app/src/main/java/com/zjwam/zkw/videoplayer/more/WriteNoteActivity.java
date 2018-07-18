@@ -79,6 +79,10 @@ public class WriteNoteActivity extends BaseActivity {
             Toast.makeText(getBaseContext(), ((MyException) exception).getErrorBean().msg, Toast.LENGTH_SHORT).show();
         }
     }
+    public void getWriteNoteMsgFinish(){
+        ZkwPreference.getInstance(this).setViteoTime(String.valueOf(0));
+        ZkwPreference.getInstance(this).setVideoId("");
+    }
 
     private int getTime(String time) {
         if ("0".equals(time)) {

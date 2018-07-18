@@ -41,6 +41,14 @@ public class CommmentActivityHttp {
                             ((CommmentActivity) context).upDataMsgError(response);
                         }
                     }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        if (context instanceof CommmentActivity){
+                            ((CommmentActivity) context).upDataMsgFinish();
+                        }
+                    }
                 });
     }
 

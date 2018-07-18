@@ -41,6 +41,14 @@ public class WriteNoteActivityHttp {
                             ((WriteNoteActivity) context).getWriteNoteMsgError(response);
                         }
                     }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        if (context instanceof WriteNoteActivity){
+                            ((WriteNoteActivity) context).getWriteNoteMsgFinish();
+                    }
+                    }
                 });
     }
 }

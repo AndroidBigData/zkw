@@ -2,16 +2,12 @@ package com.zjwam.zkw.videoplayer;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Handler;
-import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,31 +16,22 @@ import android.support.design.widget.TabLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alipay.sdk.app.PayTask;
 import com.jaeger.library.StatusBarUtil;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cache.CacheMode;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
 import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack;
-import com.shuyu.gsyvideoplayer.listener.GSYVideoProgressListener;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
-import com.shuyu.gsyvideoplayer.utils.Debuger;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.zjwam.zkw.BaseActivity;
 import com.zjwam.zkw.HttpUtils.VideoPlayerHttp;
 import com.zjwam.zkw.R;
-import com.zjwam.zkw.callback.Json2Callback;
-import com.zjwam.zkw.callback.JsonCallback;
 import com.zjwam.zkw.entity.CommentBean;
 import com.zjwam.zkw.entity.EmptyBean;
 import com.zjwam.zkw.entity.IntroduceBean;
-import com.zjwam.zkw.entity.PayMsgBean;
 import com.zjwam.zkw.entity.ResponseBean;
-import com.zjwam.zkw.entity.SimpleResponse;
+import com.zjwam.zkw.entity.VideoAskAnswerBean;
 import com.zjwam.zkw.entity.VideoCatalogBean;
 import com.zjwam.zkw.entity.VideoMainMsgBean;
 import com.zjwam.zkw.fragment.VideoPlayer.AnswerFragment;
@@ -54,15 +41,12 @@ import com.zjwam.zkw.fragment.VideoPlayer.IntroduceFragment;
 import com.zjwam.zkw.pay.PayPreviewActivity;
 import com.zjwam.zkw.personalcenter.MineShopCartActivity;
 import com.zjwam.zkw.util.AniManager;
-import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.MyException;
-import com.zjwam.zkw.pay.PayResult;
 import com.zjwam.zkw.util.Reflex;
 import com.zjwam.zkw.util.ZkwPreference;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Video2PlayActivity extends BaseActivity implements CatalogFragment.FragmentInteraction {
     private RelativeLayout video_back;
@@ -335,8 +319,6 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
                 .setVideoAllCallBack(new GSYSampleCallBack() {
                     @Override
                     public void onPrepared(String url, Object... objects) {
-                        Debuger.printfError("***** onPrepared **** " + objects[0]);
-                        Debuger.printfError("***** onPrepared **** " + objects[1]);
                         super.onPrepared(url, objects);
                         //开始播放了才能旋转和全屏
                         orientationUtils.setEnable(true);
@@ -522,5 +504,17 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
     }
     public void getVideoCommentFinish(){
         commentFragment.getVideoCommentFinish();
+    }
+    /**
+     * 问答页面
+     */
+    public void getVideoAnswer(Response<ResponseBean<VideoAskAnswerBean>> response){
+        answerFragment.getVideoAnswer(response);
+    }
+    public void getVideoAnswerError(Response<ResponseBean<VideoAskAnswerBean>> response){
+        answerFragment.getVideoAnswerError(response);
+    }
+    public void getVideoAnswerFinish(){
+        answerFragment.getVideoAnswerFinish();
     }
 }
