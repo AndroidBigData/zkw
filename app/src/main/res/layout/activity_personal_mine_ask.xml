@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".personalcenter.PersonalMineAskActivity">
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:id="@+id/mine_ask_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/title_back_black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="问答详情"
+            android:textColor="@color/text_color_gray"
+            android:textSize="18sp" />
+    </RelativeLayout>
+    <include
+        layout="@layout/video_answer_ask_header"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/ask_include"/>
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:id="@+id/mine_ask_lrecyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ask_include"/>
+</RelativeLayout>

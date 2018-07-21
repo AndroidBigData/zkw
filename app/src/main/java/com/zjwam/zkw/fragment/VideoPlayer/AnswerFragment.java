@@ -38,8 +38,10 @@ import com.zjwam.zkw.entity.ResponseBean;
 import com.zjwam.zkw.entity.VideoAskAnswerBean;
 import com.zjwam.zkw.util.MyException;
 import com.zjwam.zkw.util.NetworkUtils;
+import com.zjwam.zkw.util.ZkwPreference;
 import com.zjwam.zkw.videoplayer.VideoAnswerActivity;
 import com.zjwam.zkw.videoplayer.more.CommmentActivity;
+import com.zjwam.zkw.videoplayer.more.QuestionActivity;
 import com.zjwam.zkw.videoplayer.more.WriteNoteActivity;
 
 import java.util.ArrayList;
@@ -175,6 +177,7 @@ public class AnswerFragment extends Fragment {
                         startActivity(new Intent(getActivity(), WriteNoteActivity.class).putExtras(bundle));
                         break;
                     case 1:
+                        startActivity(new Intent(getActivity(), QuestionActivity.class).putExtras(bundle));
                         break;
                     case 2:
                         startActivity(new Intent(getActivity(), CommmentActivity.class).putExtras(bundle));
@@ -199,11 +202,6 @@ public class AnswerFragment extends Fragment {
         item = new HashMap<>();
         item.put("img", R.drawable.answer_comment);
         item.put("title", "评价");
-        data.add(item);
-
-        item = new HashMap<>();
-        item.put("img", R.drawable.answer_load);
-        item.put("title", "下载资料");
         data.add(item);
 
         item = new HashMap<>();
@@ -270,5 +268,14 @@ public class AnswerFragment extends Fragment {
     private void addItems(List<VideoAskAnswerBean.getVideoAnswerItems> list) {
         videoAskAnswerAdapter.addAll(list);
         mCurrentCounter += list.size();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (ZkwPreference.getInstance(getActivity()).IsRefresh()){
+            video_answer_recyclerview.refresh();
+            ZkwPreference.getInstance(getActivity()).setIsRefresh(false);
+        }
     }
 }

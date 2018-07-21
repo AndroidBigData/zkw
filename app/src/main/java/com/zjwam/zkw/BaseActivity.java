@@ -18,6 +18,8 @@ import com.lzy.okgo.OkGo;
 
 public class BaseActivity extends AppCompatActivity{
 
+    private boolean mReceiverTag = false;
+
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
@@ -45,12 +47,20 @@ public class BaseActivity extends AppCompatActivity{
         // 在当前的activity中注册广播
         IntentFilter filter = new IntentFilter();
         filter.addAction("exitapp");
-        this.registerReceiver(this.finishAppReceiver, filter);
+        if (!mReceiverTag){
+            this.registerReceiver(this.finishAppReceiver, filter);
+            mReceiverTag = true;
+        }
+
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        this.unregisterReceiver(this.finishAppReceiver);
+        if (mReceiverTag){
+            mReceiverTag = false;
+            this.unregisterReceiver(this.finishAppReceiver);
+        }
+
         OkGo.getInstance().cancelTag(this);
     }
 
@@ -61,5 +71,14 @@ public class BaseActivity extends AppCompatActivity{
                 Toast.makeText(getBaseContext(), "网络请求失败", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    /**
+     * 返回
+     *
+     * @param view
+     */
+    public void back(View view) {
+        finish();
     }
 }

@@ -6,6 +6,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.callback.JsonCallback;
+import com.zjwam.zkw.entity.EmptyBean;
 import com.zjwam.zkw.entity.ResponseBean;
 import com.zjwam.zkw.entity.VideoAnswersBean;
 import com.zjwam.zkw.util.Config;
@@ -41,6 +42,30 @@ public class VideoAnswersHttp {
                         super.onFinish();
                         if (context instanceof VideoAnswerActivity){
                             ((VideoAnswerActivity) context).getAnswersFinish();
+                        }
+                    }
+                });
+    }
+    public void getAnswersReply(String id, String uid, String content){
+        OkGo.<ResponseBean<EmptyBean>>post(Config.URL+"api/play/question_add")
+                .params("id",id)
+                .params("uid",uid)
+                .params("content",content)
+                .tag(content)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new JsonCallback<ResponseBean<EmptyBean>>() {
+                    @Override
+                    public void onSuccess(Response<ResponseBean<EmptyBean>> response) {
+                        if (context instanceof VideoAnswerActivity){
+                            ((VideoAnswerActivity) context).getAnswersReply(response);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<ResponseBean<EmptyBean>> response) {
+                        super.onError(response);
+                        if (context instanceof VideoAnswerActivity){
+                            ((VideoAnswerActivity) context).getAnswersReplyError(response);
                         }
                     }
                 });

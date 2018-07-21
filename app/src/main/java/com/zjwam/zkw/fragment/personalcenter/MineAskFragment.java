@@ -1,6 +1,7 @@
 package com.zjwam.zkw.fragment.personalcenter;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
@@ -26,6 +28,7 @@ import com.zjwam.zkw.adapter.PersonalCourseAskAdapter;
 import com.zjwam.zkw.callback.JsonCallback;
 import com.zjwam.zkw.entity.PersonalMineAskBean;
 import com.zjwam.zkw.entity.ResponseBean;
+import com.zjwam.zkw.personalcenter.PersonalMineAskActivity;
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.MyException;
 import com.zjwam.zkw.util.NetworkUtils;
@@ -45,6 +48,7 @@ public class MineAskFragment extends Fragment {
     private String uid;
     private boolean isRefresh = true;
     private ImageView mineask_nodata;
+    private ResponseBean<PersonalMineAskBean> data;
 
     public MineAskFragment() {
         // Required empty public constructor
@@ -97,6 +101,14 @@ public class MineAskFragment extends Fragment {
         });
 
         mineask_recyclerview.refresh();
+        lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString("id", String.valueOf(data.data.getQuestion().get(position).getId()));
+                startActivity(new Intent(getActivity(),PersonalMineAskActivity.class).putExtras(bundle));
+            }
+        });
     }
 
     private void getData(final String uid, final int page) {
@@ -109,7 +121,7 @@ public class MineAskFragment extends Fragment {
                     @Override
                     public void onSuccess(Response<ResponseBean<PersonalMineAskBean>> response) {
                         if (isRefresh) courseAskAdapter.clear();
-                        ResponseBean<PersonalMineAskBean> data = response.body();
+                        data = response.body();
                         max_items = data.data.getCount();
                         if (data.data.getQuestion().size()>0){
                             addItems(data.data.getQuestion());

@@ -97,7 +97,6 @@ public class MineAnswerFragment extends Fragment {
                 }
             }
         });
-
         mine_answer_recyclerview.refresh();
     }
 

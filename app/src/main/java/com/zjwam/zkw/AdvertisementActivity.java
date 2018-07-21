@@ -64,7 +64,7 @@ public class AdvertisementActivity extends BaseActivity {
             }
         });
 
-        OkGo.<ResponseBean<AdvertisementBean>>get(Config.URL + "api/index/get_ads")
+        OkGo.<ResponseBean<AdvertisementBean>>get(Config.URL + "api/index/get_ads?type=android")
                 .tag(this)
                 .cacheKey("AdvertisementActivity")
                 .execute(new JsonCallback<ResponseBean<AdvertisementBean>>() {

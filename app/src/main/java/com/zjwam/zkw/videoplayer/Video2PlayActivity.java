@@ -121,6 +121,58 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
 
         mAniManager = new AniManager();
 
+        initVideo();
+    }
+
+    private void initVideo() {
+        gsyVideoOption = new GSYVideoOptionBuilder();
+        gsyVideoOption
+                .setIsTouchWiget(true)
+                .setRotateViewAuto(false)
+                .setLockLand(false)
+                .setAutoFullWithSize(true)
+                .setShowFullAnimation(false)
+                .setNeedLockFull(true)
+//                .setCacheWithPlay(false)
+//                .setUrl(url)
+                .setVideoTitle(title)
+                .setVideoAllCallBack(new GSYSampleCallBack() {
+                    @Override
+                    public void onPrepared(String url, Object... objects) {
+                        super.onPrepared(url, objects);
+                        //开始播放了才能旋转和全屏
+                        orientationUtils.setEnable(true);
+                        isPlay = true;
+                    }
+
+                    @Override
+                    public void onQuitFullscreen(String url, Object... objects) {
+                        super.onQuitFullscreen(url, objects);
+                        if (orientationUtils != null) {
+                            orientationUtils.backToProtVideo();
+                        }
+                    }
+                })
+                .setLockClickListener(new LockClickListener() {
+                    @Override
+                    public void onClick(View view, boolean lock) {
+                        if (orientationUtils != null) {
+                            //配合下方的onConfigurationChanged
+                            orientationUtils.setEnable(!lock);
+                        }
+                    }
+                });
+//                .build(detailPlayer);
+        detailPlayer.getFullscreenButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //直接横屏
+                orientationUtils.resolveByClick();
+
+                //第一个true是否需要隐藏actionbar，第二个true是否需要隐藏statusbar
+                detailPlayer.startWindowFullscreen(Video2PlayActivity.this, true, true);
+            }
+        });
     }
 
     private void setView() {
@@ -284,8 +336,15 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
             isSC = 1;
             video_sc.setImageResource(R.drawable.video_sc_over);
         }
+//        if (1 == video.getBuy()){
+//            video_buyover.setVisibility(View.GONE);
+//        }
         if (1 == video.getBuy()){
+            isBuy = true;
             video_buyover.setVisibility(View.GONE);
+            setView();
+        }else {
+            setView();
         }
         video_price.setText("￥"+String.valueOf(video.getPrice()));
         video_old_price.setText("原价 ￥"+String.valueOf(video.getOld_price()));
@@ -295,64 +354,16 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
         }else {
             video_card_num.setVisibility(View.GONE);
         }
-        if (1 == video.getBuy()){
-            isBuy = true;
-            video_buyover.setVisibility(View.GONE);
-            setView();
-        }else {
-            setView();
-        }
     }
 
     public void getFirstFinish(){
-        gsyVideoOption = new GSYVideoOptionBuilder();
-        gsyVideoOption
-                .setIsTouchWiget(true)
-                .setRotateViewAuto(false)
-                .setLockLand(false)
-                .setAutoFullWithSize(true)
-                .setShowFullAnimation(false)
-                .setNeedLockFull(true)
-                .setCacheWithPlay(false)
-                .setUrl(url)
-                .setVideoTitle(title)
-                .setVideoAllCallBack(new GSYSampleCallBack() {
-                    @Override
-                    public void onPrepared(String url, Object... objects) {
-                        super.onPrepared(url, objects);
-                        //开始播放了才能旋转和全屏
-                        orientationUtils.setEnable(true);
-                        isPlay = true;
-                    }
-
-                    @Override
-                    public void onQuitFullscreen(String url, Object... objects) {
-                        super.onQuitFullscreen(url, objects);
-                        if (orientationUtils != null) {
-                            orientationUtils.backToProtVideo();
-                        }
-                    }
-                })
-                .setLockClickListener(new LockClickListener() {
-                    @Override
-                    public void onClick(View view, boolean lock) {
-                        if (orientationUtils != null) {
-                            //配合下方的onConfigurationChanged
-                            orientationUtils.setEnable(!lock);
-                        }
-                    }
-                })
-                .build(detailPlayer);
-        detailPlayer.getFullscreenButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //直接横屏
-                orientationUtils.resolveByClick();
-
-                //第一个true是否需要隐藏actionbar，第二个true是否需要隐藏statusbar
-                detailPlayer.startWindowFullscreen(Video2PlayActivity.this, true, true);
-            }
-        });
+        if (url != null && url.length()>0){
+            gsyVideoOption.setUrl(url)
+                    .setVideoTitle(title)
+                    .build(detailPlayer);
+        }else {
+            Toast.makeText(getBaseContext(),"视频地址请求失败！",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

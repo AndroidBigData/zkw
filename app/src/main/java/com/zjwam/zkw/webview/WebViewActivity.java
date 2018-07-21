@@ -23,6 +23,9 @@ import com.alipay.sdk.app.PayTask;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zjwam.zkw.BaseActivity;
 import com.zjwam.zkw.MainActivity;
 import com.zjwam.zkw.R;
@@ -30,6 +33,7 @@ import com.zjwam.zkw.callback.JsonCallback;
 import com.zjwam.zkw.customview.LearnCardSuccessDialog;
 import com.zjwam.zkw.entity.PayMsgBean;
 import com.zjwam.zkw.entity.ResponseBean;
+import com.zjwam.zkw.entity.WxPayBean;
 import com.zjwam.zkw.fragment.login.LoginFragment;
 import com.zjwam.zkw.pay.PayPreviewActivity;
 import com.zjwam.zkw.pay.PayResult;
@@ -37,6 +41,7 @@ import com.zjwam.zkw.personalcenter.MineLearnCardActivity;
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.ZkwPreference;
 import com.zjwam.zkw.videoplayer.Video2PlayActivity;
+import com.zjwam.zkw.wxapi.WXPayEntryActivity;
 
 import java.util.Map;
 
@@ -49,6 +54,7 @@ public class WebViewActivity extends BaseActivity {
     private ProgressBar bar;
     private static final int SDK_PAY_FLAG = 1;
     private boolean isFlag = false;
+    private IWXAPI msgApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +127,10 @@ public class WebViewActivity extends BaseActivity {
 
                 } else if (url.contains("wechart")) {
                     if (isFlag){
-                        Toast.makeText(getBaseContext(), "微信支付", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getBaseContext(), "微信支付", Toast.LENGTH_SHORT).show();
+                        msgApi = WXAPIFactory.createWXAPI(getBaseContext(), Config.APPID,false);
+                        msgApi.registerApp(Config.APPID);
+                        getWxPay();
                     }else {
                         startActivity(new Intent(getBaseContext(), LoginFragment.class));
                     }
@@ -140,6 +149,38 @@ public class WebViewActivity extends BaseActivity {
         });
     }
 
+    private void getWxPay() {
+        OkGo.<ResponseBean<WxPayBean>>post(Config.URL+"api/pay/pay_card")
+                .params("uid",uid)
+                .params("type","wechart")
+                .cacheMode(CacheMode.NO_CACHE)
+                .tag(this)
+                .execute(new JsonCallback<ResponseBean<WxPayBean>>() {
+                    @Override
+                    public void onSuccess(Response<ResponseBean<WxPayBean>> response) {
+                        final WxPayBean.getWxPay wxPay = response.body().data.getOrderinfo();
+                        Runnable payRunnable = new Runnable() {
+                            //这里注意要放在子线程
+                            @Override
+                            public void run() {
+                                PayReq request = new PayReq();
+                                request.appId = wxPay.getAppid();
+                                request.partnerId = wxPay.getPartnerid();
+                                request.prepayId = wxPay.getPrepayid();
+                                request.packageValue = wxPay.getPackages();
+                                request.nonceStr = wxPay.getNoncestr();
+                                request.timeStamp = wxPay.getTimestamp();
+                                request.sign = wxPay.getSign();
+                                msgApi.sendReq(request);//发送调起微信的请求
+//                                startActivity(new Intent(getBaseContext(),WXPayEntryActivity.class));
+                            }
+                        };
+                        Thread payThread = new Thread(payRunnable);
+                        payThread.start();
+                    }
+                });
+    }
+
     private void getAliPay() {
         OkGo.<ResponseBean<PayMsgBean>>post(Config.URL + "api/pay/pay_card")
                 .params("uid",uid)
@@ -151,7 +192,6 @@ public class WebViewActivity extends BaseActivity {
                     public void onSuccess(Response<ResponseBean<PayMsgBean>> response) {
                         final ResponseBean<PayMsgBean> orderInfo = response.body();
                         Runnable payRunnable = new Runnable() {
-
                             @Override
                             public void run() {
                                 PayTask alipay = new PayTask(WebViewActivity.this);
@@ -162,7 +202,6 @@ public class WebViewActivity extends BaseActivity {
                                 mHandler.sendMessage(msg);
                             }
                         };
-
                         Thread payThread = new Thread(payRunnable);
                         payThread.start();
                     }
@@ -226,5 +265,16 @@ public class WebViewActivity extends BaseActivity {
         uid = ZkwPreference.getInstance(getBaseContext()).getUid();
         isFlag = ZkwPreference.getInstance(getBaseContext()).IsFlag();
         webview.loadUrl(url);
+        if (ZkwPreference.getInstance(getBaseContext()).IsRefresh()){
+            final LearnCardSuccessDialog learnCardSuccessDialog = new LearnCardSuccessDialog(WebViewActivity.this,"购买成功","  恭喜！购买成功！","请在“个人中心-学习卡”页面确认激活");
+            learnCardSuccessDialog.show();
+            learnCardSuccessDialog.setClickListener(new LearnCardSuccessDialog.ClickListenerInterface() {
+                @Override
+                public void doConfirm(View view) {
+                    learnCardSuccessDialog.dismiss();
+                }
+            });
+            ZkwPreference.getInstance(getBaseContext()).setIsRefresh(false);
+        }
     }
 }

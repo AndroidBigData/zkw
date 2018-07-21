@@ -22,12 +22,14 @@ import com.zjwam.zkw.HttpUtils.VideoAnswersHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.VideoAnswersAdapter;
 import com.zjwam.zkw.customview.ReplayDialog;
+import com.zjwam.zkw.entity.EmptyBean;
 import com.zjwam.zkw.entity.ResponseBean;
 import com.zjwam.zkw.entity.VideoAnswersBean;
 import com.zjwam.zkw.util.GlideImageUtil;
 import com.zjwam.zkw.util.MyException;
 import com.zjwam.zkw.util.NetworkUtils;
 import com.zjwam.zkw.util.RequestOptionsUtils;
+import com.zjwam.zkw.util.ZkwPreference;
 
 import java.util.List;
 
@@ -42,7 +44,7 @@ public class VideoAnswerActivity extends BaseActivity {
     private int page = 1,mCurrentCounter = 0,max_items;
     private VideoAnswersHttp videoAnswersHttp;
     private boolean isRefresh = false,isNetWork=false;
-    private String id = "";
+    private String id = "",uid="";
     private ReplayDialog replayDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +89,7 @@ public class VideoAnswerActivity extends BaseActivity {
 
     private void initData() {
         id = getIntent().getStringExtra("id");
+        uid = ZkwPreference.getInstance(getBaseContext()).getUid();
         videoAnswersHttp = new VideoAnswersHttp(this);
         videoAnswersAdapter = new VideoAnswersAdapter(this);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(videoAnswersAdapter);
@@ -136,17 +139,38 @@ public class VideoAnswerActivity extends BaseActivity {
         header_answer_say.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                replayDialog = new ReplayDialog(VideoAnswerActivity.this);
-                replayDialog.show();
+                if (ZkwPreference.getInstance(getBaseContext()).IsFlag()){
+                    replayDialog = new ReplayDialog(VideoAnswerActivity.this);
+                    replayDialog.show();
+                }else {
+                    Toast.makeText(getBaseContext(),"请先登录！",Toast.LENGTH_SHORT).show();
+                }
                 replayDialog.setOnBtnCommitClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getBaseContext(),replayDialog.getContent(),Toast.LENGTH_SHORT).show();
-                        replayDialog.dismiss();
+                        if (replayDialog.getContent().trim().length()>0){
+                            videoAnswersHttp.getAnswersReply(id,uid,replayDialog.getContent());
+                        }else {
+                            Toast.makeText(getBaseContext(),"输入内容不得为空！",Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }
         });
+    }
+
+    public void getAnswersReply(Response<ResponseBean<EmptyBean>> response){
+        replayDialog.dismiss();
+        replayDialog.setContent("");
+        Toast.makeText(getBaseContext(),response.body().msg,Toast.LENGTH_SHORT).show();
+        video_answers_recyclerview.refresh();
+    }
+    public void getAnswersReplyError(Response<ResponseBean<EmptyBean>> response){
+        Throwable exception = response.getException();
+        if (exception instanceof MyException){
+            Toast.makeText(getBaseContext(),((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
+        }
+        replayDialog.dismiss();
     }
 
     private void initView() {

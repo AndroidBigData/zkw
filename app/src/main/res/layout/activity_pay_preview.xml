@@ -33,9 +33,10 @@
         android:id="@+id/preview_bg"
         android:layout_width="match_parent"
         android:layout_height="196dp"
-        android:src="@drawable/homepage_background"
+        android:src="@drawable/pay_detail"
         android:scaleType="fitXY"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        />
     <com.github.jdsjlzx.recyclerview.LRecyclerView
         android:id="@+id/preview_recyclerview"
         android:layout_width="match_parent"
@@ -68,7 +69,8 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="8dp"
             android:button="@drawable/check_bok_selector"
-            android:background="@color/white"/>
+            android:background="@color/white"
+            android:checked="true"/>
 
         <ImageView
             android:id="@+id/imageView10"
@@ -78,7 +80,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/wx_check"
             app:srcCompat="@drawable/wx_pay"
-
             android:layout_marginBottom="8dp"/>
 
         <CheckBox

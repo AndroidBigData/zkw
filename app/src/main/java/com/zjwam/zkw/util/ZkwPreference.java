@@ -7,7 +7,7 @@ public class ZkwPreference {
     private static final String LOGIN_NAME = "loginName"; //登录名
     private static final String PASSWORD = "password";  //密码
     private static final String IS_FLAG = "isFlag"; //是否已经登录
-    private static final String ISFLASH = "isFlash"; //记录用户是否是第一次使用app
+    private static final String ISREFRESH = "isRefresh"; //记录是否刷新页面，用于传值比较麻烦的页面
     private static final String UID = "uid"; //记录用户id
     private static final String REGISTER_TYPE = "registerType";//记录用户类型
     private static final String CHOICE_INFO = "choiceInfo";//完善个人信息页面，记录用户选择的信息；
@@ -81,15 +81,14 @@ public class ZkwPreference {
         editor.commit();
     }
 
-    public boolean IsFlash(){
-        Boolean isFlash = sharedPreference.getBoolean(ISFLASH, false);
-        return isFlash;
+    public boolean IsRefresh(){
+        Boolean isRefresh = sharedPreference.getBoolean(ISREFRESH, false);
+        return isRefresh;
     }
 
-
-    public void SetIsFlash(Boolean isFlash){
+    public void setIsRefresh(Boolean isRefresh){
         SharedPreferences.Editor edit = sharedPreference.edit();
-        edit.putBoolean(ISFLASH, isFlash);
+        edit.putBoolean(ISREFRESH, isRefresh);
         edit.commit();
     }
 

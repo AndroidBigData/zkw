@@ -240,6 +240,9 @@ public class MineFragment extends Fragment {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.personal_tx:
+                    if (!isFlag) {
+                        startActivity(new Intent(getActivity(), LoginFragment.class));
+                    }
                     break;
                 case R.id.personal_nickname:
                     if (!isFlag) {

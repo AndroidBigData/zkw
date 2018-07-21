@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".videoplayer.more.WriteNoteActivity"
+    tools:context=".videoplayer.more.QuestionActivity"
     android:background="@color/register_choice_background">
 
     <RelativeLayout
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/write_note_back"
+            android:id="@+id/question_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerInside"
@@ -27,29 +27,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="记笔记"
+            android:text="提问"
             android:textColor="@color/text_color_gray"
             android:textSize="18sp" />
+
         <TextView
-            android:id="@+id/write_note_save"
+            android:id="@+id/question_save"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:text="保存"
-            android:gravity="center"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:textSize="14sp"
-            android:textColor="@color/btn_bule_shap"/>
+            android:gravity="center"
+            android:text="发布"
+            android:textColor="@color/btn_bule_shap"
+            android:textSize="14sp" />
     </RelativeLayout>
 
     <EditText
-        android:id="@+id/write_note"
+        android:id="@+id/question_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
         android:background="@null"
         android:textColor="@color/personal_header"
-        android:hint="请输入笔记内容"
+        android:hint="请输入提问内容"
         android:textSize="14sp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
