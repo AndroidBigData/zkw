@@ -7,6 +7,7 @@ import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.MainActivity;
 import com.zjwam.zkw.callback.Json2Callback;
+import com.zjwam.zkw.callback.JsonCallback;
 import com.zjwam.zkw.entity.ClassSearchBean;
 import com.zjwam.zkw.entity.CurriculumLnitializationBean;
 import com.zjwam.zkw.entity.HomePageBean;
@@ -60,71 +61,59 @@ public class MainActivityHttp {
      */
 
     public void getChoiceData(String wid){
-        OkGo.<ClassSearchBean>get(Config.URL+"api/search/cate_search?wid=" + wid)
-                .tag(context)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new Json2Callback<ClassSearchBean>() {
+        OkGoUtils.getRequets(Config.URL + "api/search/cate_search?wid=" + wid, context, new Json2Callback<ClassSearchBean>() {
+            @Override
+            public void onSuccess(Response<ClassSearchBean> response) {
+                if (context instanceof MainActivity){
+                    ((MainActivity) context).getChoiceData(response);
+                }
+            }
 
-                    @Override
-                    public void onSuccess(Response<ClassSearchBean> response) {
-                        if (context instanceof MainActivity){
-                            ((MainActivity) context).getChoiceData(response);
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        if (context instanceof MainActivity){
-                            ((MainActivity) context).getChoiceDatFinish();
-                        }
-                    }
-                });
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (context instanceof MainActivity){
+                    ((MainActivity) context).getChoiceDatFinish();
+                }
+            }
+        });
     }
 
     public void getChoiceListData(String id){
-        OkGo.<CurriculumLnitializationBean>get(Config.URL+"api/Search/cate_search_class?id=" + id)
-                .cacheMode(CacheMode.NO_CACHE)
-                .tag(context)
-                .execute(new Json2Callback<CurriculumLnitializationBean>() {
+        OkGoUtils.getRequets(Config.URL + "api/Search/cate_search_class?id=" + id, context, new Json2Callback<CurriculumLnitializationBean>() {
+            @Override
+            public void onSuccess(Response<CurriculumLnitializationBean> response) {
+                if (context instanceof MainActivity){
+                    ((MainActivity) context).getChoiceListData(response);
+                }
+            }
 
-                    @Override
-                    public void onSuccess(Response<CurriculumLnitializationBean> response) {
-                        if (context instanceof MainActivity){
-                            ((MainActivity) context).getChoiceListData(response);
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        if (context instanceof MainActivity){
-                            ((MainActivity) context).getChoiceListDataFinish();
-                        }
-                    }
-                });
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (context instanceof MainActivity){
+                    ((MainActivity) context).getChoiceListDataFinish();
+                }
+            }
+        });
     }
     public void getData(String wid, int page) {
-        OkGo.<CurriculumLnitializationBean>get(Config.URL + "api/course/class_index?wid=" + wid + "&page=" + page)
-                .tag(context)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new Json2Callback<CurriculumLnitializationBean>() {
+        OkGoUtils.getRequets(Config.URL + "api/course/class_index?wid=" + wid + "&page=" + page, context, new Json2Callback<CurriculumLnitializationBean>() {
+            @Override
+            public void onSuccess(Response<CurriculumLnitializationBean> response) {
+                if (context instanceof MainActivity){
+                    ((MainActivity) context).getData(response);
+                }
+            }
 
-                    @Override
-                    public void onSuccess(Response<CurriculumLnitializationBean> response) {
-                        if (context instanceof MainActivity){
-                            ((MainActivity) context).getData(response);
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        if (context instanceof MainActivity){
-                            ((MainActivity) context).getDataFinish();
-                        }
-                    }
-                });
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (context instanceof MainActivity){
+                    ((MainActivity) context).getDataFinish();
+                }
+            }
+        });
     }
     public void getInitialization() {
         OkGo.<CurriculumLnitializationBean>get(Config.URL + "api/course/class_index")
@@ -171,33 +160,30 @@ public class MainActivityHttp {
     }
 
     public void qdMessage(String uid) {
-        OkGo.<PersonalQDBean>get(Config.URL + "api/user/sign?id=" + uid)
-                .cacheMode(CacheMode.NO_CACHE)
-                .tag(context)
-                .execute(new Json2Callback<PersonalQDBean>() {
-                    @Override
-                    public void onSuccess(Response<PersonalQDBean> response) {
-                        if (context instanceof MainActivity){
-                            ((MainActivity) context).qdMessage(response);
-                        }
-                    }
+        OkGoUtils.getRequets(Config.URL + "api/user/sign?id=" + uid, context, new Json2Callback<PersonalQDBean>() {
+            @Override
+            public void onSuccess(Response<PersonalQDBean> response) {
+                if (context instanceof MainActivity){
+                    ((MainActivity) context).qdMessage(response);
+                }
+            }
 
-                    @Override
-                    public void onError(Response<PersonalQDBean> response) {
-                        super.onError(response);
-                        if (context instanceof MainActivity){
-                            ((MainActivity) context).qdMessageError(response);
-                        }
-                    }
+            @Override
+            public void onError(Response<PersonalQDBean> response) {
+                super.onError(response);
+                if (context instanceof MainActivity){
+                    ((MainActivity) context).qdMessageError(response);
+                }
+            }
 
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        if (context instanceof MainActivity){
-                            ((MainActivity) context).qdMessageFinish();
-                        }
-                    }
-                });
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (context instanceof MainActivity){
+                    ((MainActivity) context).qdMessageFinish();
+                }
+            }
+        });
     }
 
 }

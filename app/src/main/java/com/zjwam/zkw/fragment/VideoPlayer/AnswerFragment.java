@@ -204,15 +204,15 @@ public class AnswerFragment extends Fragment {
         item.put("title", "评价");
         data.add(item);
 
-        item = new HashMap<>();
-        item.put("img", R.drawable.answer_lx);
-        item.put("title", "在线考试");
-        data.add(item);
-
-        item = new HashMap<>();
-        item.put("img", R.drawable.answer_share);
-        item.put("title", "分享");
-        data.add(item);
+//        item = new HashMap<>();
+//        item.put("img", R.drawable.answer_lx);
+//        item.put("title", "在线考试");
+//        data.add(item);
+//
+//        item = new HashMap<>();
+//        item.put("img", R.drawable.answer_share);
+//        item.put("title", "分享");
+//        data.add(item);
     }
 
     private void initView() {

@@ -39,7 +39,6 @@ import com.zjwam.zkw.entity.ClassInfo;
 import com.zjwam.zkw.entity.ClassSearchBean;
 import com.zjwam.zkw.entity.CurriculumLnitializationBean;
 import com.zjwam.zkw.search.SearchActivity;
-import com.zjwam.zkw.util.BadNetWork;
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.customview.CurriculumPopupWindow;
 import com.zjwam.zkw.util.NetworkUtils;

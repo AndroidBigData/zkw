@@ -21,7 +21,7 @@ import com.zjwam.zkw.jsondata.Dialog2Json;
 import com.zjwam.zkw.personalcenter.addinformation.AddCompanyInformationActivity;
 import com.zjwam.zkw.personalcenter.addinformation.AddStudentInformationActivity;
 import com.zjwam.zkw.personalcenter.addinformation.AddTeacherInformationActivity;
-import com.zjwam.zkw.util.BadNetWork;
+
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.ZkwPreference;
 
@@ -185,7 +185,6 @@ public class RegisterActivity extends BaseActivity {
 //
 //            @Override
 //            public void onError(Throwable ex, boolean isOnCallback) {
-//                new BadNetWork().isBadNetWork(getBaseContext());
 //            }
 //
 //            @Override
@@ -235,7 +234,6 @@ public class RegisterActivity extends BaseActivity {
 //
 //            @Override
 //            public void onError(Throwable ex, boolean isOnCallback) {
-//                new BadNetWork().isBadNetWork(getBaseContext());
 //            }
 //
 //            @Override

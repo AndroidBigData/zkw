@@ -17,7 +17,7 @@ import com.zjwam.zkw.BaseActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.entity.DialogInfo;
 import com.zjwam.zkw.jsondata.Dialog2Json;
-import com.zjwam.zkw.util.BadNetWork;
+
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.ZkwPreference;
 

@@ -32,11 +32,11 @@ public class ZkwApplication extends Application {
         loggingInterceptor.setColorLevel(Level.INFO);
         builder.addInterceptor(loggingInterceptor);
         //全局的读取超时时间
-        builder.readTimeout(10000, TimeUnit.MILLISECONDS);
+        builder.readTimeout(5000, TimeUnit.MILLISECONDS);
         //全局的写入超时时间
-        builder.writeTimeout(10000, TimeUnit.MILLISECONDS);
+        builder.writeTimeout(5000, TimeUnit.MILLISECONDS);
         //全局的连接超时时间
-        builder.connectTimeout(10000, TimeUnit.MILLISECONDS);
+        builder.connectTimeout(5000, TimeUnit.MILLISECONDS);
         //使用数据库保持cookie，如果cookie不过期，则一直有效
         builder.cookieJar(new CookieJarImpl(new DBCookieStore(this)));
         //方法一：信任所有证书,不安全有风险

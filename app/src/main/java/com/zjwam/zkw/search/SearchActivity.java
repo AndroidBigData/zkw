@@ -37,7 +37,6 @@ import com.zjwam.zkw.entity.ClassInfo;
 import com.zjwam.zkw.entity.ClassTypeInfo;
 import com.zjwam.zkw.entity.SearchClassBean;
 import com.zjwam.zkw.jsondata.ClassInfoJson2Data;
-import com.zjwam.zkw.util.BadNetWork;
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.KeyboardUtils;
 import com.zjwam.zkw.util.NetworkUtils;

@@ -27,7 +27,7 @@ import com.zjwam.zkw.HttpUtils.VideoPlayerHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.VideoCatalogAdapter;
 import com.zjwam.zkw.entity.VideoCatalogBean;
-import com.zjwam.zkw.util.BadNetWork;
+
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.ZkwPreference;
 import com.zjwam.zkw.jsondata.VideoJson2Data;

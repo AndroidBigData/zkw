@@ -34,7 +34,7 @@ import com.zjwam.zkw.entity.JsonBean;
 import com.zjwam.zkw.jsondata.AddInfoData2Json;
 import com.zjwam.zkw.jsondata.Dialog2Json;
 import com.zjwam.zkw.util.AddChoiceInfo;
-import com.zjwam.zkw.util.BadNetWork;
+
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.GetJsonDataUtil;
 import com.zjwam.zkw.util.KeyboardUtils;
@@ -235,7 +235,6 @@ public class AddStudentInformationActivity extends BaseActivity {
 //
 //            @Override
 //            public void onError(Throwable ex, boolean isOnCallback) {
-//                new BadNetWork().isBadNetWork(getBaseContext());
 //            }
 //
 //            @Override

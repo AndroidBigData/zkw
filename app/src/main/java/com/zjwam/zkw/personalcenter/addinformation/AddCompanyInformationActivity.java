@@ -258,7 +258,6 @@ public class AddCompanyInformationActivity extends BaseActivity {
 //
 //            @Override
 //            public void onError(Throwable ex, boolean isOnCallback) {
-//                new BadNetWork().isBadNetWork(getBaseContext());
 //            }
 //
 //            @Override
@@ -324,7 +323,6 @@ public class AddCompanyInformationActivity extends BaseActivity {
 //
 //            @Override
 //            public void onError(Throwable ex, boolean isOnCallback) {
-//                new BadNetWork().isBadNetWork(getBaseContext());
 //            }
 //
 //            @Override

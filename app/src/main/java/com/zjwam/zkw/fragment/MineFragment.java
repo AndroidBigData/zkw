@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,12 +24,9 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.HttpUtils.MainActivityHttp;
 import com.zjwam.zkw.R;
-import com.zjwam.zkw.callback.Json2Callback;
 import com.zjwam.zkw.customview.CustomToast;
 import com.zjwam.zkw.entity.PersoanlMessage;
 import com.zjwam.zkw.entity.PersonalQDBean;
@@ -46,9 +42,8 @@ import com.zjwam.zkw.personalcenter.MineNoteBookActivity;
 import com.zjwam.zkw.personalcenter.MineOrderActivity;
 import com.zjwam.zkw.personalcenter.MineShopCartActivity;
 import com.zjwam.zkw.personalcenter.SetUpActivity;
-import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.GlideImageUtil;
-import com.zjwam.zkw.util.NetworkUtils;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
 import com.zjwam.zkw.util.ZkwPreference;
 
 
@@ -319,10 +314,13 @@ public class MineFragment extends Fragment {
     }
 
     public void qdMessageError(Response<PersonalQDBean> response) {
-        if (!NetworkUtils.isNetAvailable(context)) {
-            customToast = new CustomToast(getActivity());
-            customToast.setsToast("签到失败，网络不可用", R.drawable.personal_hard);
-        }
+//        if (!NetworkUtils.isNetAvailable(context)) {
+//            customToast = new CustomToast(getActivity());
+//            customToast.setsToast("签到失败，网络不可用", R.drawable.personal_hard);
+//        }
+        Throwable exception = response.getException();
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        customToast.setsToast(error, R.drawable.personal_hard);
     }
 
     public void qdMessageFinish() {

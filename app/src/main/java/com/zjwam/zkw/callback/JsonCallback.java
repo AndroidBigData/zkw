@@ -15,6 +15,8 @@
  */
 package com.zjwam.zkw.callback;
 
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.lzy.okgo.callback.AbsCallback;
@@ -50,11 +52,7 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
      * 这里的解析工作不同的业务逻辑基本都不一样,所以需要自己实现,以下给出的时模板代码,实际使用根据需要修改
      */
     @Override
-    public T convertResponse(Response response) throws Throwable {
-
-        // 重要的事情说三遍，不同的业务，这里的代码逻辑都不一样，如果你不修改，那么基本不可用
-        // 重要的事情说三遍，不同的业务，这里的代码逻辑都不一样，如果你不修改，那么基本不可用
-        // 重要的事情说三遍，不同的业务，这里的代码逻辑都不一样，如果你不修改，那么基本不可用
+    public T convertResponse(Response response) {
 
         //详细自定义的原理和文档，看这里： https://github.com/jeasonlzy/okhttp-OkGo/wiki/JsonCallback
 
@@ -91,18 +89,18 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
         }
     }
 
-    @Override
-    public void onError(com.lzy.okgo.model.Response<T> response) {
-        Throwable exception = response.getException();
-        if (exception != null) exception.printStackTrace();
-        if (exception instanceof UnknownHostException || exception instanceof ConnectException){
-            System.out.println("网络连接失败，请连接网络");
-        }else if (exception instanceof SocketTimeoutException){
-            System.out.println("网络请求超时");
-        }else if (exception instanceof HttpException){
-            System.out.println("服务端响应码404和500");
-        }else if (exception instanceof StorageException){
-            System.out.println("SD卡不存在或者没有权限");
-        }
-    }
+//    @Override
+//    public void onError(com.lzy.okgo.model.Response<T> response) {
+//        Throwable exception = response.getException();
+//        if (exception != null) exception.printStackTrace();
+//        if (exception instanceof UnknownHostException || exception instanceof ConnectException){
+//            System.out.println("网络连接失败，请连接网络");
+//        }else if (exception instanceof SocketTimeoutException){
+//            System.out.println("网络请求超时");
+//        }else if (exception instanceof HttpException){
+//            System.out.println("服务端响应码404和500");
+//        }else if (exception instanceof StorageException){
+//            System.out.println("SD卡不存在或者没有权限");
+//        }
+//    }
 }

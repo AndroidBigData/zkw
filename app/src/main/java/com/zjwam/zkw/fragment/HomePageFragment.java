@@ -289,95 +289,6 @@ private View.OnClickListener onClickListener = new View.OnClickListener() {
         }
     }
 };
-    private void loadData(String url) {
-
-//        OkGo.<String>get(url)
-//                .cacheKey("HomePageFragment")
-//                .tag(this)
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onSuccess(Response<String> response) {
-//                        dataclass = new HomePageJson2Class(response.body());
-//                        initLunbo();
-//                        initKCTJ();
-//                        initClassMore();
-//                        initData();
-//                    }
-//
-//                    @Override
-//                    public void onCacheSuccess(Response<String> response) {
-//                        super.onCacheSuccess(response);
-//                        if (!isInitCache) {
-//                            //一般来说,缓存回调成功和网络回调成功做的事情是一样的,所以这里直接回调onSuccess
-//                            onSuccess(response);
-//                            isInitCache = true;
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onError(Response<String> response) {
-//                        super.onError(response);
-//                        new BadNetWork().isBadNetWork(getActivity());
-//                    }
-//                });
-
-        OkGo.<HomePageBean>get(url)
-                .tag(this)
-                .cacheKey("HomePageFragment")
-                .execute(new Json2Callback<HomePageBean>() {
-                    @Override
-                    public void onSuccess(Response<HomePageBean> response) {
-                        dataes = response.body();
-                        initLunbo();
-                        initKCTJ();
-//                        initClassMore();
-                        initYJS();
-                        initData();
-                    }
-                    @Override
-                    public void onCacheSuccess(Response<HomePageBean> response) {
-                        super.onCacheSuccess(response);
-                        if (!isInitCache) {
-                            //一般来说,缓存回调成功和网络回调成功做的事情是一样的,所以这里直接回调onSuccess
-                            onSuccess(response);
-                            isInitCache = true;
-                        }
-                    }
-
-                    @Override
-                    public void onError(Response<HomePageBean> response) {
-                        super.onError(response);
-                    }
-                });
-
-
-//        RequestParams params = new RequestParams(url);
-//        x.http().get(params, new Callback.CommonCallback<String>() {
-//            @Override
-//            public void onSuccess(String result) {
-//                dataclass = new HomePageJson2Class(result);
-//                initLunbo();
-//                initKCTJ();
-//                initClassMore(result);
-//                initData();
-//            }
-//
-//            @Override
-//            public void onError(Throwable ex, boolean isOnCallback) {
-//                new BadNetWork().isBadNetWork(getActivity());
-//            }
-//
-//            @Override
-//            public void onCancelled(CancelledException cex) {
-//
-//            }
-//
-//            @Override
-//            public void onFinished() {
-//
-//            }
-//        });
-    }
 
     private void initYJS() {
         HomePageKCTJInfo yjs = dataes.getYjs();
@@ -441,27 +352,7 @@ private View.OnClickListener onClickListener = new View.OnClickListener() {
 
     private void initKCTJ() {
         kctj_list.setFocusable(false);
-//        homePageKCTJInfos = new ArrayList<>();
-//        try {
-//            JSONArray kctjdatas = dataclass.getKCTJData();
-//
-//            List<HomePageKCTJInfo> datas = new HomePageKCTJJson2Data(kctjdatas).getKCTJInfo();
-//            for (int i = 0 ; i < kctjdatas.length() ; i++){
-//                HomePageKCTJInfo homePageKCTJInfo = new HomePageKCTJInfo();
-//                homePageKCTJInfo.setName(datas.get(i).getName());
-//                homePageKCTJInfo.setCode(datas.get(i).getCode());
-//                homePageKCTJInfo.setItemInfos(datas.get(i).getItemInfos());
-//                homePageKCTJInfo.setItemImgs(datas.get(i).getItemImgs());
-//                Log.i("---datas:",datas.get(i).getItemImgs().toString());
-//                homePageKCTJInfos.add(homePageKCTJInfo);
-//            }
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
         homePageKCTJInfos = dataes.getClass_es();
-
         homePageKCTJAdapter = new HomePageKCTJAdapter(getActivity(),homePageKCTJInfos,itemCallBack);
         kctj_list.setAdapter(homePageKCTJAdapter);
         setListViewHeightBasedOnChildren(kctj_list);
@@ -583,20 +474,6 @@ private View.OnClickListener onClickListener = new View.OnClickListener() {
     };
 
     private void initLunbo() {
-//        JSONArray lunbodatas = null;
-
-//        try {
-//            lunbodatas = dataclass.getLunboData();
-//            lunboBean = new LunboJson2Data().getLunboData(lunbodatas);
-//            lunbo_data = new ArrayList<>();
-//            for (int i = 0 ; i < lunbodatas.length() ; i++){
-//                String url = lunboBean.get(i).getImg();
-//                lunbo_data.add(Config.URL + url);
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
         lunbo_data = new ArrayList<>();
         final List<LunboBean> lunboBean = dataes.getBanner();
         for (int i = 0 ; i < lunboBean.size() ; i++){

@@ -34,7 +34,7 @@ import com.zjwam.zkw.personalcenter.addinformation.AddCompanyInformationActivity
 import com.zjwam.zkw.personalcenter.addinformation.AddStudentInformationActivity;
 import com.zjwam.zkw.personalcenter.addinformation.AddTeacherInformationActivity;
 import com.zjwam.zkw.register.RegisterChoiceActivity;
-import com.zjwam.zkw.util.BadNetWork;
+
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.ZkwPreference;
 
@@ -194,7 +194,6 @@ public class LoginFragment extends BaseActivity {
 //
 //            @Override
 //            public void onError(Throwable ex, boolean isOnCallback) {
-//                new BadNetWork().isBadNetWork(getActivity());
 //            }
 //
 //            @Override

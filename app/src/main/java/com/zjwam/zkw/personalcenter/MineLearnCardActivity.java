@@ -194,6 +194,7 @@ public class MineLearnCardActivity extends BaseActivity {
     private void getLearnCardMsg() {
         OkGo.<ResponseBean<MineLearnCardBean>>post(Config.URL + "api/user/combo_list ")
                 .params("uid", uid)
+                .params("type","android")
                 .tag(this)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new JsonCallback<ResponseBean<MineLearnCardBean>>() {
