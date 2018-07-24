@@ -12,6 +12,7 @@ import android.widget.Button;
 
 import com.zjwam.zkw.BaseActivity;
 import com.zjwam.zkw.R;
+import com.zjwam.zkw.personalcenter.addinformation.AddCompanyInformationActivity;
 import com.zjwam.zkw.util.ZkwPreference;
 
 public class RegisterChoiceActivity extends BaseActivity {

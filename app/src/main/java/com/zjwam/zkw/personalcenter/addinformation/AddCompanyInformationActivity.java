@@ -1,10 +1,17 @@
 package com.zjwam.zkw.personalcenter.addinformation;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,11 +24,9 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
-import com.lzy.imagepicker.ImagePicker;
-import com.lzy.imagepicker.bean.ImageItem;
-import com.lzy.imagepicker.ui.ImageGridActivity;
-import com.lzy.imagepicker.view.CropImageView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
@@ -29,6 +34,7 @@ import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.base.Request;
 import com.zjwam.zkw.BaseActivity;
 import com.zjwam.zkw.R;
+import com.zjwam.zkw.customview.ChoicePictureDialog;
 import com.zjwam.zkw.entity.AddCompanyInfo;
 import com.zjwam.zkw.entity.DialogInfo;
 import com.zjwam.zkw.entity.JsonBean;
@@ -37,8 +43,9 @@ import com.zjwam.zkw.jsondata.Dialog2Json;
 import com.zjwam.zkw.util.AddChoiceInfo;
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.GetJsonDataUtil;
-import com.zjwam.zkw.util.GlideImageLoader;
+import com.zjwam.zkw.util.GlideImageUtil;
 import com.zjwam.zkw.util.KeyboardUtils;
+import com.zjwam.zkw.util.RequestOptionsUtils;
 import com.zjwam.zkw.util.ZkwPreference;
 
 import org.json.JSONArray;
@@ -47,6 +54,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.media.MediaRecorder.VideoSource.CAMERA;
 
 public class AddCompanyInformationActivity extends BaseActivity {
 
@@ -64,9 +73,12 @@ public class AddCompanyInformationActivity extends BaseActivity {
     private JSONObject data;
     private static final int MSG_LOAD_DATA = 0x0001;
     private RelativeLayout company_progress;
-    private ArrayList<ImageItem> images = null;
-    private ImagePicker imagePicker;
-    private String img_path;
+    private String photo_path = null;
+    private ChoicePictureDialog choicePictureDialog;
+    private Uri imageUri;
+    private static final int CAMERA = 1;
+    private static final int CHOOSE_PICTURE = 2;
+    private static final int CROP_SMALL_PICTURE = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +97,30 @@ public class AddCompanyInformationActivity extends BaseActivity {
         add_company_identity.setOnClickListener(onClickListener);
         image_up.setOnClickListener(onClickListener);
         makesure_company.setOnClickListener(onClickListener);
+        choicePictureDialog = new ChoicePictureDialog(AddCompanyInformationActivity.this);
+        choicePictureDialog.setOnClickListener(new ChoicePictureDialog.PopOnClick() {
+            @Override
+            public void OnClickPhotograph() {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "/temp/"+System.currentTimeMillis() + ".jpg"));
+                //将拍照所得的相片保存到SD卡根目录
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                startActivityForResult(intent, CAMERA);
+                choicePictureDialog.dismiss();
+            }
+
+            @Override
+            public void OnClickalbum() {
+                Intent picture = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(picture, CHOOSE_PICTURE);
+                choicePictureDialog.dismiss();
+            }
+
+            @Override
+            public void OnClickcancel() {
+                choicePictureDialog.dismiss();
+            }
+        });
     }
 
     private void initView() {
@@ -103,20 +139,6 @@ public class AddCompanyInformationActivity extends BaseActivity {
         makesure_company = findViewById(R.id.makesure_company);
         company_progress = findViewById(R.id.progress_add_company);
         company_progress.getBackground().setAlpha(100);
-
-        imagePicker = ImagePicker.getInstance();
-        imagePicker.setImageLoader(new GlideImageLoader());  //设置图片加载器
-        imagePicker.setShowCamera(false);  //显示拍照按钮
-        imagePicker.setCrop(false);        //允许裁剪（单选才有效）
-        imagePicker.setSaveRectangle(true); //是否按矩形区域保存
-        imagePicker.setSelectLimit(9);    //选中数量限制
-        imagePicker.setStyle(CropImageView.Style.RECTANGLE);  //裁剪框的形状
-        imagePicker.setFocusWidth(800);   //裁剪框的宽度。单位像素（圆形自动取宽高最小值）
-        imagePicker.setFocusHeight(800);  //裁剪框的高度。单位像素（圆形自动取宽高最小值）
-        imagePicker.setOutPutX(1000);//保存文件的宽度。单位像素
-        imagePicker.setOutPutY(1000);//保存文件的高度。单位像素
-        imagePicker.setMultiMode(false);//是否多选
-
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -163,9 +185,7 @@ public class AddCompanyInformationActivity extends BaseActivity {
                     initPicker(company_identity,null,view);
                     break;
                 case R.id.image_up:
-                    Intent intent = new Intent(getBaseContext(), ImageGridActivity.class);
-                    intent.putExtra(ImageGridActivity.EXTRAS_IMAGES,images);
-                    startActivityForResult(intent, 100);
+                    choicePictureDialog.show();
                     break;
                 case R.id.makesure_company:
                     AddCompanyInfo addCompanyInfo = new AddCompanyInfo();
@@ -193,37 +213,19 @@ public class AddCompanyInformationActivity extends BaseActivity {
                     addCompanyInfo.setCom_identity(add_company_identity.getText().toString());
                     addCompanyInfo.setCredit_cade(add_company_num.getText().toString().trim());
                     data = AddCompanyData2Json.getCompanyData2Json(addCompanyInfo,getBaseContext());
-                    Log.i("---data:",data.toString());
                     upData(Config.URL + "api/info/complete_company");
-
                     break;
             }
         }
     };
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == ImagePicker.RESULT_CODE_ITEMS) {
-            if (data != null && requestCode == 100) {
-                images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
-                img_path = images.get(0).path;
-                imagePicker.getImageLoader().displayImage(AddCompanyInformationActivity.this,img_path,add_company_image,235,340);
-                Log.i("---path:",images.get(0).path);
-                upImg(Config.URL+"api/info/company_img",ZkwPreference.getInstance(getBaseContext()).getUid(),img_path);
-            } else {
-                Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
     private void upImg(String url,String uid, String img_path) {
 
         OkGo.<String>post(url)
                 .tag(this)
                 .cacheMode(CacheMode.NO_CACHE)
-                .params("uid","12868")
+                .params("uid",uid)
                 .params("test",new File(img_path))
                 .execute(new StringCallback() {
                     @Override
@@ -235,11 +237,6 @@ public class AddCompanyInformationActivity extends BaseActivity {
                             Toast.makeText(getBaseContext(),dialogInfo.getMsg(),Toast.LENGTH_SHORT).show();
                             add_company_image.setImageResource(R.drawable.license_demo);
                         }
-                    }
-
-                    @Override
-                    public void onError(Response<String> response) {
-                        super.onError(response);
                     }
                 });
 
@@ -478,6 +475,129 @@ public class AddCompanyInformationActivity extends BaseActivity {
             }
         }
     };
+
+    /**
+     * 不裁剪直接设置用这个方法
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            //选择照片
+            case CHOOSE_PICTURE:
+                if (data != null) {
+                    imageUri = data.getData();
+                    photo_path = uriToFile(imageUri, this);
+                }
+                break;
+            case CAMERA:
+                if (resultCode == Activity.RESULT_OK) {
+                    photo_path = imageUri.getPath();
+                }
+                break;
+        }
+        if (photo_path != null) {
+            //图片处理
+            GlideImageUtil.setImageView(getBaseContext(),photo_path,add_company_image, RequestOptionsUtils.commonTransform());
+            upImg(Config.URL + "api/info/company_img", ZkwPreference.getInstance(getBaseContext()).getUid(),photo_path);
+        }
+    }
+
+//    /**
+//     * 图片进行裁剪之后进行设置
+//     */
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        switch (requestCode) {
+//            //选择照片
+//            case CHOOSE_PICTURE:
+//                if (data != null) {
+//                    imageUri = data.getData();
+//                    cropPhoto(imageUri);
+//                }
+//                break;
+//            case CAMERA:
+//                if (resultCode == Activity.RESULT_OK) {//判断是否拍照成功(点击了返回键即不进入方法)
+//                    cropPhoto(imageUri);
+//                }
+//                break;
+//            case CROP_SMALL_PICTURE:
+//                if (data != null) {
+//                    setImageUri(data);
+//                    photo_path = uriToFile(imageUri, this);
+//                    //图片处理
+//                    Glide.with(this).load(photo_path)
+//                            .diskCacheStrategy(DiskCacheStrategy.NONE)//禁用磁盘缓存
+//                            .skipMemoryCache(true)//跳过内存缓存
+//                            .into(iv_main_avater);
+//                    //如果要上传到服务器，在这里调取接口即可
+//                }
+//                break;
+//        }
+//    }
+
+
+    /**
+     * 系统的裁剪功能
+     */
+    public void cropPhoto(Uri uri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高
+        intent.putExtra("outputX", 150);
+        intent.putExtra("outputY", 150);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, CROP_SMALL_PICTURE);
+    }
+
+    /**
+     * 得到裁剪之后的图片uri
+     *
+     * @param intent
+     */
+    private void setImageUri(Intent intent) {
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            Bitmap bitmap = extras.getParcelable("data");
+            imageUri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, null, null));//bitmap转为uri
+            //Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);（uri转为bitmap）
+        }
+    }
+
+    /**
+     * uri转为file
+     *
+     * @param uri
+     * @param context
+     * @return
+     */
+    public static String uriToFile(Uri uri, Context context) {
+        String path = null;
+        switch (uri.getScheme()) {
+            case "content":
+                Cursor cursor = context.getContentResolver().query(uri,
+                        new String[]{MediaStore.Images.Media.DATA}, null, null, null);
+                if (cursor != null) {
+                    int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    cursor.moveToFirst();
+                    path = cursor.getString(index);
+                    cursor.close();
+                }
+                break;
+            default:
+                path = uri.getPath();
+        }
+        return path;
+    }
 
     @Override
     protected void onDestroy() {
