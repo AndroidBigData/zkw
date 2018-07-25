@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.lzy.okgo.model.Response;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
 import com.zjwam.zkw.HttpUtils.VideoPlayerHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.VideoAskAnswerAdapter;
@@ -254,9 +256,9 @@ public class AnswerFragment extends Fragment {
 
     public void getVideoAnswerError(Response<ResponseBean<VideoAskAnswerBean>> response) {
         Throwable exception = response.getException();
-        if (exception instanceof MyException) {
-            Toast.makeText(context, ((MyException) exception).getErrorBean().msg, Toast.LENGTH_SHORT).show();
-        }
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+
     }
 
     public void getVideoAnswerFinish() {

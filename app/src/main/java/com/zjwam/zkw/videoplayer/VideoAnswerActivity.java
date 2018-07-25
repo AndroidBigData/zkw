@@ -18,6 +18,7 @@ import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
 import com.zjwam.zkw.HttpUtils.VideoAnswersHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.VideoAnswersAdapter;
@@ -72,9 +73,8 @@ public class VideoAnswerActivity extends BaseActivity {
 
     public void getAnswersError(Response<ResponseBean<VideoAnswersBean>> response){
         Throwable exception = response.getException();
-        if (exception instanceof MyException){
-            Toast.makeText(this,((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
-        }
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        Toast.makeText(this,error,Toast.LENGTH_SHORT).show();
     }
     public void getAnswersFinish(){
         video_answers_recyclerview.refreshComplete(10);
@@ -167,9 +167,8 @@ public class VideoAnswerActivity extends BaseActivity {
     }
     public void getAnswersReplyError(Response<ResponseBean<EmptyBean>> response){
         Throwable exception = response.getException();
-        if (exception instanceof MyException){
-            Toast.makeText(getBaseContext(),((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
-        }
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        Toast.makeText(getBaseContext(),error,Toast.LENGTH_SHORT).show();
         replayDialog.dismiss();
     }
 

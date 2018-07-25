@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
 import com.zjwam.zkw.HttpUtils.VideoPlayerHttp;
 import com.zjwam.zkw.HttpUtils.VideoQuestionHttp;
 import com.zjwam.zkw.R;
@@ -71,9 +72,9 @@ public class QuestionActivity extends BaseActivity {
     }
     public void getQuestionError(Response<ResponseBean<EmptyBean>> response){
         Throwable exception = response.getException();
-        if (exception instanceof MyException){
-            Toast.makeText(getBaseContext(),((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
-        }
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        Toast.makeText(getBaseContext(),error,Toast.LENGTH_SHORT).show();
+
     }
     public void getQuestionFinish(){
         ZkwPreference.getInstance(getBaseContext()).setVideoId("");

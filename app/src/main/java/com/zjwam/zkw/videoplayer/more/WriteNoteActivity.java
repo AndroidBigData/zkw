@@ -12,6 +12,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
 import com.zjwam.zkw.HttpUtils.WriteNoteActivityHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.callback.JsonCallback;
@@ -57,7 +58,7 @@ public class WriteNoteActivity extends BaseActivity {
                 note = write_note.getText().toString();
                 if (uid.trim().length() > 0) {
                     if (note.length() > 0) {
-                       writeNoteActivityHttp.getWriteNoteMsg(uid,id,vid, String.valueOf(vtime),note);
+                        writeNoteActivityHttp.getWriteNoteMsg(uid, id, vid, String.valueOf(vtime), note);
                     } else {
                         Toast.makeText(getBaseContext(), "输入内容为空！", Toast.LENGTH_SHORT).show();
                     }
@@ -75,11 +76,11 @@ public class WriteNoteActivity extends BaseActivity {
 
     public void getWriteNoteMsgError(Response<ResponseBean<EmptyBean>> response) {
         Throwable exception = response.getException();
-        if (exception instanceof MyException) {
-            Toast.makeText(getBaseContext(), ((MyException) exception).getErrorBean().msg, Toast.LENGTH_SHORT).show();
-        }
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        Toast.makeText(getBaseContext(), error, Toast.LENGTH_SHORT).show();
     }
-    public void getWriteNoteMsgFinish(){
+
+    public void getWriteNoteMsgFinish() {
         ZkwPreference.getInstance(this).setViteoTime(String.valueOf(0));
         ZkwPreference.getInstance(this).setVideoId("");
     }

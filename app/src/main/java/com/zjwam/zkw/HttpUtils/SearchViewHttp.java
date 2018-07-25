@@ -26,34 +26,29 @@ public class SearchViewHttp {
         params.put("classname",classname);
         params.put("id",id);
         params.put("page",page);
-        OkGo.<SearchClassBean>post(Config.URL + "api/Search/search_class")
-                .params(params)
-                .tag(context)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new Json2Callback<SearchClassBean>() {
-                    @Override
-                    public void onSuccess(Response<SearchClassBean> response) {
-                        if (context instanceof SearchActivity){
-                            ((SearchActivity)context).getData(response);
-                        }
-                    }
+        OkGoUtils.postRequets(Config.URL + "api/Search/search_class", context, params, new Json2Callback<SearchClassBean>() {
+            @Override
+            public void onSuccess(Response<SearchClassBean> response) {
+                if (context instanceof SearchActivity){
+                    ((SearchActivity)context).getData(response);
+                }
+            }
 
-                    @Override
-                    public void onError(Response<SearchClassBean> response) {
-                        super.onError(response);
-                        if (!NetworkUtils.isNetAvailable(context)) {
-                            ((SearchActivity) context).error();
-                            ((SearchActivity) context).netError();
-                        }
-                    }
+            @Override
+            public void onError(Response<SearchClassBean> response) {
+                super.onError(response);
+                if (!NetworkUtils.isNetAvailable(context)) {
+                    ((SearchActivity) context).netError(response);
+                }
+            }
 
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        if (context instanceof SearchActivity){
-                            ((SearchActivity) context).loadFinish();
-                        }
-                    }
-                });
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (context instanceof SearchActivity){
+                    ((SearchActivity) context).loadFinish();
+                }
+            }
+        });
     }
 }

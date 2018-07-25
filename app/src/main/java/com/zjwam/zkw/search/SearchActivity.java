@@ -39,6 +39,7 @@ import com.zjwam.zkw.entity.SearchClassBean;
 import com.zjwam.zkw.jsondata.ClassInfoJson2Data;
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.KeyboardUtils;
+import com.zjwam.zkw.util.MyException;
 import com.zjwam.zkw.util.NetworkUtils;
 import com.zjwam.zkw.videoplayer.Video2PlayActivity;
 
@@ -158,13 +159,18 @@ public class SearchActivity extends BaseActivity {
         }
 
     }
-    public void netError(){
-        search_recycler.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
-            @Override
-            public void reload() {
-                searchHttp.searInfo(classname,classId, String.valueOf(page));
-            }
-        });
+    public void netError(Response<SearchClassBean> response){
+        Throwable exception = response.getException();
+        if (exception instanceof MyException){
+            Toast.makeText(getBaseContext(),((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
+        }else {
+            search_recycler.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                @Override
+                public void reload() {
+                    searchHttp.searInfo(classname,classId, String.valueOf(page));
+                }
+            });
+        }
     }
     public void loadFinish(){
         search_recycler.refreshComplete(10);

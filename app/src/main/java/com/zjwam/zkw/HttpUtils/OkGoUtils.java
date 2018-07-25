@@ -29,14 +29,14 @@ public class OkGoUtils {
                 .execute(callback);
     }
     public static <T>void postRequets(String url, Object tag, Map<String,String> map, JsonCallback<T> callback){
-        OkGo.<T>get(url)
+        OkGo.<T>post(url)
                 .tag(tag)
                 .params(map)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(callback);
     }
     /**
-     *没有固定数据格式
+     *非固定数据格式
      */
     public static <T>void getRequets(String url, Object tag, Json2Callback<T> callback){
         OkGo.<T>get(url)
@@ -45,7 +45,7 @@ public class OkGoUtils {
                 .execute(callback);
     }
     public static <T>void postRequets(String url, Object tag, Map<String,String> map, Json2Callback<T> callback){
-        OkGo.<T>get(url)
+        OkGo.<T>post(url)
                 .tag(tag)
                 .params(map)
                 .cacheMode(CacheMode.NO_CACHE)

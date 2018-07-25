@@ -25,6 +25,7 @@ import com.shuyu.gsyvideoplayer.listener.LockClickListener;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
 import com.zjwam.zkw.HttpUtils.VideoPlayerHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.entity.CommentBean;
@@ -321,9 +322,8 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
     }
     public void getSCError(Response<ResponseBean<EmptyBean>> response){
         Throwable exception = response.getException();
-        if (exception instanceof MyException){
-            Toast.makeText(getBaseContext(),((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
-        }
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        Toast.makeText(getBaseContext(),error,Toast.LENGTH_SHORT).show();
     }
 
 

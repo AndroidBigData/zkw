@@ -15,6 +15,7 @@ import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
 import com.zjwam.zkw.HttpUtils.CommmentActivityHttp;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.callback.JsonCallback;
 import com.zjwam.zkw.entity.EmptyBean;
@@ -87,9 +88,11 @@ public class CommmentActivity extends BaseActivity {
 
     public void upDataMsgError(Response<ResponseBean<EmptyBean>> response) {
         Throwable exception = response.getException();
-        if (exception instanceof MyException) {
-            Toast.makeText(getBaseContext(), ((MyException) exception).getErrorBean().msg, Toast.LENGTH_SHORT).show();
-        }
+//        if (exception instanceof MyException) {
+//            Toast.makeText(getBaseContext(), ((MyException) exception).getErrorBean().msg, Toast.LENGTH_SHORT).show();
+//        }
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        Toast.makeText(getBaseContext(), error, Toast.LENGTH_SHORT).show();
     }
     public void upDataMsgFinish() {
         ZkwPreference.getInstance(this).setVideoId("");
