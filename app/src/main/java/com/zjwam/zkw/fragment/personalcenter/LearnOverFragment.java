@@ -1,6 +1,7 @@
 package com.zjwam.zkw.fragment.personalcenter;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -19,6 +22,8 @@ import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
+import com.zjwam.zkw.HttpUtils.PersonalCenterHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.MineClassAdapter;
 import com.zjwam.zkw.callback.Json2Callback;
@@ -40,11 +45,18 @@ public class LearnOverFragment extends Fragment {
     private int page = 1;
     private int max_items;
     private String uid;
+    private Context context;
+    private PersonalCenterHttp personalCenterHttp;
 
     public LearnOverFragment() {
         // Required empty public constructor
     }
 
+    public static LearnOverFragment newInstance(Context context) {
+        LearnOverFragment fragment = new LearnOverFragment();
+        fragment.context = context;
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,7 +75,7 @@ public class LearnOverFragment extends Fragment {
         uid = ZkwPreference.getInstance(getActivity()).getUid();
         learnover_recyclerview = getActivity().findViewById(R.id.learnover_recyclerview);
         learnover_nodata = getActivity().findViewById(R.id.learnover_nodata);
-
+        personalCenterHttp = new PersonalCenterHttp(context);
         mineClassAdapter = new MineClassAdapter(getActivity());
         lRecyclerViewAdapter = new LRecyclerViewAdapter(mineClassAdapter);
         learnover_recyclerview.setAdapter(lRecyclerViewAdapter);
@@ -76,7 +88,7 @@ public class LearnOverFragment extends Fragment {
             public void onRefresh() {
                 page = 1;
                 mCurrentCounter = 0;
-                getData(page);
+                personalCenterHttp.getLearnOver(uid, "2", String.valueOf(page));
                 mineClassAdapter.clear();
             }
         });
@@ -85,7 +97,7 @@ public class LearnOverFragment extends Fragment {
             public void onLoadMore() {
                 if (mCurrentCounter < max_items) {
                     page++;
-                    getData(page);
+                    personalCenterHttp.getLearnOver(uid, "2", String.valueOf(page));
                 } else {
                     learnover_recyclerview.setNoMore(true);
                 }
@@ -94,37 +106,30 @@ public class LearnOverFragment extends Fragment {
         learnover_recyclerview.refresh();
     }
 
-    private void getData(int page) {
-        OkGo.<MineClassBean>post(Config.URL + "api/user/all_class")
-                .params("uid", uid)
-                .params("type", 2)
-                .params("page", page)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new Json2Callback<MineClassBean>() {
-                    @Override
-                    public void onSuccess(Response<MineClassBean> response) {
-                        MineClassBean mineClassBean = response.body();
-                        max_items = mineClassBean.getData().getCount();
-                        if (mineClassBean.getData().getClass_list().size()>0){
-                            addItems(mineClassBean.getData().getClass_list());
-                            learnover_nodata.setVisibility(View.GONE);
-                        }else {
-                            learnover_nodata.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        learnover_recyclerview.refreshComplete(10);
-                        lRecyclerViewAdapter.notifyDataSetChanged();
-                    }
-                });
-    }
-
     private void addItems(List<MineClassBean.itemBean> list) {
         mineClassAdapter.addAll(list);
         mCurrentCounter += list.size();
+    }
+
+    public void getLearnOver(Response<MineClassBean> response) {
+        MineClassBean mineClassBean = response.body();
+        max_items = mineClassBean.getData().getCount();
+        if (mineClassBean.getData().getClass_list().size() > 0) {
+            addItems(mineClassBean.getData().getClass_list());
+            learnover_nodata.setVisibility(View.GONE);
+        } else {
+            learnover_nodata.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void getLearnOverError(Response<MineClassBean> response) {
+        Throwable exception = response.getException();
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+    }
+
+    public void getLearnOverFinish() {
+        learnover_recyclerview.refreshComplete(10);
+        lRecyclerViewAdapter.notifyDataSetChanged();
     }
 }

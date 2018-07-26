@@ -24,6 +24,8 @@ import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
+import com.zjwam.zkw.HttpUtils.PayPreviewHttp;
 import com.zjwam.zkw.MainActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.PayPreviewAdapter;
@@ -53,6 +55,7 @@ public class PayPreviewActivity extends BaseActivity{
     private String id = "",clid = "",uid,ids = "",title = "";
     private static final int SDK_PAY_FLAG = 1;
     private IWXAPI msgApi;
+    private PayPreviewHttp payPreviewHttp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +70,7 @@ public class PayPreviewActivity extends BaseActivity{
         clid = bundle.getString("clid");
         title = bundle.getString("title");
         uid = ZkwPreference.getInstance(getBaseContext()).getUid();
+        payPreviewHttp = new PayPreviewHttp(this);
         previewAdapter = new PayPreviewAdapter(getBaseContext());
         lRecyclerViewAdapter = new LRecyclerViewAdapter(previewAdapter);
         preview_recyclerview.setAdapter(lRecyclerViewAdapter);
@@ -78,40 +82,24 @@ public class PayPreviewActivity extends BaseActivity{
         wx_check.setOnClickListener(onClickListener);
         preview_pay.setOnClickListener(onClickListener);
         if (id != null && id.length()>0){
-            getPreviewMsg(Config.URL + "api/pay/pay_verify","id",id);
+            payPreviewHttp.getPreviewMsg(uid,"id",id);
         }
         if ( clid != null&& clid.length()>0){
-            getPreviewMsg(Config.URL + "api/pay/pay_verify","clid",clid);
+            payPreviewHttp.getPreviewMsg(uid,"clid",clid);
         }
     }
-
-    private void getPreviewMsg(String url,String idtype,String id) {
-        OkGo.<ResponseBean<PayPreviewBean>>post(url)
-                .params(idtype,id)
-                .params("uid",uid)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new JsonCallback<ResponseBean<PayPreviewBean>>() {
-                    @Override
-                    public void onSuccess(Response<ResponseBean<PayPreviewBean>> response) {
-                        List<PayPreviewBean.getOrderItems> item = response.body().data.getOrder();
-                        previewAdapter.addAll(item);
-                        for (int i= 0; i<item.size() ;i++){
-                            ids = ids +item.get(i).getId() + "_";
-                        }
-                    }
-
-                    @Override
-                    public void onError(Response<ResponseBean<PayPreviewBean>> response) {
-                        super.onError(response);
-                        Throwable exception = response.getException();
-                        if (exception instanceof MyException){
-                            Toast.makeText(getBaseContext(),((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+    public void getPreviewMsg(Response<ResponseBean<PayPreviewBean>> response){
+        List<PayPreviewBean.getOrderItems> item = response.body().data.getOrder();
+        previewAdapter.addAll(item);
+        for (int i= 0; i<item.size() ;i++){
+            ids = ids +item.get(i).getId() + "_";
+        }
     }
-
+    public void getPreviewMsgError(Response<ResponseBean<PayPreviewBean>> response){
+        Throwable exception = response.getException();
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        error(error);
+    }
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -129,11 +117,11 @@ public class PayPreviewActivity extends BaseActivity{
                     break;
                 case R.id.preview_pay:
                     if (zfb_check.isChecked()){
-                        payMsg(Config.URL + "api/pay/pay",ids,"alipay");
+                        payPreviewHttp.aliPay(uid,ids,"alipay");
                     }else if (wx_check.isChecked()){
                         msgApi = WXAPIFactory.createWXAPI(getBaseContext(), Config.APPID,false);
                         msgApi.registerApp(Config.APPID);
-                        payWXMsg(Config.URL + "api/pay/pay",ids,"wechart");
+                        payPreviewHttp.wxPay(uid,ids,"wechart");
                     }else {
                         Toast.makeText(getBaseContext(),"请选择支付方式",Toast.LENGTH_SHORT).show();
                     }
@@ -144,70 +132,54 @@ public class PayPreviewActivity extends BaseActivity{
         }
     };
 
-    private void payWXMsg(String url, String ids, String type) {
-        OkGo.<ResponseBean<WxPayBean>>post(url)
-                .params("id",ids)
-                .params("uid",uid)
-                .params("type",type)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new JsonCallback<ResponseBean<WxPayBean>>() {
-                    @Override
-                    public void onSuccess(Response<ResponseBean<WxPayBean>> response) {
-                        final WxPayBean.getWxPay wxPay = response.body().data.getOrderinfo();
-                        Runnable payRunnable = new Runnable() {
-                            //这里注意要放在子线程
-                            @Override
-                            public void run() {
-                                PayReq request = new PayReq();
-                                request.appId = wxPay.getAppid();
-                                request.partnerId = wxPay.getPartnerid();
-                                request.prepayId = wxPay.getPrepayid();
-                                request.packageValue = wxPay.getPackages();
-                                request.nonceStr = wxPay.getNoncestr();
-                                request.timeStamp = wxPay.getTimestamp();
-                                request.sign = wxPay.getSign();
-                                msgApi.sendReq(request);//发送调起微信的请求
-//                                startActivity(new Intent(getBaseContext(),WXPayEntryActivity.class));
-                            }
-                        };
-                        Thread payThread = new Thread(payRunnable);
-                        payThread.start();
-                    }
-                });
+    public void wxPay(Response<ResponseBean<WxPayBean>> response){
+        final WxPayBean.getWxPay wxPay = response.body().data.getOrderinfo();
+        Runnable payRunnable = new Runnable() {
+            //这里注意要放在子线程
+            @Override
+            public void run() {
+                PayReq request = new PayReq();
+                request.appId = wxPay.getAppid();
+                request.partnerId = wxPay.getPartnerid();
+                request.prepayId = wxPay.getPrepayid();
+                request.packageValue = wxPay.getPackages();
+                request.nonceStr = wxPay.getNoncestr();
+                request.timeStamp = wxPay.getTimestamp();
+                request.sign = wxPay.getSign();
+                msgApi.sendReq(request);//发送调起微信的请求
+            }
+        };
+        Thread payThread = new Thread(payRunnable);
+        payThread.start();
     }
-
-
-    private void payMsg(String url,String id,String type) {
-        OkGo.<ResponseBean<PayMsgBean>>post(url)
-                .params("uid",uid)
-                .params("id",id)
-                .params("type",type)
-                .cacheMode(CacheMode.NO_CACHE)
-                .tag(this)
-                .execute(new JsonCallback<ResponseBean<PayMsgBean>>() {
-                    @Override
-                    public void onSuccess(Response<ResponseBean<PayMsgBean>> response) {
-                        final ResponseBean<PayMsgBean> orderInfo = response.body();
-                        Runnable payRunnable = new Runnable() {
-
-                            @Override
-                            public void run() {
-                                PayTask alipay = new PayTask(PayPreviewActivity.this);
-                                Map<String, String> result = alipay.payV2(orderInfo.data.getOrderinfo(), true);
-                                Message msg = new Message();
-                                msg.what = SDK_PAY_FLAG;
-                                msg.obj = result;
-                                mHandler.sendMessage(msg);
-                            }
-                        };
-
-                        Thread payThread = new Thread(payRunnable);
-                        payThread.start();
-                    }
-                });
+    public void wxPayError(Response<ResponseBean<WxPayBean>> response){
+        Throwable exception = response.getException();
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        error(error);
     }
+    public void aliPay(Response<ResponseBean<PayMsgBean>> response){
+        final ResponseBean<PayMsgBean> orderInfo = response.body();
+        Runnable payRunnable = new Runnable() {
 
+            @Override
+            public void run() {
+                PayTask alipay = new PayTask(PayPreviewActivity.this);
+                Map<String, String> result = alipay.payV2(orderInfo.data.getOrderinfo(), true);
+                Message msg = new Message();
+                msg.what = SDK_PAY_FLAG;
+                msg.obj = result;
+                mHandler.sendMessage(msg);
+            }
+        };
+
+        Thread payThread = new Thread(payRunnable);
+        payThread.start();
+    }
+    public void aliPayError(Response<ResponseBean<PayMsgBean>> response){
+        Throwable exception = response.getException();
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        error(error);
+    }
     private Handler mHandler = new Handler() {
         @SuppressWarnings("unused")
         public void handleMessage(Message msg) {

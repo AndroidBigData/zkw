@@ -64,11 +64,11 @@ public class BaseActivity extends AppCompatActivity{
         OkGo.getInstance().cancelTag(this);
     }
 
-    public void error() {
+    public void error(final String error) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getBaseContext(), "网络请求失败", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), error, Toast.LENGTH_LONG).show();
             }
         });
     }

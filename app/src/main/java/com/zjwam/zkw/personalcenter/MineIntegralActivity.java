@@ -18,6 +18,8 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
+import com.zjwam.zkw.HttpUtils.PersonalCenterHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.PersonalMineIntegralAdapter;
 import com.zjwam.zkw.callback.JsonCallback;
@@ -35,13 +37,16 @@ public class MineIntegralActivity extends BaseActivity {
 
     private TextView all_integral;
     private TabLayout mine_integral_tablayout;
-    private ImageView mine_integral_back,mine_integral_nodata;
+    private ImageView mine_integral_back, mine_integral_nodata;
     private LRecyclerView integral_recyclerview;
     private PersonalMineIntegralAdapter mineIntegralAdapter;
     private LRecyclerViewAdapter lRecyclerViewAdapter;
-    private int page = 1,mCurrentCounter = 0,max_items,type = 0;
+    private int page = 1, mCurrentCounter = 0, max_items, type = 0;
     private String uid;
     private boolean isRefresh = true;
+    private PersonalCenterHttp personalCenterHttp;
+    private Throwable exception;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +57,10 @@ public class MineIntegralActivity extends BaseActivity {
 
     private void initData() {
         uid = ZkwPreference.getInstance(getBaseContext()).getUid();
+        personalCenterHttp = new PersonalCenterHttp(this);
         mine_integral_tablayout.addTab(mine_integral_tablayout.newTab().setText("获取记录"));
         mine_integral_tablayout.addTab(mine_integral_tablayout.newTab().setText("消费记录"));
-        Reflex.setReflex(mine_integral_tablayout,56);
+        Reflex.setReflex(mine_integral_tablayout, 56);
         mine_integral_tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -78,7 +84,7 @@ public class MineIntegralActivity extends BaseActivity {
                 finish();
             }
         });
-        mineIntegralAdapter  = new PersonalMineIntegralAdapter(getBaseContext());
+        mineIntegralAdapter = new PersonalMineIntegralAdapter(getBaseContext());
         lRecyclerViewAdapter = new LRecyclerViewAdapter(mineIntegralAdapter);
         integral_recyclerview.setAdapter(lRecyclerViewAdapter);
         integral_recyclerview.setLayoutManager(new LinearLayoutManager(getBaseContext()));
@@ -91,7 +97,7 @@ public class MineIntegralActivity extends BaseActivity {
                 isRefresh = true;
                 page = 1;
                 mCurrentCounter = 0;
-                getData(uid,type,page);
+                personalCenterHttp.getMineIntegral(uid,String.valueOf(type), String.valueOf(page));
             }
         });
         integral_recyclerview.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -100,7 +106,7 @@ public class MineIntegralActivity extends BaseActivity {
                 isRefresh = false;
                 if (mCurrentCounter < max_items) {
                     page++;
-                    getData(uid,type,page);
+                    personalCenterHttp.getMineIntegral(uid,String.valueOf(type), String.valueOf(page));
                 } else {
                     integral_recyclerview.setNoMore(true);
                 }
@@ -110,55 +116,36 @@ public class MineIntegralActivity extends BaseActivity {
         integral_recyclerview.refresh();
     }
 
-    private void getData(final String uid, final int type, final int page) {
-        OkGo.<ResponseBean<MineIntegralBean>>post(Config.URL + "api/user/jifen")
-                .params("uid",uid)
-                .params("type",type)
-                .params("page",page)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new JsonCallback<ResponseBean<MineIntegralBean>>() {
-                    @Override
-                    public void onSuccess(Response<ResponseBean<MineIntegralBean>> response) {
-                        if (isRefresh){
-                            mineIntegralAdapter.clear();
-                        }
-                        ResponseBean<MineIntegralBean> data = response.body();
-                        max_items = data.data.getCount();
-                        all_integral.setText(String.valueOf(data.data.getAllfen()));
-                        if (data.data.getJifen().size()>0){
-                            addItems(data.data.getJifen());
-                            mine_integral_nodata.setVisibility(View.GONE);
-                        }else{
-                            mine_integral_nodata.setVisibility(View.VISIBLE);
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Response<ResponseBean<MineIntegralBean>> response) {
-                        super.onError(response);
-                        Throwable exception = response.getException();
-                        if (exception instanceof MyException){
-                            Toast.makeText(getBaseContext(),((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        integral_recyclerview.refreshComplete(10);
-                        lRecyclerViewAdapter.notifyDataSetChanged();
-                        if (!NetworkUtils.isNetAvailable(getBaseContext())){
-                            integral_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
-                                @Override
-                                public void reload() {
-                                    getData(uid,type,page);
-                                }
-                            });
-                        }
-                    }
-                });
+    public void getMineIntegral(Response<ResponseBean<MineIntegralBean>> response){
+        if (isRefresh) {
+            mineIntegralAdapter.clear();
+        }
+        ResponseBean<MineIntegralBean> data = response.body();
+        max_items = data.data.getCount();
+        all_integral.setText(String.valueOf(data.data.getAllfen()));
+        if (max_items > 0) {
+            addItems(data.data.getJifen());
+            mine_integral_nodata.setVisibility(View.GONE);
+        } else {
+            mine_integral_nodata.setVisibility(View.VISIBLE);
+        }
+    }
+    public void getMineIntegralError(Response<ResponseBean<MineIntegralBean>> response){
+        exception = response.getException();
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        error(error);
+    }
+    public void getMineIntegralFinish(){
+        integral_recyclerview.refreshComplete(10);
+        lRecyclerViewAdapter.notifyDataSetChanged();
+        if (!(exception instanceof MyException)){
+            integral_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                @Override
+                public void reload() {
+                    personalCenterHttp.getMineIntegral(uid,String.valueOf(type), String.valueOf(page));
+                }
+            });
+        }
     }
 
     private void addItems(List<MineIntegralBean.getIntegralItem> jifen) {

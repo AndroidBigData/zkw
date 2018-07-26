@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
 import com.zjwam.zkw.R;
+import com.zjwam.zkw.entity.MineClassBean;
 import com.zjwam.zkw.fragment.personalcenter.LearnAllFragment;
 import com.zjwam.zkw.fragment.personalcenter.LearnOverFragment;
 import com.zjwam.zkw.fragment.personalcenter.LearningFragment;
@@ -27,6 +29,9 @@ public class MineClassActivity extends BaseActivity {
     private TabLayout mine_class_tablayout;
     private ViewPager mine_class_viewpager;
     private ImageView mine_class_back;
+    private LearnAllFragment learnAllFragment;
+    private LearningFragment learningFragment;
+    private LearnOverFragment learnOverFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +49,12 @@ public class MineClassActivity extends BaseActivity {
         titleList.add("全部");
         titleList.add("学习中");
         titleList.add("已完成");
-        fragmentList.add(new LearnAllFragment());
-        fragmentList.add(new LearningFragment());
-        fragmentList.add(new LearnOverFragment());
+        learnAllFragment = new LearnAllFragment(this);
+        fragmentList.add(learnAllFragment);
+        learningFragment = LearningFragment.newInstance(this);
+        fragmentList.add(learningFragment);
+        learnOverFragment = LearnOverFragment.newInstance(this);
+        fragmentList.add(learnOverFragment);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mine_class_viewpager.setAdapter(viewPagerAdapter);
         mine_class_tablayout.setupWithViewPager(mine_class_viewpager);
@@ -59,6 +67,38 @@ public class MineClassActivity extends BaseActivity {
             }
         });
     }
+
+    public void getLearnAll(Response<MineClassBean> response){
+        learnAllFragment.getLearnAll(response);
+    }
+    public void getLearnAllError(Response<MineClassBean> response){
+        learnAllFragment.getLearnAllError(response);
+    }
+    public void getLearnAllFinish(){
+        learnAllFragment.getLearnAllFinish();
+    }
+
+    public void getLearning(Response<MineClassBean> response){
+        learningFragment.getLearning(response);
+    }
+    public void getLearningError(Response<MineClassBean> response){
+        learningFragment.getLearningError(response);
+    }
+    public void getLearningFinish(){
+        learningFragment.getLearningFinish();
+    }
+
+    public void getLearnOver(Response<MineClassBean> response){
+        learnOverFragment.getLearnOver(response);
+    }
+    public void getLearnOverError(Response<MineClassBean> response){
+        learnOverFragment.getLearnOverError(response);
+    }
+    public void getLearnOverFinish(){
+        learnOverFragment.getLearnOverFinish();
+    }
+
+
     class ViewPagerAdapter extends FragmentPagerAdapter {
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);

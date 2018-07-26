@@ -18,9 +18,12 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
+import com.zjwam.zkw.HttpUtils.PersonalCenterHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.PersonalMineNoteBookAdapter;
 import com.zjwam.zkw.callback.JsonCallback;
+import com.zjwam.zkw.entity.EmptyBean;
 import com.zjwam.zkw.entity.PersonalNoteBookBean;
 import com.zjwam.zkw.entity.ResponseBean;
 import com.zjwam.zkw.entity.SimpleResponse;
@@ -42,6 +45,8 @@ public class MineNoteBookActivity extends BaseActivity {
     private int max_items;
     private boolean isChecked = true, isRefresh = true;
     private String uid;
+    private PersonalCenterHttp personalCenterHttp;
+    private Throwable exception;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,7 @@ public class MineNoteBookActivity extends BaseActivity {
 
     private void initData() {
         uid = ZkwPreference.getInstance(getBaseContext()).getUid();
+        personalCenterHttp = new PersonalCenterHttp(this);
         noteBookAdapter = new PersonalMineNoteBookAdapter(getBaseContext());
         lRecyclerViewAdapter = new LRecyclerViewAdapter(noteBookAdapter);
         mine_notebook_recyclerview.setAdapter(lRecyclerViewAdapter);
@@ -66,7 +72,7 @@ public class MineNoteBookActivity extends BaseActivity {
                 isRefresh = true;
                 page = 1;
                 mCurrentCounter = 0;
-                getNoteBookData(uid, page);
+                personalCenterHttp.getNoteBookData(uid, String.valueOf(page));
             }
         });
         mine_notebook_recyclerview.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -75,7 +81,7 @@ public class MineNoteBookActivity extends BaseActivity {
                 isRefresh = false;
                 if (mCurrentCounter < max_items) {
                     page++;
-                    getNoteBookData(uid, page);
+                    personalCenterHttp.getNoteBookData(uid, String.valueOf(page));
                 } else {
                     mine_notebook_recyclerview.setNoMore(true);
                 }
@@ -87,7 +93,7 @@ public class MineNoteBookActivity extends BaseActivity {
             public void OnDeleteNoteBook(int noteId, int position) {
                 if (isChecked){
                     positions = position;
-                    deleNoteBook(noteId);
+                    personalCenterHttp.deleNoteBook(uid, String.valueOf(noteId));
                     isChecked = false;
                 }
 
@@ -101,85 +107,49 @@ public class MineNoteBookActivity extends BaseActivity {
         });
     }
 
-    private void deleNoteBook(int noteId) {
-        OkGo.<ResponseBean<SimpleResponse>>post(Config.URL + "api/user/note_del")
-                .params("uid",uid)
-                .params("id",noteId)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new JsonCallback<ResponseBean<SimpleResponse>>() {
-                    @Override
-                    public void onSuccess(Response<ResponseBean<SimpleResponse>> response) {
-                        noteBookAdapter.remove(positions);
-                        ResponseBean<SimpleResponse> msg = response.body();
-                        Toast.makeText(getBaseContext(),msg.msg,Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onError(Response<ResponseBean<SimpleResponse>> response) {
-                        super.onError(response);
-                        Throwable exception = response.getException();
-                        if (exception instanceof MyException){
-                            Toast.makeText(getBaseContext(),((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        isChecked = true;
-                    }
-                });
+    public void deleNoteBook(Response<ResponseBean<EmptyBean>> response){
+        noteBookAdapter.remove(positions);
+        ResponseBean<EmptyBean> msg = response.body();
+        Toast.makeText(getBaseContext(),msg.msg,Toast.LENGTH_SHORT).show();
+    }
+    public void deleNoteBookError(Response<ResponseBean<EmptyBean>> response){
+        Throwable exception = response.getException();
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        error(error);
+    }
+    public void deleNoteBookFinish(){
+        isChecked = true;
     }
 
-    private void getNoteBookData(final String uid, final int page) {
-        OkGo.<ResponseBean<PersonalNoteBookBean>>post(Config.URL + "api/user/note")
-                .params("uid", uid)
-                .params("page", page)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new JsonCallback<ResponseBean<PersonalNoteBookBean>>() {
-                    @Override
-                    public void onSuccess(Response<ResponseBean<PersonalNoteBookBean>> response) {
-                        if (isRefresh) {
-                            noteBookAdapter.clear();
-                        }
-                        ResponseBean<PersonalNoteBookBean> data = response.body();
-                        max_items = data.data.getCount();
-                        if (data.data.getNote().size() > 0){
-                            addItems(data.data.getNote());
-                            mine_notebook_nodata.setVisibility(View.GONE);
-                        }else {
-                            mine_notebook_nodata.setVisibility(View.VISIBLE);
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onError(Response<ResponseBean<PersonalNoteBookBean>> response) {
-                        super.onError(response);
-                        Throwable exception = response.getException();
-                        if (exception instanceof MyException) {
-                            Toast.makeText(getBaseContext(), ((MyException) exception).getErrorBean().msg, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        mine_notebook_recyclerview.refreshComplete(10);
-                        lRecyclerViewAdapter.notifyDataSetChanged();
-                        if (!NetworkUtils.isNetAvailable(getBaseContext())) {
-                            mine_notebook_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
-                                @Override
-                                public void reload() {
-                                    getNoteBookData(uid, page);
-                                }
-                            });
-                        }
-                    }
-                });
+    public void getNoteBookData(Response<ResponseBean<PersonalNoteBookBean>> response){
+        if (isRefresh) {
+            noteBookAdapter.clear();
+        }
+        ResponseBean<PersonalNoteBookBean> data = response.body();
+        max_items = data.data.getCount();
+        if (data.data.getNote().size() > 0){
+            addItems(data.data.getNote());
+            mine_notebook_nodata.setVisibility(View.GONE);
+        }else {
+            mine_notebook_nodata.setVisibility(View.VISIBLE);
+        }
+    }
+    public void getNoteBookDataError(Response<ResponseBean<PersonalNoteBookBean>> response){
+        exception = response.getException();
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        error(error);
+    }
+    public void getNoteBookDataFinish(){
+        mine_notebook_recyclerview.refreshComplete(10);
+        lRecyclerViewAdapter.notifyDataSetChanged();
+        if (!(exception instanceof MyException)){
+            mine_notebook_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                @Override
+                public void reload() {
+                    personalCenterHttp.getNoteBookData(uid, String.valueOf(page));
+                }
+            });
+        }
     }
 
     private void addItems(List<PersonalNoteBookBean.getNoteBookItem> note) {

@@ -20,9 +20,12 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
+import com.zjwam.zkw.HttpUtils.PersonalCenterHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.PersonalCollectionAdapter;
 import com.zjwam.zkw.callback.JsonCallback;
+import com.zjwam.zkw.entity.EmptyBean;
 import com.zjwam.zkw.entity.PersonalCollectionBean;
 import com.zjwam.zkw.entity.ResponseBean;
 import com.zjwam.zkw.entity.SimpleResponse;
@@ -36,14 +39,17 @@ import java.util.List;
 
 public class MineCollectionActivity extends BaseActivity {
     private LRecyclerView mine_collection_recyclerview;
-    private ImageView mine_collection_back,collection_nodata;
+    private ImageView mine_collection_back, collection_nodata;
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private PersonalCollectionAdapter collectionAdapter;
-    private int page = 1,positions;
+    private int page = 1, positions;
     private int mCurrentCounter = 0;
     private int max_items;
     private boolean isChecked = true;
     private String uid;
+    private PersonalCenterHttp personalCenterHttp;
+    private Throwable exception;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +60,7 @@ public class MineCollectionActivity extends BaseActivity {
 
     private void initData() {
         uid = ZkwPreference.getInstance(getBaseContext()).getUid();
+        personalCenterHttp = new PersonalCenterHttp(this);
         collectionAdapter = new PersonalCollectionAdapter(getBaseContext());
         lRecyclerViewAdapter = new LRecyclerViewAdapter(collectionAdapter);
         mine_collection_recyclerview.setAdapter(lRecyclerViewAdapter);
@@ -66,7 +73,7 @@ public class MineCollectionActivity extends BaseActivity {
             public void onRefresh() {
                 page = 1;
                 mCurrentCounter = 0;
-                getCollectionData(uid,page);
+                personalCenterHttp.getCollection(uid, String.valueOf(page));
                 collectionAdapter.clear();
             }
         });
@@ -75,7 +82,7 @@ public class MineCollectionActivity extends BaseActivity {
             public void onLoadMore() {
                 if (mCurrentCounter < max_items) {
                     page++;
-                    getCollectionData(uid,page);
+                    personalCenterHttp.getCollection(uid, String.valueOf(page));
                 } else {
                     mine_collection_recyclerview.setNoMore(true);
                 }
@@ -90,10 +97,10 @@ public class MineCollectionActivity extends BaseActivity {
         });
         collectionAdapter.setOffCollection(new PersonalCollectionAdapter.offCollection() {
             @Override
-            public void onOffCollection(int classId,int position) {
-                if (isChecked){
+            public void onOffCollection(int classId, int position) {
+                if (isChecked) {
                     positions = position;
-                    offCollection(uid,classId);
+                    personalCenterHttp.offCollection(uid, String.valueOf(classId));
                     isChecked = false;
                 }
             }
@@ -103,7 +110,7 @@ public class MineCollectionActivity extends BaseActivity {
             public void onItemClick(View view, int position) {
                 Bundle bundle = new Bundle();
                 bundle.putString("id", String.valueOf(collectionAdapter.getDataList().get(position).getId()));
-                bundle.putString("title",collectionAdapter.getDataList().get(position).getName());
+                bundle.putString("title", collectionAdapter.getDataList().get(position).getName());
                 Intent intent = new Intent(getBaseContext(), Video2PlayActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -111,85 +118,53 @@ public class MineCollectionActivity extends BaseActivity {
         });
     }
 
-    private void offCollection(String uid, int classId) {
-        OkGo.<ResponseBean<SimpleResponse>>post(Config.URL + "api/user/run_hold")
-                .params("uid",uid)
-                .params("id",classId)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new JsonCallback<ResponseBean<SimpleResponse>>() {
-                    @Override
-                    public void onSuccess(Response<ResponseBean<SimpleResponse>> response) {
-                        ResponseBean<SimpleResponse> msg = response.body();
-                        Toast.makeText(getBaseContext(),msg.msg,Toast.LENGTH_SHORT).show();
-                        collectionAdapter.remove(positions);
-                        if (collectionAdapter.getDataList().size() > 0){
-                            collection_nodata.setVisibility(View.GONE);
-                        }else {
-                            collection_nodata.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Response<ResponseBean<SimpleResponse>> response) {
-                        super.onError(response);
-                        Throwable throwable = response.getException();
-                        if (throwable instanceof MyException){
-                            Toast.makeText(getBaseContext(),((MyException) throwable).getErrorBean().msg,Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        isChecked = true;
-                    }
-                });
+    public void offCollection(Response<ResponseBean<EmptyBean>> response){
+        ResponseBean<EmptyBean> msg = response.body();
+        Toast.makeText(getBaseContext(), msg.msg, Toast.LENGTH_SHORT).show();
+        collectionAdapter.remove(positions);
+        if (max_items > 0) {
+            collection_nodata.setVisibility(View.GONE);
+        } else {
+            collection_nodata.setVisibility(View.VISIBLE);
+        }
+    }
+    public void offCollectionError(Response<ResponseBean<EmptyBean>> response){
+        Throwable throwable = response.getException();
+        String error = HttpErrorMsg.getErrorMsg(throwable);
+        error(error);
+    }
+    public void offCollectionFinish(){
+        isChecked = true;
     }
 
-    private void getCollectionData(final String uid, final int page) {
-        OkGo.<ResponseBean<PersonalCollectionBean>>post(Config.URL + "api/user/hold")
-                .params("uid",uid)
-                .params("page",page)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new JsonCallback<ResponseBean<PersonalCollectionBean>>() {
-                    @Override
-                    public void onSuccess(Response<ResponseBean<PersonalCollectionBean>> response) {
-                        ResponseBean<PersonalCollectionBean> data = response.body();
-                        max_items = data.data.getCount();
-                        if (data.data.getClass_list().size() > 0){
-                            addItems(data.data.getClass_list());
-                            collection_nodata.setVisibility(View.GONE);
-                        }else {
-                            collection_nodata.setVisibility(View.VISIBLE);
-                        }
-                    }
+    public void getCollectio(Response<ResponseBean<PersonalCollectionBean>> response) {
+        ResponseBean<PersonalCollectionBean> data = response.body();
+        max_items = data.data.getCount();
+        if (max_items > 0) {
+            addItems(data.data.getClass_list());
+            collection_nodata.setVisibility(View.GONE);
+        } else {
+            collection_nodata.setVisibility(View.VISIBLE);
+        }
+    }
 
-                    @Override
-                    public void onError(Response<ResponseBean<PersonalCollectionBean>> response) {
-                        super.onError(response);
-                        Throwable exception = response.getException();
-                        if (exception instanceof MyException){
-                            Toast.makeText(getBaseContext(),((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
-                        }
-                    }
+    public void getCollectioError(Response<ResponseBean<PersonalCollectionBean>> response) {
+        exception = response.getException();
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        error(error);
+    }
 
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        mine_collection_recyclerview.refreshComplete(10);
-                        lRecyclerViewAdapter.notifyDataSetChanged();
-                        if (!NetworkUtils.isNetAvailable(getBaseContext())) {
-                            mine_collection_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
-                                @Override
-                                public void reload() {
-                                    getCollectionData(uid,page);
-                                }
-                            });
-                        }
-                    }
-                });
+    public void getCollectioFinish() {
+        mine_collection_recyclerview.refreshComplete(10);
+        lRecyclerViewAdapter.notifyDataSetChanged();
+        if (!(exception instanceof MyException)) {
+            mine_collection_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                @Override
+                public void reload() {
+                    personalCenterHttp.getCollection(uid, String.valueOf(page));
+                }
+            });
+        }
     }
 
     private void addItems(List<PersonalCollectionBean.CollectionItems> class_list) {

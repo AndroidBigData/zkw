@@ -76,7 +76,6 @@ public class AdvertisementActivity extends BaseActivity {
                         Glide.with(getBaseContext())
                                 .load(data.data.getAd().getImg())
                                 .into(simpleTarget);
-
                     }
 
                     @Override

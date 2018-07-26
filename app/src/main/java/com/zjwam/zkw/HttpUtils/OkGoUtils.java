@@ -28,10 +28,10 @@ public class OkGoUtils {
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(callback);
     }
-    public static <T>void postRequets(String url, Object tag, Map<String,String> map, JsonCallback<T> callback){
+    public static <T>void postRequets(String url, Object tag, Map<String,String> params, JsonCallback<T> callback){
         OkGo.<T>post(url)
                 .tag(tag)
-                .params(map)
+                .params(params)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(callback);
     }
@@ -44,10 +44,10 @@ public class OkGoUtils {
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(callback);
     }
-    public static <T>void postRequets(String url, Object tag, Map<String,String> map, Json2Callback<T> callback){
+    public static <T>void postRequets(String url, Object tag, Map<String,String> params, Json2Callback<T> callback){
         OkGo.<T>post(url)
                 .tag(tag)
-                .params(map)
+                .params(params)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(callback);
     }

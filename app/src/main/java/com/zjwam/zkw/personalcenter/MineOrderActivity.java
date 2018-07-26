@@ -18,6 +18,8 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
+import com.zjwam.zkw.HttpUtils.PersonalCenterHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.PersonalMineOrderAdapter;
 import com.zjwam.zkw.callback.JsonCallback;
@@ -41,6 +43,8 @@ public class MineOrderActivity extends BaseActivity {
     private int page = 1,mCurrentCounter = 0,max_items,type = 0;
     private String uid;
     private boolean isRefresh = true;
+    private Throwable exception;
+    private PersonalCenterHttp personalCenterHttp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,7 @@ public class MineOrderActivity extends BaseActivity {
 
     private void initData() {
         uid = ZkwPreference.getInstance(getBaseContext()).getUid();
+        personalCenterHttp = new PersonalCenterHttp(this);
         mine_order_tablayout.addTab(mine_order_tablayout.newTab().setText("未付款"));
         mine_order_tablayout.addTab(mine_order_tablayout.newTab().setText("已付款"));
         Reflex.setReflex(mine_order_tablayout,66);
@@ -92,7 +97,7 @@ public class MineOrderActivity extends BaseActivity {
                 isRefresh = true;
                 page = 1;
                 mCurrentCounter = 0;
-                getData(uid,type);
+                personalCenterHttp.getMineOrder(uid,String.valueOf(type),String.valueOf(page));
             }
         });
         mine_order_recyclerview.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -101,7 +106,7 @@ public class MineOrderActivity extends BaseActivity {
                 isRefresh = false;
                 if (mCurrentCounter < max_items) {
                     page++;
-                    getData(uid,type);
+                    personalCenterHttp.getMineOrder(uid,String.valueOf(type),String.valueOf(page));
                 } else {
                     mine_order_recyclerview.setNoMore(true);
                 }
@@ -111,54 +116,35 @@ public class MineOrderActivity extends BaseActivity {
         mine_order_recyclerview.refresh();
     }
 
-    private void getData(final String uid, final int type) {
-        OkGo.<ResponseBean<PersonalOrderBean>>post(Config.URL + "api/user/order")
-                .params("uid",uid)
-                .params("type",type)
-                .params("page",page)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new JsonCallback<ResponseBean<PersonalOrderBean>>() {
-                    @Override
-                    public void onSuccess(Response<ResponseBean<PersonalOrderBean>> response) {
-                        if (isRefresh){
-                            mineOrderAdapter.clear();
-                        }
-                        ResponseBean<PersonalOrderBean> data = response.body();
-                        max_items = data.data.getCount();
-                        if (data.data.getPay().size() > 0){
-                            addItems(data.data.getPay());
-                            mine_order_nodata.setVisibility(View.GONE);
-                        }else {
-                            mine_order_nodata.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Response<ResponseBean<PersonalOrderBean>> response) {
-                        super.onError(response);
-                        Throwable exception = response.getException();
-                        if (exception instanceof MyException){
-                            Toast.makeText(getBaseContext(),((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        mine_order_recyclerview.refreshComplete(10);
-                        lRecyclerViewAdapter.notifyDataSetChanged();
-                        if (!NetworkUtils.isNetAvailable(getBaseContext())) {
-                            mine_order_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
-                                @Override
-                                public void reload() {
-                                    getData(uid, type);
-                                }
-                            });
-                        }
-                    }
-                });
-
+    public void getMineOrder(Response<ResponseBean<PersonalOrderBean>> response){
+        if (isRefresh){
+            mineOrderAdapter.clear();
+        }
+        ResponseBean<PersonalOrderBean> data = response.body();
+        max_items = data.data.getCount();
+        if (max_items > 0){
+            addItems(data.data.getPay());
+            mine_order_nodata.setVisibility(View.GONE);
+        }else {
+            mine_order_nodata.setVisibility(View.VISIBLE);
+        }
+    }
+    public void getMineOrderError(Response<ResponseBean<PersonalOrderBean>> response){
+        exception = response.getException();
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        error(error);
+    }
+    public void getMineOrderFinish(){
+        mine_order_recyclerview.refreshComplete(10);
+        lRecyclerViewAdapter.notifyDataSetChanged();
+        if (!(exception instanceof MyException)) {
+            mine_order_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                @Override
+                public void reload() {
+                    personalCenterHttp.getMineOrder(uid,String.valueOf(type),String.valueOf(page));
+                }
+            });
+        }
     }
 
     private void addItems(List<PersonalOrderBean.getOrderItems> pay) {

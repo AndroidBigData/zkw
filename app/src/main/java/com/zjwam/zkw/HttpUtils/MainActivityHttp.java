@@ -50,7 +50,7 @@ public class MainActivityHttp {
                     public void onError(Response<HomePageBean> response) {
                         super.onError(response);
                         if (!NetworkUtils.isNetAvailable(context)) {
-                            ((MainActivity) context).error();
+                            ((MainActivity) context).error("网络不可用！");
                         }
                     }
                 });

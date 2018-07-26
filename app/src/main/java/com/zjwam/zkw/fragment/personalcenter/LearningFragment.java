@@ -1,6 +1,8 @@
 package com.zjwam.zkw.fragment.personalcenter;
 
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 
 
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
+import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -22,6 +25,8 @@ import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
+import com.zjwam.zkw.HttpUtils.PersonalCenterHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.MineClassAdapter;
 import com.zjwam.zkw.callback.Json2Callback;
@@ -44,8 +49,15 @@ public class LearningFragment extends Fragment {
     private int max_items;
     private ImageView learning_nodata;
     private String uid;
+    private Context context;
+    private PersonalCenterHttp personalCenterHttp;
     public LearningFragment() {
         // Required empty public constructor
+    }
+    public static LearningFragment newInstance(Context context) {
+        LearningFragment learningFragment = new LearningFragment();
+        learningFragment.context = context;
+        return learningFragment;
     }
 
 
@@ -67,6 +79,8 @@ public class LearningFragment extends Fragment {
         learning_recyclerview = getActivity().findViewById(R.id.learning_recyclerview);
         learning_nodata = getActivity().findViewById(R.id.learning_nodata);
 
+        personalCenterHttp = new PersonalCenterHttp(context);
+
         mineClassAdapter = new MineClassAdapter(getActivity());
         lRecyclerViewAdapter = new LRecyclerViewAdapter(mineClassAdapter);
         learning_recyclerview.setAdapter(lRecyclerViewAdapter);
@@ -79,7 +93,7 @@ public class LearningFragment extends Fragment {
             public void onRefresh() {
                 page = 1;
                 mCurrentCounter = 0;
-                getData(page);
+                personalCenterHttp.getLearning(uid,"1", String.valueOf(page));
                 mineClassAdapter.clear();
             }
         });
@@ -88,7 +102,7 @@ public class LearningFragment extends Fragment {
             public void onLoadMore() {
                 if (mCurrentCounter < max_items) {
                     page++;
-                    getData(page);
+                    personalCenterHttp.getLearning(uid,"1", String.valueOf(page));
                 }else {
                     learning_recyclerview.setNoMore(true);
                 }
@@ -109,37 +123,31 @@ public class LearningFragment extends Fragment {
         });
     }
 
-    private void getData(int page) {
-        OkGo.<MineClassBean>post(Config.URL+"api/user/all_class")
-                .params("uid",uid)
-                .params("type",1)
-                .params("page",page)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new Json2Callback<MineClassBean>() {
-                    @Override
-                    public void onSuccess(Response<MineClassBean> response) {
-                        MineClassBean mineClassBean = response.body();
-                        if (mineClassBean.getData().getClass_list().size()>0){
-                            addItems(mineClassBean.getData().getClass_list());
-                            learning_nodata.setVisibility(View.GONE);
-                        }else {
-                            learning_nodata.setVisibility(View.VISIBLE);
-                        }
-                        max_items = mineClassBean.getData().getCount();
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        learning_recyclerview.refreshComplete(10);
-                        lRecyclerViewAdapter.notifyDataSetChanged();
-                    }
-                });
-    }
-
     private void addItems(List<MineClassBean.itemBean> list) {
         mineClassAdapter.addAll(list);
         mCurrentCounter += list.size();
     }
+
+    public void getLearning(Response<MineClassBean> response) {
+        MineClassBean mineClassBean = response.body();
+        if (mineClassBean.getData().getClass_list().size()>0){
+            addItems(mineClassBean.getData().getClass_list());
+            learning_nodata.setVisibility(View.GONE);
+        }else {
+            learning_nodata.setVisibility(View.VISIBLE);
+        }
+        max_items = mineClassBean.getData().getCount();
+    }
+
+    public void getLearningError(Response<MineClassBean> response) {
+        Throwable exception = response.getException();
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        Toast.makeText(context,error,Toast.LENGTH_SHORT).show();
+    }
+
+    public void getLearningFinish() {
+        learning_recyclerview.refreshComplete(10);
+        lRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
 }
