@@ -14,9 +14,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
+import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.lzy.okgo.OkGo;
@@ -48,11 +50,11 @@ public class CatalogFragment extends Fragment {
     private List<ClassBean> data;
     private Context context;
     private String uid;
+    private ImageView catalog_nodata;
+    private boolean isRefresh = false;
 
     // 2.1 定义用来与外部activity交互，获取到宿主activity
     private FragmentInteraction listterner;
-
-
 
     // 1 定义了所有activity必须实现的接口方法
     public interface FragmentInteraction {
@@ -97,12 +99,19 @@ public class CatalogFragment extends Fragment {
     private void init() {
         uid = ZkwPreference.getInstance(getActivity()).getUid();
         video_class_list = getActivity().findViewById(R.id.video_class_list);
+        catalog_nodata = getActivity().findViewById(R.id.catalog_nodata);
         videoCatalogAdapter = new VideoCatalogAdapter(getActivity(),code);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(videoCatalogAdapter);
         video_class_list.setAdapter(lRecyclerViewAdapter);
         video_class_list.setLayoutManager(new LinearLayoutManager(getActivity()));
         video_class_list.setLoadMoreEnabled(false);
-        video_class_list.setPullRefreshEnabled(false);
+        video_class_list.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                isRefresh = true;
+                new VideoPlayerHttp(context).getVideoCatalog(id,uid);
+            }
+        });
         lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -138,21 +147,29 @@ public class CatalogFragment extends Fragment {
                             AlertDialog dialog = builder.create();
                             dialog.show();
                         }
-
                     }
                 } else {
                     Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-        new VideoPlayerHttp(context).getVideoCatalog(id,uid);
+        video_class_list.refresh();
     }
 
     public void getVideoCatalog(Response<VideoCatalogBean> response) {
         data = response.body().getVideo();
         code = String.valueOf(response.body().getCode());
         msg = response.body().getMsg();
-        videoCatalogAdapter.setDataList(data);
+        if (data.size()>0){
+            videoCatalogAdapter.clear();
+            videoCatalogAdapter.setDataList(data);
+            catalog_nodata.setVisibility(View.GONE);
+        }else {
+            catalog_nodata.setVisibility(View.VISIBLE);
+        }
+    }
+    public void getVideoCatalogFinish() {
+        video_class_list.refreshComplete(10);
+        lRecyclerViewAdapter.notifyDataSetChanged();
     }
 }

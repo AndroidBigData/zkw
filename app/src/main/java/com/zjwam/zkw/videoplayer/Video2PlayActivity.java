@@ -505,6 +505,9 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
     public void getVideoCatelog(Response<VideoCatalogBean> response){
         catalogFragment.getVideoCatalog(response);
     }
+    public void getVideoCatelogFinish(){
+        catalogFragment.getVideoCatalogFinish();
+    }
     /**
      * 评论页面
      * @param response

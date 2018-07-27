@@ -114,6 +114,14 @@ public class VideoPlayerHttp {
                     ((Video2PlayActivity) context).getVideoCatelog(response);
                 }
             }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (context instanceof Video2PlayActivity){
+                    ((Video2PlayActivity) context).getVideoCatelogFinish();
+                }
+            }
         });
     }
     public void getVideoComment(String id,String page){
