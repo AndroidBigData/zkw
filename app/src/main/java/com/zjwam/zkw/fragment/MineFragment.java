@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.HttpUtils.MainActivityHttp;
+import com.zjwam.zkw.MainActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.customview.CustomToast;
 import com.zjwam.zkw.entity.PersoanlMessage;
@@ -150,6 +152,7 @@ public class MineFragment extends Fragment {
         personal_list.addFooterView(footerView, null, false);
         personal_list.setAdapter(personalAdapter);
 
+        customToast = new CustomToast(context);
         personal_nickname.setOnClickListener(onClickListener);
         personal_mine_class.setOnClickListener(onClickListener);
         personal_mine_note_book.setOnClickListener(onClickListener);
@@ -304,11 +307,9 @@ public class MineFragment extends Fragment {
     public void qdMessage(Response<PersonalQDBean> response) {
         PersonalQDBean personalQDBean = response.body();
         if ("1".equals(personalQDBean.getCode())) {
-            customToast = new CustomToast(getActivity());
             customToast.setsToast(personalQDBean.getMsg() + ",获得" + personalQDBean.getData().getJifen() + "积分", R.drawable.personal_smile);
             personal_num.setText(String.valueOf(Integer.parseInt(personal_num.getText().toString()) + Integer.parseInt(personalQDBean.getData().getJifen())));
         } else {
-            customToast = new CustomToast(getActivity());
             customToast.setsToast(personalQDBean.getMsg(), R.drawable.personal_hard);
         }
     }
@@ -321,6 +322,7 @@ public class MineFragment extends Fragment {
         Throwable exception = response.getException();
         String error = HttpErrorMsg.getErrorMsg(exception);
         customToast.setsToast(error, R.drawable.personal_hard);
+
     }
 
     public void qdMessageFinish() {

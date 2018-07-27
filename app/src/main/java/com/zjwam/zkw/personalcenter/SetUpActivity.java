@@ -12,7 +12,9 @@ import android.widget.TextView;
 import com.zjwam.zkw.BaseActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.fragment.login.LoginFragment;
+import com.zjwam.zkw.personalcenter.addinformation.AddCompanyInformationActivity;
 import com.zjwam.zkw.personalcenter.addinformation.AddStudentInformationActivity;
+import com.zjwam.zkw.personalcenter.addinformation.AddTeacherInformationActivity;
 import com.zjwam.zkw.util.ZkwPreference;
 
 public class SetUpActivity extends BaseActivity {
@@ -39,7 +41,12 @@ private boolean isFalg;
             switch (view.getId()){
                 case R.id.mine_setup:
                     if (isFalg){
-                        startActivity(new Intent(getBaseContext(), AddStudentInformationActivity.class));
+                        if ("0".equals(ZkwPreference.getInstance(getBaseContext()).getRegisterType())){
+                            startActivity(new Intent(getBaseContext(), AddStudentInformationActivity.class));
+                        }else if ("1".equals(ZkwPreference.getInstance(getBaseContext()).getRegisterType())){
+                            startActivity(new Intent(getBaseContext(), AddTeacherInformationActivity.class));
+                        }else if ("2".equals(ZkwPreference.getInstance(getBaseContext()).getRegisterType()))
+                            startActivity(new Intent(getBaseContext(), AddCompanyInformationActivity.class));
                     }else {
                         showDialog();
                     }

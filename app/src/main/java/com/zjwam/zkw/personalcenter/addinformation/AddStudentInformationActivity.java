@@ -183,7 +183,6 @@ public class AddStudentInformationActivity extends BaseActivity {
                             .build();
                     pvOptions.setPicker(province_item, city_item, area_item);//三级选择器
                     pvOptions.show();
-
                     break;
             }
         }

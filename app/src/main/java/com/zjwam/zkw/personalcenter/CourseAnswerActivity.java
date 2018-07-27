@@ -10,8 +10,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
 import com.zjwam.zkw.R;
+import com.zjwam.zkw.entity.PersonalMineAnswerBean;
+import com.zjwam.zkw.entity.PersonalMineAskBean;
+import com.zjwam.zkw.entity.ResponseBean;
 import com.zjwam.zkw.fragment.personalcenter.MineAnswerFragment;
 import com.zjwam.zkw.fragment.personalcenter.MineAskFragment;
 import com.zjwam.zkw.util.Reflex;
@@ -26,6 +30,8 @@ public class CourseAnswerActivity extends BaseActivity {
     private TabLayout courseanswer_tablayout;
     private ViewPager courseanswer_viewpager;
     private ImageView courseanswer_back;
+    private MineAskFragment mineAskFragment;
+    private MineAnswerFragment mineAnswerFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +47,10 @@ public class CourseAnswerActivity extends BaseActivity {
         fragmentList = new ArrayList<>();
         titleList.add("我提问的");
         titleList.add("我回答的");
-        fragmentList.add(new MineAskFragment());
-        fragmentList.add(new MineAnswerFragment());
+        mineAskFragment = MineAskFragment.newInstance(this);
+        fragmentList.add(mineAskFragment);
+        mineAnswerFragment = MineAnswerFragment.newInstance(this);
+        fragmentList.add(mineAnswerFragment);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         courseanswer_viewpager.setAdapter(viewPagerAdapter);
         courseanswer_tablayout.setupWithViewPager(courseanswer_viewpager);
@@ -55,6 +63,27 @@ public class CourseAnswerActivity extends BaseActivity {
             }
         });
     }
+
+    public void mineAskQuestion(Response<ResponseBean<PersonalMineAskBean>> response){
+        mineAskFragment.mineAskQuestion(response);
+    }
+    public void mineAskQuestionError(Response<ResponseBean<PersonalMineAskBean>> response){
+        mineAskFragment.mineAskQuestionError(response);
+    }
+    public void mineAskQuestionFinish(){
+        mineAskFragment.mineAskQuestionFinish();
+    }
+
+    public void mineAnswerQuestion(Response<ResponseBean<PersonalMineAnswerBean>> response){
+        mineAnswerFragment.mineAnswerQuestion(response);
+    }
+    public void mineAnswerQuestionError(Response<ResponseBean<PersonalMineAnswerBean>> response){
+        mineAnswerFragment.mineAnswerQuestionError(response);
+    }
+    public void mineAnswerQuestionFinesh(){
+        mineAnswerFragment.mineAnswerQuestionFinesh();
+    }
+
     class ViewPagerAdapter extends FragmentPagerAdapter {
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);

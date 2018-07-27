@@ -17,6 +17,8 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
+import com.zjwam.zkw.HttpUtils.PersonalCenterHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.PersonalMineCommentAdapter;
 import com.zjwam.zkw.callback.JsonCallback;
@@ -38,6 +40,8 @@ public class MineCommentActivity extends BaseActivity {
     private int page = 1,mCurrentCounter = 0,max_items;
     private String uid;
     private boolean isRefresh = true;
+    private Throwable exception;
+    private PersonalCenterHttp personalCenterHttp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,7 @@ public class MineCommentActivity extends BaseActivity {
 
     private void initData() {
         uid = ZkwPreference.getInstance(getBaseContext()).getUid();
+        personalCenterHttp = new PersonalCenterHttp(this);
         mineCommentAdapter = new PersonalMineCommentAdapter(getBaseContext());
         lRecyclerViewAdapter = new LRecyclerViewAdapter(mineCommentAdapter);
         mine_comment_recyclerview.setAdapter(lRecyclerViewAdapter);
@@ -62,7 +67,7 @@ public class MineCommentActivity extends BaseActivity {
                 isRefresh = true;
                 page = 1;
                 mCurrentCounter = 0;
-                getData(uid,page);
+                personalCenterHttp.mineComment(uid, String.valueOf(page));
             }
         });
         mine_comment_recyclerview.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -71,7 +76,7 @@ public class MineCommentActivity extends BaseActivity {
                 isRefresh = false;
                 if (mCurrentCounter < max_items) {
                     page++;
-                    getData(uid,page);
+                    personalCenterHttp.mineComment(uid, String.valueOf(page));
                 } else {
                     mine_comment_recyclerview.setNoMore(true);
                 }
@@ -88,51 +93,34 @@ public class MineCommentActivity extends BaseActivity {
         });
     }
 
-    private void getData(final String uid, final int page) {
-        OkGo.<ResponseBean<PersonalMineCommentBean>>post(Config.URL+"api/user/comment")
-                .params("uid",uid)
-                .params("page",page)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new JsonCallback<ResponseBean<PersonalMineCommentBean>>() {
-                    @Override
-                    public void onSuccess(Response<ResponseBean<PersonalMineCommentBean>> response) {
-                        if (isRefresh){
-                            mineCommentAdapter.clear();
-                        }
-                        ResponseBean<PersonalMineCommentBean> datas = response.body();
-                        if (datas.data.getComment().size()>0){
-                            addItems(datas.data.getComment());
-                            mine_comment_nodata.setVisibility(View.GONE);
-                        }else mine_comment_nodata.setVisibility(View.VISIBLE);
+    public void mineComment(Response<ResponseBean<PersonalMineCommentBean>> response){
+        if (isRefresh){
+            mineCommentAdapter.clear();
+        }
+        ResponseBean<PersonalMineCommentBean> datas = response.body();
+        if (datas.data.getComment().size()>0){
+            addItems(datas.data.getComment());
+            mine_comment_nodata.setVisibility(View.GONE);
+        }else mine_comment_nodata.setVisibility(View.VISIBLE);
 
-                        max_items = datas.data.getCount();
-                    }
-
-                    @Override
-                    public void onError(Response<ResponseBean<PersonalMineCommentBean>> response) {
-                        super.onError(response);
-                        Throwable exception = response.getException();
-                        if (exception instanceof MyException){
-                            Toast.makeText(getBaseContext(),((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        mine_comment_recyclerview.refreshComplete(10);
-                        lRecyclerViewAdapter.notifyDataSetChanged();
-                        if (!NetworkUtils.isNetAvailable(getBaseContext())){
-                            mine_comment_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
-                                @Override
-                                public void reload() {
-                                    getData(uid,page);
-                                }
-                            });
-                        }
-                    }
-                });
+        max_items = datas.data.getCount();
+    }
+    public void mineCommentError(Response<ResponseBean<PersonalMineCommentBean>> response){
+        exception = response.getException();
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        error(error);
+    }
+    public void mineCommentFinish(){
+        mine_comment_recyclerview.refreshComplete(10);
+        lRecyclerViewAdapter.notifyDataSetChanged();
+        if (!(exception instanceof MyException)){
+            mine_comment_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                @Override
+                public void reload() {
+                    personalCenterHttp.mineComment(uid, String.valueOf(page));
+                }
+            });
+        }
     }
 
     private void addItems(List<PersonalMineCommentBean.getCommentItems> comment) {

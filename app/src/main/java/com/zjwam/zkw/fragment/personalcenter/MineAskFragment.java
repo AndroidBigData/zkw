@@ -1,6 +1,7 @@
 package com.zjwam.zkw.fragment.personalcenter;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,11 +24,14 @@ import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
+import com.zjwam.zkw.HttpUtils.PersonalCenterHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.PersonalCourseAskAdapter;
 import com.zjwam.zkw.callback.JsonCallback;
 import com.zjwam.zkw.entity.PersonalMineAskBean;
 import com.zjwam.zkw.entity.ResponseBean;
+import com.zjwam.zkw.personalcenter.CourseAnswerActivity;
 import com.zjwam.zkw.personalcenter.PersonalMineAskActivity;
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.MyException;
@@ -49,11 +53,19 @@ public class MineAskFragment extends Fragment {
     private boolean isRefresh = true;
     private ImageView mineask_nodata;
     private ResponseBean<PersonalMineAskBean> data;
+    private Context context;
+    private Throwable exception;
+    private PersonalCenterHttp personalCenterHttp;
 
     public MineAskFragment() {
         // Required empty public constructor
     }
 
+    public static MineAskFragment newInstance(Context context) {
+        MineAskFragment fragment = new MineAskFragment();
+        fragment.context = context;
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,6 +83,7 @@ public class MineAskFragment extends Fragment {
 
     private void initData() {
         uid = ZkwPreference.getInstance(getActivity()).getUid();
+        personalCenterHttp = new PersonalCenterHttp(context);
         courseAskAdapter = new PersonalCourseAskAdapter(getActivity());
         lRecyclerViewAdapter = new LRecyclerViewAdapter(courseAskAdapter);
         mineask_recyclerview.setAdapter(lRecyclerViewAdapter);
@@ -84,7 +97,7 @@ public class MineAskFragment extends Fragment {
                 isRefresh = true;
                 page = 1;
                 mCurrentCounter = 0;
-                getData(uid,page);
+                personalCenterHttp.mineAskQuestion(uid, String.valueOf(page));
             }
         });
         mineask_recyclerview.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -93,7 +106,7 @@ public class MineAskFragment extends Fragment {
                 isRefresh = false;
                 if (mCurrentCounter < max_items) {
                     page++;
-                    getData(uid,page);
+                    personalCenterHttp.mineAskQuestion(uid, String.valueOf(page));
                 } else {
                     mineask_recyclerview.setNoMore(true);
                 }
@@ -111,49 +124,6 @@ public class MineAskFragment extends Fragment {
         });
     }
 
-    private void getData(final String uid, final int page) {
-        OkGo.<ResponseBean<PersonalMineAskBean>>post(Config.URL + "api/user/question")
-                .params("uid",uid)
-                .params("page",page)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new JsonCallback<ResponseBean<PersonalMineAskBean>>() {
-                    @Override
-                    public void onSuccess(Response<ResponseBean<PersonalMineAskBean>> response) {
-                        if (isRefresh) courseAskAdapter.clear();
-                        data = response.body();
-                        max_items = data.data.getCount();
-                        if (data.data.getQuestion().size()>0){
-                            addItems(data.data.getQuestion());
-                            mineask_nodata.setVisibility(View.GONE);
-                        }else mineask_nodata.setVisibility(View.VISIBLE);
-
-                    }
-
-                    @Override
-                    public void onError(Response<ResponseBean<PersonalMineAskBean>> response) {
-                        super.onError(response);
-                        Throwable exception = response.getException();
-                        if (exception instanceof MyException) Toast.makeText(getActivity(),((MyException) exception).getErrorBean().msg,Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        mineask_recyclerview.refreshComplete(10);
-                        lRecyclerViewAdapter.notifyDataSetChanged();
-                        if (!NetworkUtils.isNetAvailable(getActivity())) {
-                            mineask_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
-                                @Override
-                                public void reload() {
-                                    getData(uid, page);
-                                }
-                            });
-                        }
-                    }
-                });
-    }
-
     private void addItems(List<PersonalMineAskBean.getAskItems> question) {
         courseAskAdapter.addAll(question);
         mCurrentCounter += question.size();
@@ -162,5 +132,36 @@ public class MineAskFragment extends Fragment {
     private void initView() {
         mineask_recyclerview = getActivity().findViewById(R.id.mineask_recyclerview);
         mineask_nodata = getActivity().findViewById(R.id.mineask_nodata);
+    }
+
+    public void mineAskQuestion(Response<ResponseBean<PersonalMineAskBean>> response) {
+        if (isRefresh) courseAskAdapter.clear();
+        data = response.body();
+        max_items = data.data.getCount();
+        if (data.data.getQuestion().size()>0){
+            addItems(data.data.getQuestion());
+            mineask_nodata.setVisibility(View.GONE);
+        }else mineask_nodata.setVisibility(View.VISIBLE);
+    }
+
+    public void mineAskQuestionError(Response<ResponseBean<PersonalMineAskBean>> response) {
+        exception = response.getException();
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        if (context instanceof CourseAnswerActivity && !((CourseAnswerActivity) context).isFinishing()){
+            ((CourseAnswerActivity) context).error(error);
+        }
+    }
+
+    public void mineAskQuestionFinish() {
+        mineask_recyclerview.refreshComplete(10);
+        lRecyclerViewAdapter.notifyDataSetChanged();
+        if (!(exception instanceof MyException)) {
+            mineask_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
+                @Override
+                public void reload() {
+                    personalCenterHttp.mineAskQuestion(uid, String.valueOf(page));
+                }
+            });
+        }
     }
 }

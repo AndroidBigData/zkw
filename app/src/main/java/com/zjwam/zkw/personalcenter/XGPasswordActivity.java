@@ -14,8 +14,12 @@ import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
+import com.zjwam.zkw.HttpUtils.PersonalCenterHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.entity.DialogInfo;
+import com.zjwam.zkw.entity.EmptyBean;
+import com.zjwam.zkw.entity.ResponseBean;
 import com.zjwam.zkw.jsondata.Dialog2Json;
 
 import com.zjwam.zkw.util.Config;
@@ -24,10 +28,12 @@ import com.zjwam.zkw.util.ZkwPreference;
 
 public class XGPasswordActivity extends BaseActivity {
 
-    private EditText ggmm_ymm,ggmm_xmm,ggmm_xmm2;
+    private EditText ggmm_ymm, ggmm_xmm, ggmm_xmm2;
     private RelativeLayout back;
     private Button makesure_button;
-    private String ymm,xmm,xmm2;
+    private String ymm, xmm, xmm2;
+    private PersonalCenterHttp personalCenterHttp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,26 +43,25 @@ public class XGPasswordActivity extends BaseActivity {
     }
 
     private void initData() {
+        personalCenterHttp = new PersonalCenterHttp(this);
         makesure_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ymm = ggmm_ymm.getText().toString().trim();
                 xmm = ggmm_xmm.getText().toString().trim();
                 xmm2 = ggmm_xmm2.getText().toString().trim();
-                if (ymm.length()>0 && xmm.length() >= 6 && xmm2.length() >= 6){
-                    Log.i("---pass2",ZkwPreference.getInstance(getBaseContext()).getPassword());
-                    if (ymm.equals(ZkwPreference.getInstance(getBaseContext()).getPassword())){
-                        if (!xmm.equals(xmm2)){
-                            Toast.makeText(getBaseContext(),"新密码不一致",Toast.LENGTH_SHORT).show();
-                        }else {
-                            upData();
+                if (ymm.length() > 0 && xmm.length() >= 6 && xmm2.length() >= 6) {
+                    if (ymm.equals(ZkwPreference.getInstance(getBaseContext()).getPassword())) {
+                        if (!xmm.equals(xmm2)) {
+                            Toast.makeText(getBaseContext(), "新密码不一致", Toast.LENGTH_SHORT).show();
+                        } else {
+                            personalCenterHttp.XGPassword(ZkwPreference.getInstance(getBaseContext()).getUid(), xmm);
                         }
-                    }else {
-                        Toast.makeText(getBaseContext(),"旧密码错误！",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getBaseContext(), "旧密码错误！", Toast.LENGTH_SHORT).show();
                     }
-
-                }else {
-                    Toast.makeText(getBaseContext(),"密码必须大于六位！",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getBaseContext(), "密码必须大于六位！", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -69,64 +74,18 @@ public class XGPasswordActivity extends BaseActivity {
         });
     }
 
-    private void upData() {
+    public void xgPassword(Response<ResponseBean<EmptyBean>> response) {
+        ggmm_ymm.setText("");
+        ggmm_xmm.setText("");
+        ggmm_xmm2.setText("");
+        String msg = response.body().msg;
+        error(msg);
+    }
 
-        OkGo.<String>post(Config.URL+"api/Login/change_pwd")
-                .cacheMode(CacheMode.NO_CACHE)
-                .params("uid", ZkwPreference.getInstance(getBaseContext()).getUid())
-                .params("newpass",xmm)
-                .tag(this)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        DialogInfo dialogInfo = Dialog2Json.getDialogInfo(response.body());
-                        if ("1".equals(dialogInfo.getCode())){
-                            Toast.makeText(getBaseContext(),dialogInfo.getMsg(),Toast.LENGTH_SHORT).show();
-                            ggmm_ymm.setText("");
-                            ggmm_xmm.setText("");
-                            ggmm_xmm2.setText("");
-                        }else {
-                            Toast.makeText(getBaseContext(),dialogInfo.getMsg(),Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Response<String> response) {
-                        super.onError(response);
-                    }
-                });
-//        RequestParams params = new RequestParams(Config.URL+"api/Login/change_pwd");
-//        params.addBodyParameter("uid", ZkwPreference.getInstance(getBaseContext()).getUid());
-//        params.addBodyParameter("newpass",xmm);
-//        x.http().post(params, new Callback.CommonCallback<String>() {
-//            @Override
-//            public void onSuccess(String result) {
-//                DialogInfo dialogInfo = Dialog2Json.getDialogInfo(result);
-//                if ("1".equals(dialogInfo.getCode())){
-//                    Toast.makeText(getBaseContext(),dialogInfo.getMsg(),Toast.LENGTH_SHORT).show();
-//                    ggmm_ymm.setText("");
-//                    ggmm_xmm.setText("");
-//                    ggmm_xmm2.setText("");
-//                }else {
-//                    Toast.makeText(getBaseContext(),dialogInfo.getMsg(),Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onError(Throwable ex, boolean isOnCallback) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(CancelledException cex) {
-//
-//            }
-//
-//            @Override
-//            public void onFinished() {
-//
-//            }
-//        });
+    public void xgPasswordError(Response<ResponseBean<EmptyBean>> response) {
+        Throwable exception = response.getException();
+        String error = HttpErrorMsg.getErrorMsg(exception);
+        error(error);
     }
 
     private void initView() {
