@@ -21,18 +21,13 @@ import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
-import com.zjwam.zkw.HttpUtils.VideoPlayerHttp;
+import com.zjwam.zkw.httputils.VideoPlayerHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.VideoCommentAdapter;
-import com.zjwam.zkw.callback.Json2Callback;
 import com.zjwam.zkw.entity.CommentBean;
-import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.NetworkUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

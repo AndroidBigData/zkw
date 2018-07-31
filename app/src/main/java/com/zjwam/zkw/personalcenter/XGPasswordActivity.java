@@ -1,28 +1,20 @@
 package com.zjwam.zkw.personalcenter;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cache.CacheMode;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
-import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
-import com.zjwam.zkw.HttpUtils.PersonalCenterHttp;
+import com.zjwam.zkw.httputils.HttpErrorMsg;
+import com.zjwam.zkw.httputils.PersonalCenterHttp;
 import com.zjwam.zkw.R;
-import com.zjwam.zkw.entity.DialogInfo;
 import com.zjwam.zkw.entity.EmptyBean;
 import com.zjwam.zkw.entity.ResponseBean;
-import com.zjwam.zkw.jsondata.Dialog2Json;
 
-import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.ZkwPreference;
 
 

@@ -1,6 +1,4 @@
-package com.zjwam.zkw.HttpUtils;
-
-import android.util.Log;
+package com.zjwam.zkw.httputils;
 
 import com.lzy.okgo.exception.HttpException;
 import com.lzy.okgo.exception.StorageException;

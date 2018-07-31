@@ -1,4 +1,4 @@
-package com.zjwam.zkw.HttpUtils;
+package com.zjwam.zkw.httputils;
 
 import android.content.Context;
 
@@ -7,7 +7,6 @@ import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.MainActivity;
 import com.zjwam.zkw.callback.Json2Callback;
-import com.zjwam.zkw.callback.JsonCallback;
 import com.zjwam.zkw.entity.ClassSearchBean;
 import com.zjwam.zkw.entity.CurriculumLnitializationBean;
 import com.zjwam.zkw.entity.HomePageBean;

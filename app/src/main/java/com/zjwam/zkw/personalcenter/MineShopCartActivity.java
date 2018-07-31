@@ -1,11 +1,7 @@
 package com.zjwam.zkw.personalcenter;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -14,31 +10,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alipay.sdk.app.PayTask;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cache.CacheMode;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
-import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
-import com.zjwam.zkw.HttpUtils.PersonalCenterHttp;
+import com.zjwam.zkw.httputils.HttpErrorMsg;
+import com.zjwam.zkw.httputils.PersonalCenterHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.PersonalMineShopCardAdapter;
-import com.zjwam.zkw.callback.JsonCallback;
 import com.zjwam.zkw.entity.EmptyBean;
 import com.zjwam.zkw.entity.MineShopCartBean;
-import com.zjwam.zkw.entity.PayMsgBean;
 import com.zjwam.zkw.entity.ResponseBean;
-import com.zjwam.zkw.entity.SimpleResponse;
 import com.zjwam.zkw.pay.PayPreviewActivity;
-import com.zjwam.zkw.pay.PayResult;
-import com.zjwam.zkw.util.Config;
-import com.zjwam.zkw.util.MyException;
 import com.zjwam.zkw.util.ZkwPreference;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class MineShopCartActivity extends BaseActivity {
 

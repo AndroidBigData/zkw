@@ -1,25 +1,19 @@
 package com.zjwam.zkw.videoplayer.more;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
-import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
-import com.zjwam.zkw.HttpUtils.WriteNoteActivityHttp;
+import com.zjwam.zkw.httputils.HttpErrorMsg;
+import com.zjwam.zkw.httputils.WriteNoteActivityHttp;
 import com.zjwam.zkw.R;
-import com.zjwam.zkw.callback.JsonCallback;
 import com.zjwam.zkw.entity.EmptyBean;
 import com.zjwam.zkw.entity.ResponseBean;
-import com.zjwam.zkw.util.Config;
-import com.zjwam.zkw.util.MyException;
 import com.zjwam.zkw.util.ZkwPreference;
 
 public class WriteNoteActivity extends BaseActivity {
@@ -72,6 +66,7 @@ public class WriteNoteActivity extends BaseActivity {
     public void getWriteNoteMsg(Response<ResponseBean<EmptyBean>> response) {
         write_note.setText("");
         Toast.makeText(getBaseContext(), response.body().msg, Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     public void getWriteNoteMsgError(Response<ResponseBean<EmptyBean>> response) {

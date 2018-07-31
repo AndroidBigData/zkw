@@ -1,4 +1,4 @@
-package com.zjwam.zkw.HttpUtils;
+package com.zjwam.zkw.httputils;
 
 import android.content.Context;
 

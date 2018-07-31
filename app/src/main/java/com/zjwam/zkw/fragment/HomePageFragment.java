@@ -24,17 +24,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.request.RequestOptions;
-import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.zhouwei.mzbanner.MZBannerView;
 import com.zhouwei.mzbanner.holder.MZHolderCreator;
 import com.zhouwei.mzbanner.holder.MZViewHolder;
-import com.zjwam.zkw.HttpUtils.MainActivityHttp;
+import com.zjwam.zkw.httputils.MainActivityHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.HomePageClassMoreAdapter;
 import com.zjwam.zkw.adapter.HomePageKCTJAdapter;
 import com.zjwam.zkw.adapter.ViewPagerAdapter;
-import com.zjwam.zkw.callback.Json2Callback;
 import com.zjwam.zkw.entity.ClassInfo;
 import com.zjwam.zkw.entity.HomePageBean;
 import com.zjwam.zkw.entity.HomePageKCTJInfo;

@@ -1,13 +1,10 @@
 package com.zjwam.zkw.webview;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -20,30 +17,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zjwam.zkw.BaseActivity;
-import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
-import com.zjwam.zkw.HttpUtils.WebViewHttp;
+import com.zjwam.zkw.httputils.HttpErrorMsg;
+import com.zjwam.zkw.httputils.WebViewHttp;
 import com.zjwam.zkw.MainActivity;
 import com.zjwam.zkw.R;
-import com.zjwam.zkw.callback.JsonCallback;
 import com.zjwam.zkw.customview.LearnCardSuccessDialog;
 import com.zjwam.zkw.entity.PayMsgBean;
 import com.zjwam.zkw.entity.ResponseBean;
 import com.zjwam.zkw.entity.WxPayBean;
 import com.zjwam.zkw.fragment.login.LoginFragment;
-import com.zjwam.zkw.pay.PayPreviewActivity;
 import com.zjwam.zkw.pay.PayResult;
 import com.zjwam.zkw.personalcenter.MineLearnCardActivity;
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.ZkwPreference;
-import com.zjwam.zkw.videoplayer.Video2PlayActivity;
-import com.zjwam.zkw.wxapi.WXPayEntryActivity;
 
 import java.util.Map;
 

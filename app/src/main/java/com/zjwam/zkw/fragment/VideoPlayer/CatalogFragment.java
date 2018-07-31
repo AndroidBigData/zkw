@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,21 +20,15 @@ import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cache.CacheMode;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.zjwam.zkw.HttpUtils.VideoPlayerHttp;
+import com.zjwam.zkw.httputils.VideoPlayerHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.VideoCatalogAdapter;
 import com.zjwam.zkw.entity.VideoCatalogBean;
 
-import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.ZkwPreference;
-import com.zjwam.zkw.jsondata.VideoJson2Data;
 import com.zjwam.zkw.entity.ClassBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

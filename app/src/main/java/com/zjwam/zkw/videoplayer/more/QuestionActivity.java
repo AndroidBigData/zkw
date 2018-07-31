@@ -1,6 +1,5 @@
 package com.zjwam.zkw.videoplayer.more;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -10,15 +9,12 @@ import android.widget.Toast;
 
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
-import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
-import com.zjwam.zkw.HttpUtils.VideoPlayerHttp;
-import com.zjwam.zkw.HttpUtils.VideoQuestionHttp;
+import com.zjwam.zkw.httputils.HttpErrorMsg;
+import com.zjwam.zkw.httputils.VideoQuestionHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.entity.EmptyBean;
 import com.zjwam.zkw.entity.ResponseBean;
-import com.zjwam.zkw.util.MyException;
 import com.zjwam.zkw.util.ZkwPreference;
-import com.zjwam.zkw.videoplayer.Video2PlayActivity;
 
 public class QuestionActivity extends BaseActivity {
 
@@ -69,6 +65,7 @@ public class QuestionActivity extends BaseActivity {
         Toast.makeText(getBaseContext(),response.body().msg,Toast.LENGTH_SHORT).show();
         question_content.setText("");
         ZkwPreference.getInstance(getBaseContext()).setIsRefresh(true);
+        finish();
     }
     public void getQuestionError(Response<ResponseBean<EmptyBean>> response){
         Throwable exception = response.getException();

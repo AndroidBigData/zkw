@@ -1,4 +1,4 @@
-package com.zjwam.zkw.HttpUtils;
+package com.zjwam.zkw.httputils;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;

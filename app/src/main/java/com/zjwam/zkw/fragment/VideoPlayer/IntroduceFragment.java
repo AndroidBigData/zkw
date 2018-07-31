@@ -13,14 +13,10 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
-import com.zjwam.zkw.HttpUtils.VideoPlayerHttp;
+import com.zjwam.zkw.httputils.VideoPlayerHttp;
 import com.zjwam.zkw.R;
-import com.zjwam.zkw.callback.Json2Callback;
 import com.zjwam.zkw.entity.IntroduceBean;
-import com.zjwam.zkw.util.Config;
 
 /**
  * A simple {@link Fragment} subclass.

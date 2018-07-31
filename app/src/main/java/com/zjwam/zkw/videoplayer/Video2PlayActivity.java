@@ -25,8 +25,8 @@ import com.shuyu.gsyvideoplayer.listener.LockClickListener;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.zjwam.zkw.BaseActivity;
-import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
-import com.zjwam.zkw.HttpUtils.VideoPlayerHttp;
+import com.zjwam.zkw.httputils.HttpErrorMsg;
+import com.zjwam.zkw.httputils.VideoPlayerHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.entity.CommentBean;
 import com.zjwam.zkw.entity.EmptyBean;
@@ -42,7 +42,6 @@ import com.zjwam.zkw.fragment.VideoPlayer.IntroduceFragment;
 import com.zjwam.zkw.pay.PayPreviewActivity;
 import com.zjwam.zkw.personalcenter.MineShopCartActivity;
 import com.zjwam.zkw.util.AniManager;
-import com.zjwam.zkw.util.MyException;
 import com.zjwam.zkw.util.Reflex;
 import com.zjwam.zkw.util.ZkwPreference;
 
@@ -345,6 +344,7 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
             setView();
         }else {
             setView();
+            video_buyover.setVisibility(View.VISIBLE);
         }
         video_price.setText("￥"+String.valueOf(video.getPrice()));
         video_old_price.setText("原价 ￥"+String.valueOf(video.getOld_price()));

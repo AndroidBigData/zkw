@@ -1,9 +1,7 @@
-package com.zjwam.zkw.HttpUtils;
+package com.zjwam.zkw.httputils;
 
 import android.content.Context;
 
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.callback.JsonCallback;
 import com.zjwam.zkw.entity.EmptyBean;

@@ -26,7 +26,6 @@ public class SplashActivity extends BaseActivity {
         init();
     }
 
-
     private void init() {
         timer = new Timer();
         task = new TimerTask() {

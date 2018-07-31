@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lzy.okgo.model.Response;
-import com.zjwam.zkw.HttpUtils.MainActivityHttp;
-import com.zjwam.zkw.MainActivity;
+import com.zjwam.zkw.httputils.MainActivityHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.customview.CustomToast;
 import com.zjwam.zkw.entity.PersoanlMessage;
@@ -45,7 +43,7 @@ import com.zjwam.zkw.personalcenter.MineOrderActivity;
 import com.zjwam.zkw.personalcenter.MineShopCartActivity;
 import com.zjwam.zkw.personalcenter.SetUpActivity;
 import com.zjwam.zkw.util.GlideImageUtil;
-import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
+import com.zjwam.zkw.httputils.HttpErrorMsg;
 import com.zjwam.zkw.util.ZkwPreference;
 
 

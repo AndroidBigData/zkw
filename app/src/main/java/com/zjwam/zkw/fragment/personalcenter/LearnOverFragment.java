@@ -14,21 +14,16 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
-import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
-import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
-import com.zjwam.zkw.HttpUtils.PersonalCenterHttp;
+import com.zjwam.zkw.httputils.HttpErrorMsg;
+import com.zjwam.zkw.httputils.PersonalCenterHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.MineClassAdapter;
-import com.zjwam.zkw.callback.Json2Callback;
 import com.zjwam.zkw.entity.MineClassBean;
-import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.ZkwPreference;
 
 import java.util.List;

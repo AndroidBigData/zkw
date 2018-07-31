@@ -71,13 +71,14 @@
     <EditText
         android:id="@+id/comment_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@null"
         android:layout_below="@+id/linearLayout"
         android:textSize="14sp"
         android:textColor="@color/personal_header"
         android:hint="请输入评价内容"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"/>
+        android:layout_marginEnd="10dp"
+        android:gravity="top"/>
 
 </RelativeLayout>

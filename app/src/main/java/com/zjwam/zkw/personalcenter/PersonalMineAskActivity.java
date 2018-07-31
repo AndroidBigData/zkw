@@ -1,12 +1,10 @@
 package com.zjwam.zkw.personalcenter;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
@@ -14,25 +12,17 @@ import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.BaseActivity;
-import com.zjwam.zkw.HttpUtils.HttpErrorMsg;
-import com.zjwam.zkw.HttpUtils.PersonalCenterHttp;
+import com.zjwam.zkw.httputils.HttpErrorMsg;
+import com.zjwam.zkw.httputils.PersonalCenterHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.PersonalMineAskItemAdapter;
-import com.zjwam.zkw.callback.JsonCallback;
-import com.zjwam.zkw.customview.ReplayDialog;
-import com.zjwam.zkw.entity.EmptyBean;
 import com.zjwam.zkw.entity.PersonalMineAskItemBean;
 import com.zjwam.zkw.entity.ResponseBean;
-import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.GlideImageUtil;
 import com.zjwam.zkw.util.MyException;
-import com.zjwam.zkw.util.NetworkUtils;
 import com.zjwam.zkw.util.ZkwPreference;
-import com.zjwam.zkw.videoplayer.VideoAnswerActivity;
 
 import java.util.List;
 
