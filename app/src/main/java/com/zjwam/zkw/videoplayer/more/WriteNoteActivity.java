@@ -20,8 +20,7 @@ public class WriteNoteActivity extends BaseActivity {
     private ImageView write_note_back;
     private TextView write_note_save;
     private EditText write_note;
-    private int vtime;
-    private String id, uid, vid, note;
+    private String id, uid, vid, note,vtime;
     private WriteNoteActivityHttp writeNoteActivityHttp;
 
     @Override
@@ -52,7 +51,7 @@ public class WriteNoteActivity extends BaseActivity {
                 note = write_note.getText().toString();
                 if (uid.trim().length() > 0) {
                     if (note.length() > 0) {
-                        writeNoteActivityHttp.getWriteNoteMsg(uid, id, vid, String.valueOf(vtime), note);
+                        writeNoteActivityHttp.getWriteNoteMsg(uid, id, vid, vtime, note);
                     } else {
                         Toast.makeText(getBaseContext(), "输入内容为空！", Toast.LENGTH_SHORT).show();
                     }
@@ -77,14 +76,14 @@ public class WriteNoteActivity extends BaseActivity {
 
     public void getWriteNoteMsgFinish() {
         ZkwPreference.getInstance(this).setViteoTime(String.valueOf(0));
-        ZkwPreference.getInstance(this).setVideoId("");
+//        ZkwPreference.getInstance(this).setVideoId("");
     }
 
-    private int getTime(String time) {
-        if ("0".equals(time)) {
-            return 0;
+    private String getTime(String time) {
+        if (time.length()<4) {
+            return "0";
         } else {
-            return Integer.parseInt(time.substring(0, time.length() - 3));
+            return time.substring(0, time.length() - 3);
         }
     }
 

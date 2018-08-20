@@ -89,7 +89,7 @@ public class CommmentActivity extends BaseActivity {
         Toast.makeText(getBaseContext(), error, Toast.LENGTH_SHORT).show();
     }
     public void upDataMsgFinish() {
-        ZkwPreference.getInstance(this).setVideoId("");
+//        ZkwPreference.getInstance(this).setVideoId("");
     }
 
     private void initView() {

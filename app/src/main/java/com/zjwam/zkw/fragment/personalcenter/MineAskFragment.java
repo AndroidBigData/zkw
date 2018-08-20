@@ -112,7 +112,7 @@ public class MineAskFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 Bundle bundle = new Bundle();
-                bundle.putString("id", String.valueOf(data.data.getQuestion().get(position).getId()));
+                bundle.putString("id", String.valueOf(courseAskAdapter.getDataList().get(position).getId()));
                 startActivity(new Intent(getActivity(),PersonalMineAskActivity.class).putExtras(bundle));
             }
         });

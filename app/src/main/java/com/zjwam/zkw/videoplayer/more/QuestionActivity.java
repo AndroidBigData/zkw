@@ -21,7 +21,7 @@ public class QuestionActivity extends BaseActivity {
     private ImageView question_back;
     private TextView question_save;
     private EditText question_content;
-    private String vid,uid,vtime,id,content;
+    private String vid,uid,vtime,id,content,time;
     private VideoQuestionHttp videoQuestionHttp;
 
     @Override
@@ -36,6 +36,7 @@ public class QuestionActivity extends BaseActivity {
         vid = ZkwPreference.getInstance(getBaseContext()).getVideoId();
         uid = ZkwPreference.getInstance(getBaseContext()).getUid();
         vtime = ZkwPreference.getInstance(getBaseContext()).getViteoTime();
+        time = getTime(vtime);
         id = getIntent().getStringExtra("id");
         videoQuestionHttp = new VideoQuestionHttp(this);
         question_back.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +51,7 @@ public class QuestionActivity extends BaseActivity {
                 content = question_content.getText().toString().trim();
                 if (ZkwPreference.getInstance(getBaseContext()).IsFlag()){
                     if (content.length()>0){
-                        videoQuestionHttp.getQuextion(uid,id,vid,vtime,content);
+                        videoQuestionHttp.getQuextion(uid,id,vid,time,content);
                     }else {
                         Toast.makeText(getBaseContext(),"输入内容为空！",Toast.LENGTH_SHORT).show();
                     }
@@ -74,7 +75,7 @@ public class QuestionActivity extends BaseActivity {
 
     }
     public void getQuestionFinish(){
-        ZkwPreference.getInstance(getBaseContext()).setVideoId("");
+//        ZkwPreference.getInstance(getBaseContext()).setVideoId("");
         ZkwPreference.getInstance(getBaseContext()).setViteoTime("0");
     }
 
@@ -82,5 +83,12 @@ public class QuestionActivity extends BaseActivity {
         question_back = findViewById(R.id.question_back);
         question_save = findViewById(R.id.question_save);
         question_content = findViewById(R.id.question_content);
+    }
+    private String getTime(String time) {
+        if (time.length()<4) {
+            return "0";
+        } else {
+            return time.substring(0, time.length() - 3);
+        }
     }
 }

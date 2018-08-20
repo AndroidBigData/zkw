@@ -88,7 +88,6 @@ public class MineNoteBookActivity extends BaseActivity {
                     personalCenterHttp.deleNoteBook(uid, String.valueOf(noteId));
                     isChecked = false;
                 }
-
             }
         });
         mine_notebook_back.setOnClickListener(new View.OnClickListener() {

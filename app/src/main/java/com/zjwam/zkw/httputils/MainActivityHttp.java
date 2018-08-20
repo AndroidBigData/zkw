@@ -26,7 +26,7 @@ public class MainActivityHttp {
      * 主页
      */
     public void getHomePageData(){
-        OkGo.<HomePageBean>get(Config.URL+"api/Index/index")
+        OkGo.<HomePageBean>get(Config.URL+"api/Index/index?type=android")
                 .tag(context)
                 .cacheKey("HomePageFragment")
                 .execute(new Json2Callback<HomePageBean>() {

@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,7 @@ public class AnswerFragment extends Fragment {
     private GridView video_more_gridview;
     private RelativeLayout more_msg;
     private boolean isOpen = false;
-    private String id = "";
+    private String id = "", vid = "";
     private Bundle bundle;
     private Context context;
     private LRecyclerView video_answer_recyclerview;
@@ -114,14 +115,14 @@ public class AnswerFragment extends Fragment {
         video_answer_recyclerview.setFooterViewColor(R.color.colorAccent, R.color.black, android.R.color.white);
         video_answer_recyclerview.setFooterViewHint("拼命加载中...", "-----我是有底线的-----", "网络不给力啊，点击再试一次吧");
         videoPlayerHttp = new VideoPlayerHttp(context);
-        videoPlayerHttp.getVideoAnswer(id, page);
+//        videoPlayerHttp.getVideoAnswer(id, page);
         video_answer_recyclerview.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
                 isRefresh = true;
                 mCurrentCounter = 0;
                 page = 1;
-                videoPlayerHttp.getVideoAnswer(id, page);
+                videoPlayerHttp.getVideoAnswer(vid, page);
             }
         });
         video_answer_recyclerview.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -131,15 +132,15 @@ public class AnswerFragment extends Fragment {
                 if (isNetVork) {
                     if (mCurrentCounter < max_items) {
                         page++;
-                        videoPlayerHttp.getVideoAnswer(id, page);
+                        videoPlayerHttp.getVideoAnswer(vid, page);
                     } else {
                         video_answer_recyclerview.setNoMore(true);
                     }
-                }else {
+                } else {
                     video_answer_recyclerview.setOnNetWorkErrorListener(new OnNetWorkErrorListener() {
                         @Override
                         public void reload() {
-                            videoPlayerHttp.getVideoAnswer(id, page);
+                            videoPlayerHttp.getVideoAnswer(vid, page);
                         }
                     });
                 }
@@ -149,7 +150,7 @@ public class AnswerFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 Bundle bundle = new Bundle();
-                bundle.putString("id", String.valueOf(items.get(position).getId()));
+                bundle.putString("id", String.valueOf(videoAskAnswerAdapter.getDataList().get(position).getId()));
                 startActivity(new Intent(getActivity(), VideoAnswerActivity.class).putExtras(bundle));
             }
         });
@@ -239,7 +240,7 @@ public class AnswerFragment extends Fragment {
 
     public void getVideoAnswer(Response<ResponseBean<VideoAskAnswerBean>> response) {
         ResponseBean<VideoAskAnswerBean> data = response.body();
-        if (isRefresh){
+        if (isRefresh) {
             videoAskAnswerAdapter.clear();
         }
         max_items = data.data.getCount();
@@ -273,9 +274,22 @@ public class AnswerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (ZkwPreference.getInstance(getActivity()).IsRefresh()){
+        if (ZkwPreference.getInstance(getActivity()).IsRefresh()) {
             video_answer_recyclerview.refresh();
             ZkwPreference.getInstance(getActivity()).setIsRefresh(false);
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            vid = ZkwPreference.getInstance(getActivity()).getVideoId();
+            video_answer_recyclerview.refresh();
+        }else {
+            if (videoAskAnswerAdapter != null){
+                videoAskAnswerAdapter.clear();
+            }
         }
     }
 }

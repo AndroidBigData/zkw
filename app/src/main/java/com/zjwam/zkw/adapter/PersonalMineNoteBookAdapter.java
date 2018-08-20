@@ -33,8 +33,8 @@ public class PersonalMineNoteBookAdapter extends ListBaseAdapter<PersonalNoteBoo
         viewHolder.mine_notebook_name.setText(items.getName());
         viewHolder.mine_notebook_vname.setText(items.getVname());
         viewHolder.mine_notebook_note.setText(items.getNote());
-        viewHolder.mine_notebook_vtime.setText(items.getVtime());
-        viewHolder.mine_notebook_addtime.setText(items.getAddtime());
+        viewHolder.mine_notebook_vtime.setText("课程时间:"+items.getVtime());
+        viewHolder.mine_notebook_addtime.setText("记录时间:"+items.getAddtime());
         viewHolder.mine_notebook_del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

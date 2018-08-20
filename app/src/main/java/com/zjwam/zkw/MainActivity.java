@@ -20,6 +20,7 @@ import com.zjwam.zkw.entity.HomePageBean;
 import com.zjwam.zkw.entity.PersoanlMessage;
 import com.zjwam.zkw.entity.PersonalQDBean;
 import com.zjwam.zkw.fragment.CurriculumFragment;
+import com.zjwam.zkw.fragment.ExamFragment;
 import com.zjwam.zkw.fragment.HomePageFragment;
 import com.zjwam.zkw.fragment.MineFragment;
 import com.zjwam.zkw.util.NetworkUtils;
@@ -29,9 +30,9 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
-    private LinearLayout index_home, index_curriculum, index_mine;
-    private ImageView img_home, img_curriculum, img_mine;
-    private TextView txt_home, txt_curriculum, txt_mine;
+    private LinearLayout index_home, index_curriculum, index_mine,index_exam;
+    private ImageView img_home, img_curriculum, img_mine,img_exam;
+    private TextView txt_home, txt_curriculum, txt_mine,txt_exam;
     private FragmentManager fragmentManager;
     private String EXITAPP = "再按一次退出程序";
     private long exitTime = 0;
@@ -39,6 +40,7 @@ public class MainActivity extends BaseActivity {
     private List<Fragment> fragments;
     private HomePageFragment homePageFragment;
     private CurriculumFragment curriculumFragment;
+    private ExamFragment examFragment;
     private MineFragment mineFragment;
     //当前显示的fragment
     private static final String CURRENT_FRAGMENT = "STATE_FRAGMENT_SHOW";
@@ -59,11 +61,13 @@ public class MainActivity extends BaseActivity {
             fragments.add(fragmentManager.findFragmentByTag(0 + ""));
             fragments.add(fragmentManager.findFragmentByTag(1 + ""));
             fragments.add(fragmentManager.findFragmentByTag(2 + ""));
+            fragments.add(fragmentManager.findFragmentByTag(3 + ""));
             //恢复fragment页面
             restoreFragment();
         } else {      //正常启动时调用
             fragments.add(homePageFragment);
             fragments.add(curriculumFragment);
+            fragments.add(examFragment);
             fragments.add(mineFragment);
             showFragment();
         }
@@ -128,10 +132,12 @@ public class MainActivity extends BaseActivity {
         index_home.setOnClickListener(onClickListener);
         index_curriculum.setOnClickListener(onClickListener);
         index_mine.setOnClickListener(onClickListener);
+        index_exam.setOnClickListener(onClickListener);
         currentFragment = new Fragment();
         fragments = new ArrayList<>();
         homePageFragment = new HomePageFragment(this);
         curriculumFragment = new CurriculumFragment(this);
+        examFragment = ExamFragment.newInstance(this);
         mineFragment = new MineFragment(this);
         homePageFragment.setOnJumpListener(new HomePageFragment.onJumpListener() {
             @Override
@@ -140,7 +146,6 @@ public class MainActivity extends BaseActivity {
                 bundle.putString("wid", wid);
                 bundle.putString("id", id);
                 bundle.putString("name", name);
-                Log.i("---bundle:", wid + name + id);
                 curriculumFragment.setArguments(bundle);
                 currentIndex = 1;
                 showFragment();
@@ -158,8 +163,11 @@ public class MainActivity extends BaseActivity {
                 case R.id.index_curriculum:
                     currentIndex = 1;
                     break;
-                case R.id.index_mine:
+                case R.id.index_exam:
                     currentIndex = 2;
+                    break;
+                case R.id.index_mine:
+                    currentIndex = 3;
                     break;
             }
             showFragment();
@@ -169,13 +177,17 @@ public class MainActivity extends BaseActivity {
     private void initView() {
         index_home = findViewById(R.id.index_home);
         index_curriculum = findViewById(R.id.index_curriculum);
+        index_exam = findViewById(R.id.index_exam);
         index_mine = findViewById(R.id.index_mine);
         img_home = findViewById(R.id.img_home);
         img_curriculum = findViewById(R.id.img_curriculum);
+        img_exam = findViewById(R.id.img_exam);
         img_mine = findViewById(R.id.img_mine);
         txt_home = findViewById(R.id.txt_home);
         txt_curriculum = findViewById(R.id.txt_curriculum);
+        txt_exam = findViewById(R.id.txt_exam);
         txt_mine = findViewById(R.id.txt_mine);
+
     }
 
     private void show(int position) {
@@ -187,10 +199,14 @@ public class MainActivity extends BaseActivity {
                 : R.drawable.curriculum);
         txt_curriculum.setTextColor(getResources().getColor(
                 position == 1 ? R.color.black : R.color.text_color_gray));
-        img_mine.setImageResource(position == 2 ? R.drawable.mine_select
+        img_exam.setImageResource(position == 2 ? R.drawable.exam_select
+                : R.drawable.exam);
+        txt_exam.setTextColor(getResources().getColor(
+                position == 2 ? R.color.black : R.color.text_color_gray));
+        img_mine.setImageResource(position == 3 ? R.drawable.mine_select
                 : R.drawable.mine);
         txt_mine.setTextColor(getResources().getColor(
-                position == 2 ? R.color.black : R.color.text_color_gray));
+                position == 3 ? R.color.black : R.color.text_color_gray));
     }
 
     /**

@@ -124,11 +124,8 @@ public class CurriculumFragment extends Fragment {
         lRecyclerViewAdapter = new LRecyclerViewAdapter(searchListAdapter);
         curriculum_recyclerview.setAdapter(lRecyclerViewAdapter);
         curriculum_recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         curriculum_recyclerview.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
-        //设置底部加载颜色
         curriculum_recyclerview.setFooterViewColor(R.color.colorAccent, R.color.black, android.R.color.white);
-        //设置底部加载文字提示
         curriculum_recyclerview.setFooterViewHint("拼命加载中", "-----我是有底线的-----", "网络不给力啊，点击再试一次吧");
         curriculum_recyclerview.setOnRefreshListener(new OnRefreshListener() {
             @Override

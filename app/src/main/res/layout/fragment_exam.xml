@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.ExamFragment"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/exam_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <LinearLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/search_fl"
+            android:background="@drawable/search_activity_linearlayout">
+
+            <ImageView
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/search"
+                android:layout_gravity="center_vertical"
+                android:scaleType="fitXY"/>
+
+            <EditText
+                android:id="@+id/search_title_exam"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="搜索试题"
+                android:textColor="@color/text_color_gray"
+                android:textSize="14sp"
+                android:layout_gravity="center_vertical"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:id="@+id/search_fl"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="分类  "
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:drawableEnd="@drawable/search_activity_down"/>
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/exam_img"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:src="@drawable/exam_title"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerInside"
+        android:background="@color/register_choice_background"
+        android:layout_below="@+id/exam_relativeLayout"/>
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:id="@+id/exam_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/register_choice_background"
+        android:layout_below="@+id/exam_img"/>
+    <ImageView
+        android:id="@+id/exam_nodata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/no_data"
+        android:visibility="gone"/>
+</RelativeLayout>

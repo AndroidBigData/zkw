@@ -53,7 +53,7 @@ import com.zjwam.zkw.util.ItemCallBack;
 import com.zjwam.zkw.util.PageChangeListener;
 import com.zjwam.zkw.util.RequestOptionsUtils;
 import com.zjwam.zkw.videoplayer.Video2PlayActivity;
-
+import com.zjwam.zkw.webview.WebViewActivity;
 
 
 import java.util.ArrayList;
@@ -488,6 +488,12 @@ private View.OnClickListener onClickListener = new View.OnClickListener() {
                     Intent intent = new Intent(getActivity(),Video2PlayActivity.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
+                }else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("url",lunboBean.get(position).getUrl());
+                    bundle.putString("title","沃易学学习卡");
+                    bundle.putString("type","type");
+                    startActivity(new Intent(getActivity(), WebViewActivity.class).putExtras(bundle));
                 }
 
             }

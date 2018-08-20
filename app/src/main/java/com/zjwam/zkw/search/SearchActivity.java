@@ -34,8 +34,6 @@ import com.zjwam.zkw.util.KeyboardUtils;
 import com.zjwam.zkw.util.MyException;
 import com.zjwam.zkw.videoplayer.Video2PlayActivity;
 
-;
-
 import java.util.ArrayList;
 import java.util.List;
 

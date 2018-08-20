@@ -3,7 +3,7 @@ package com.zjwam.zkw.entity;
 import java.io.Serializable;
 
 public class LunboBean implements Serializable{
-    private String img;
+    private String img,url;
     private int clid;
 
     public String getImg() {
@@ -20,5 +20,9 @@ public class LunboBean implements Serializable{
 
     public void setClid(int clid) {
         this.clid = clid;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }
