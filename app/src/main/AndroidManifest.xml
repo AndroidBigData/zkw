@@ -141,10 +141,13 @@
         <activity
             android:name=".personalcenter.PersonalMineAskActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".exam.ExamDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".exam.ExamResultActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".exam.ExamDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".exam.ExamResultActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".exam.ExamRecordActivity"></activity>
     </application>
 
 </manifest>

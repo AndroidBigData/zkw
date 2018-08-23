@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lzy.okgo.model.Response;
+import com.zjwam.zkw.exam.ExamRecordActivity;
 import com.zjwam.zkw.httputils.MainActivityHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.customview.CustomToast;
@@ -276,11 +277,10 @@ public class MineFragment extends Fragment {
                     break;
                 case R.id.personal_mine_error:
                     if (isFlag) {
-
+                        startActivity(new Intent(getActivity(), ExamRecordActivity.class));
                     } else {
                         showDialog();
                     }
-                    Toast.makeText(getActivity(), "3333", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.personal_mine_sc:
 //                    Toast.makeText(getActivity(), "4444", Toast.LENGTH_SHORT).show();
