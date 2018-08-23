@@ -137,8 +137,13 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleTranslucentTheme"/>
-        <activity android:name=".personalcenter.PersonalMineAskActivity"
+            android:theme="@style/NoTitleTranslucentTheme" />
+        <activity
+            android:name=".personalcenter.PersonalMineAskActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".exam.ExamDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".exam.ExamResultActivity"
             android:screenOrientation="portrait"/>
     </application>
 

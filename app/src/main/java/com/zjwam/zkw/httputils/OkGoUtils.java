@@ -5,6 +5,8 @@ import com.lzy.okgo.cache.CacheMode;
 import com.zjwam.zkw.callback.Json2Callback;
 import com.zjwam.zkw.callback.JsonCallback;
 
+import org.json.JSONObject;
+
 import java.util.Map;
 
 public class OkGoUtils {
@@ -48,6 +50,17 @@ public class OkGoUtils {
         OkGo.<T>post(url)
                 .tag(tag)
                 .params(params)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(callback);
+    }
+    /**
+     * JSON格式
+     */
+    public static <T>void postJSON(String url, Object tag, Map<String,String> params, JSONObject json, JsonCallback<T> callback){
+        OkGo.<T>post(url)
+                .tag(tag)
+                .params(params)
+                .upJson(json)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(callback);
     }

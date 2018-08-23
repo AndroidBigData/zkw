@@ -2,6 +2,7 @@ package com.zjwam.zkw.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnNetWorkErrorListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
@@ -33,6 +35,7 @@ import com.zjwam.zkw.customview.ExamDialog;
 import com.zjwam.zkw.customview.ExamPopupWindow;
 import com.zjwam.zkw.entity.ClassSearchBean;
 import com.zjwam.zkw.entity.ExamBean;
+import com.zjwam.zkw.exam.ExamDetailsActivity;
 import com.zjwam.zkw.mvp.presenter.ExamPresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.IExamPresenter;
 import com.zjwam.zkw.mvp.view.IExamView;
@@ -142,6 +145,15 @@ public class ExamFragment extends Fragment implements IExamView{
                         examPresenter.getExamTJ( String.valueOf(type));
                     }
                 });
+            }
+        });
+        lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString("id", String.valueOf(examAdapter.getDataList().get(position).getId()));
+                bundle.putString("title",examAdapter.getDataList().get(position).getExam_name());
+                startActivity(new Intent(getActivity(), ExamDetailsActivity.class).putExtras(bundle));
             }
         });
     }

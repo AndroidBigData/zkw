@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".exam.ExamDetailsActivity"
+    android:background="@color/white">
+
+    <include layout="@layout/base_title"
+        android:id="@+id/exam_details_title"/>
+
+    <TextView
+        android:id="@+id/exam_up"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:text="交卷"
+        android:gravity="center"
+        android:layout_alignParentEnd="true"
+        android:textSize="16sp"
+        android:textColor="@color/colorAccent"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/LinearLayout"
+        android:layout_below="@+id/exam_details_title">
+
+        <com.zjwam.zkw.customview.QuestionViewPager
+            android:id="@+id/readerViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--阴影-->
+        <ImageView
+            android:id="@+id/shadowView"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/shadow_right_light" />
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/LinearLayout"
+        android:layout_alignParentBottom="true">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_gray"/>
+
+        <Button
+            android:id="@+id/bt_pre"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:background="@drawable/search_activity_button"
+            android:text="上一题"
+            android:textColor="@color/text_color_gray"
+            android:layout_marginStart="10dp"
+            android:layout_centerVertical="true"/>
+
+        <Button
+            android:id="@+id/bt_next"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:background="@drawable/btn_bule_shap"
+            android:text="下一题"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/white"
+            android:layout_marginEnd="10dp"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+</RelativeLayout>
