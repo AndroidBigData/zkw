@@ -1,4 +1,4 @@
-package com.zjwam.zkw.exam;
+package com.zjwam.zkw.personalcenter;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +19,7 @@ import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.ExamRecordAdapter;
 import com.zjwam.zkw.customview.BasicDialog;
 import com.zjwam.zkw.entity.ExamRecordBean;
+import com.zjwam.zkw.exam.ExamResultActivity;
 import com.zjwam.zkw.mvp.presenter.ExamRecordPresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.IExamRecordPresenter;
 import com.zjwam.zkw.mvp.view.IExamRecordView;
@@ -59,7 +60,7 @@ public class ExamRecordActivity extends BaseActivity implements IExamRecordView 
         examRecordAdapter = new ExamRecordAdapter(this);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(examRecordAdapter);
         exam_record_recyclerview.setAdapter(lRecyclerViewAdapter);
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext());
         exam_record_recyclerview.setLayoutManager(linearLayoutManager);
         exam_record_recyclerview.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
         exam_record_recyclerview.setFooterViewColor(R.color.colorAccent, R.color.black, android.R.color.white);
@@ -102,7 +103,6 @@ public class ExamRecordActivity extends BaseActivity implements IExamRecordView 
         examRecordAdapter.setOpenItem(new ExamRecordAdapter.OpenedItem() {
             @Override
             public void openItem(View view,ExamRecordBean.Detial options) {
-                error(""+options.getId());
                 Bundle bundle = new Bundle();
                 bundle.putString("id", String.valueOf(options.getId()));
                 bundle.putString("eid", String.valueOf(options.getEid()));

@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".personalcenter.ExamRecordActivity">
+    tools:context=".personalcenter.CollectionTestActivity">
 
     <include
         layout="@layout/base_title"
-        android:id="@+id/exam_record_title"/>
+        android:id="@+id/collection_test_title"/>
 
     <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:id="@+id/collection_test_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/exam_record_recyclerview"
-        android:layout_below="@+id/exam_record_title"
+        android:layout_below="@+id/collection_test_title"
         android:background="@color/register_choice_background"/>
     <ImageView
-        android:id="@+id/exam_record_nodata"
+        android:id="@+id/collection_test_nodata"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/no_data"
         android:layout_centerInParent="true"
         android:visibility="gone"/>
+
 </RelativeLayout>

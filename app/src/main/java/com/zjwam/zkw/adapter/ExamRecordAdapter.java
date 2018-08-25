@@ -18,7 +18,6 @@ public class ExamRecordAdapter extends ListBaseAdapter<ExamRecordBean.Exam> {
     private ExamRecordBean.Exam item;
     private ViewHolder viewHolder;
     private OpenedItem openedItem;
-    private int position;
 
     public ExamRecordAdapter(Context context) {
         mLayoutInflater = LayoutInflater.from(context);

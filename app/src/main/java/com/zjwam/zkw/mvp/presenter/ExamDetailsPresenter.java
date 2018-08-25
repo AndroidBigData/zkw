@@ -8,6 +8,7 @@ import com.zjwam.zkw.entity.EmptyBean;
 import com.zjwam.zkw.entity.ExamDetailsBean;
 import com.zjwam.zkw.entity.ExamUpBean;
 import com.zjwam.zkw.entity.ResponseBean;
+import com.zjwam.zkw.exam.ExamDetailsActivity;
 import com.zjwam.zkw.httputils.HttpErrorMsg;
 import com.zjwam.zkw.mvp.model.ExamDetailsModel;
 import com.zjwam.zkw.mvp.model.imodel.IExamDetailsModel;
@@ -25,7 +26,7 @@ public class ExamDetailsPresenter implements IExamDetailsPresenter {
     private Context context;
     private IExamDetailsView examDetailsView;
     private IExamDetailsModel examDetailsModel;
-    private Map<String,String> param;
+    private Map<String, String> param;
 
     public ExamDetailsPresenter(Context context, IExamDetailsView examDetailsView) {
         this.context = context;
@@ -36,14 +37,17 @@ public class ExamDetailsPresenter implements IExamDetailsPresenter {
     @Override
     public void getExamDetails(String id) {
         param = new HashMap<>();
-        param.put("id",id);
+        param.put("id", id);
         examDetailsModel.getExamDetails(Config.URL + "api/exam/getQuestion", context, param, new BasicCallback<ResponseBean<List<ExamDetailsBean>>>() {
             @Override
             public void onSuccess(Response<ResponseBean<List<ExamDetailsBean>>> response) {
-                if (response.body().data.size()>0){
+                if (response.body().data == null || response.body().data.size() <= 0) {
+                    if (context instanceof ExamDetailsActivity) {
+                        examDetailsView.showMsg("试题内容为空！");
+                        examDetailsView.finished();
+                    }
+                } else {
                     examDetailsView.setExam(response.body().data);
-                }else {
-                    examDetailsView.showMsg("试题内容为空！");
                 }
             }
 
@@ -62,8 +66,8 @@ public class ExamDetailsPresenter implements IExamDetailsPresenter {
     }
 
     @Override
-    public void upExam(String id,JSONObject json) {
-        examDetailsModel.upaExam(Config.URL + "api/exam/answer", context, null, json,new BasicCallback<ResponseBean<ExamUpBean>>() {
+    public void upExam(String id, JSONObject json) {
+        examDetailsModel.upaExam(Config.URL + "api/exam/answer", context, null, json, new BasicCallback<ResponseBean<ExamUpBean>>() {
             @Override
             public void onSuccess(Response<ResponseBean<ExamUpBean>> response) {
                 examDetailsView.jump2Details(response.body().data.getId());

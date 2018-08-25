@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".personalcenter.MineExamBankActivity"
+    android:orientation="vertical"
+    android:background="@color/register_choice_background">
+    <include
+        layout="@layout/base_title"/>
+    <TextView
+        android:id="@+id/jump2Record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/add_informationl"
+        android:text="      做题记录"
+        android:gravity="center_vertical"
+        android:textSize="14sp"
+        android:textColor="@color/personal_header"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"/>
+    <TextView
+        android:id="@+id/jump2exam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/add_informationl"
+        android:text="      收藏试卷"
+        android:gravity="center_vertical"
+        android:textSize="14sp"
+        android:textColor="@color/personal_header"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"/>
+    <TextView
+        android:id="@+id/jump2text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/add_informationl"
+        android:text="      收藏试题"
+        android:gravity="center_vertical"
+        android:textSize="14sp"
+        android:textColor="@color/personal_header"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"/>
+</LinearLayout>

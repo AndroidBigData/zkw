@@ -147,7 +147,10 @@
         <activity
             android:name=".exam.ExamResultActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".exam.ExamRecordActivity"></activity>
+        <activity android:name=".personalcenter.ExamRecordActivity" />
+        <activity android:name=".personalcenter.MineExamBankActivity" />
+        <activity android:name=".personalcenter.CollectionExamActivity" />
+        <activity android:name=".personalcenter.CollectionTestActivity"></activity>
     </application>
 
 </manifest>

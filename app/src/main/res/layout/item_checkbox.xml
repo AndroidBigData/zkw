@@ -7,4 +7,4 @@
     android:textSize="16sp"
     android:text="问题答案"
     android:button="@drawable/radio_draw"
-    android:background="@android:color/transparent"/>
+    android:background="@android:color/transparent" />

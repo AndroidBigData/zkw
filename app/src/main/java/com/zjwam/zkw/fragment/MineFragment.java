@@ -22,10 +22,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lzy.okgo.model.Response;
-import com.zjwam.zkw.exam.ExamRecordActivity;
 import com.zjwam.zkw.httputils.MainActivityHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.customview.CustomToast;
@@ -37,6 +35,7 @@ import com.zjwam.zkw.personalcenter.CourseAnswerActivity;
 import com.zjwam.zkw.personalcenter.MineClassActivity;
 import com.zjwam.zkw.personalcenter.MineCollectionActivity;
 import com.zjwam.zkw.personalcenter.MineCommentActivity;
+import com.zjwam.zkw.personalcenter.MineExamBankActivity;
 import com.zjwam.zkw.personalcenter.MineIntegralActivity;
 import com.zjwam.zkw.personalcenter.MineLearnCardActivity;
 import com.zjwam.zkw.personalcenter.MineNoteBookActivity;
@@ -277,7 +276,7 @@ public class MineFragment extends Fragment {
                     break;
                 case R.id.personal_mine_error:
                     if (isFlag) {
-                        startActivity(new Intent(getActivity(), ExamRecordActivity.class));
+                        startActivity(new Intent(getActivity(), MineExamBankActivity.class));
                     } else {
                         showDialog();
                     }
