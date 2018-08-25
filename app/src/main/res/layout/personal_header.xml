@@ -147,7 +147,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="25dp"
-                android:src="@drawable/personal_mine_error"/>
+                android:src="@drawable/exam_bakn"/>
             <TextView
                 android:textSize="14dp"
                 android:textColor="@color/personal_header"

@@ -32,6 +32,8 @@ public class ExamResultActivity extends BaseActivity implements IExamResultView{
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private IExamResultPresenter examResultPresenter;
     private boolean isRefresh;
+    private ImageView hold;
+    private int itemPositon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,16 @@ public class ExamResultActivity extends BaseActivity implements IExamResultView{
             }
         });
         exam_result_recyclerview.refresh();
+        examResultAdapter.setHoldExamTest(new ExamResultAdapter.HoldExamTest() {
+            @Override
+            public void setOnClick(View view, int positon) {
+                itemPositon = positon;
+                hold = (ImageView) view;
+                hold.setEnabled(false);
+                examResultPresenter.holdExamTest(String.valueOf(examResultAdapter.getDataList().get(itemPositon).getId()),
+                        String.valueOf(examResultAdapter.getDataList().get(itemPositon).getEid()));
+            }
+        });
     }
 
     @Override
@@ -112,5 +124,21 @@ public class ExamResultActivity extends BaseActivity implements IExamResultView{
     public void freshComplete() {
         exam_result_recyclerview.refreshComplete(10);
         lRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void holdExamTest() {
+        if (examResultAdapter.getDataList().get(itemPositon).getHold() == 1){
+            hold.setImageResource(R.drawable.exam_unhold);
+            examResultAdapter.getDataList().get(itemPositon).setHold(0);
+        }else {
+            hold.setImageResource(R.drawable.exam_hold);
+            examResultAdapter.getDataList().get(itemPositon).setHold(1);
+        }
+    }
+
+    @Override
+    public void holdFinish() {
+        hold.setEnabled(true);
     }
 }

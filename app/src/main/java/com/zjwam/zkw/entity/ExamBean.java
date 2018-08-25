@@ -15,7 +15,7 @@ public class ExamBean {
     }
 
     public  class Exam{
-        private int id,study_num;
+        private int id,study_num,hold;
         private String exam_name,cate;
 
         public int getId() {
@@ -24,6 +24,14 @@ public class ExamBean {
 
         public int getStudy_num() {
             return study_num;
+        }
+
+        public void setHold(int hold) {
+            this.hold = hold;
+        }
+
+        public int getHold() {
+            return hold;
         }
 
         public String getExam_name() {

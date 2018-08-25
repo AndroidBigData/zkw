@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.callback.BasicCallback;
+import com.zjwam.zkw.entity.EmptyBean;
 import com.zjwam.zkw.entity.ExamBaseResultBean;
 import com.zjwam.zkw.entity.ExamResultBean;
 import com.zjwam.zkw.entity.ResponseBean;
@@ -55,6 +56,34 @@ public class ExamResultPresenter implements IExamResultPresenter {
             @Override
             public void onFinish() {
                 examResultView.freshComplete();
+            }
+        });
+    }
+
+    @Override
+    public void holdExamTest(String id, String eid) {
+        param = new HashMap<>();
+        param.put("uid",examResultModel.uid(context));
+        param.put("qid",id);
+        param.put("eid",eid);
+        param.put("type", String.valueOf(0));
+        examResultModel.getExamTestHold(Config.URL + "api/user/examRunHold", context, param, new BasicCallback<ResponseBean<EmptyBean>>() {
+            @Override
+            public void onSuccess(Response<ResponseBean<EmptyBean>> response) {
+                examResultView.holdExamTest();
+                examResultView.showMsg(response.body().msg);
+            }
+
+            @Override
+            public void onError(Response<ResponseBean<EmptyBean>> response) {
+                Throwable exception = response.getException();
+                String error = HttpErrorMsg.getErrorMsg(exception);
+                examResultView.showMsg(error);
+            }
+
+            @Override
+            public void onFinish() {
+                examResultView.holdFinish();
             }
         });
     }

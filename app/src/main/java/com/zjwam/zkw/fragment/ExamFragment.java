@@ -40,6 +40,7 @@ import com.zjwam.zkw.mvp.presenter.ExamPresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.IExamPresenter;
 import com.zjwam.zkw.mvp.view.IExamView;
 import com.zjwam.zkw.util.KeyboardUtils;
+import com.zjwam.zkw.util.ZkwPreference;
 
 import java.util.List;
 
@@ -60,6 +61,8 @@ public class ExamFragment extends Fragment implements IExamView{
     private ImageView exam_nodata;
     private RelativeLayout exam_relativeLayout;
     private int types;
+    private ImageView hold;
+    private int examItem;
 
     public ExamFragment() {
         // Required empty public constructor
@@ -150,10 +153,31 @@ public class ExamFragment extends Fragment implements IExamView{
         lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Bundle bundle = new Bundle();
-                bundle.putString("id", String.valueOf(examAdapter.getDataList().get(position).getId()));
-                bundle.putString("title",examAdapter.getDataList().get(position).getExam_name());
-                startActivity(new Intent(getActivity(), ExamDetailsActivity.class).putExtras(bundle));
+                if (ZkwPreference.getInstance(getContext()).IsFlag()){
+                    Bundle bundle = new Bundle();
+                    bundle.putString("id", String.valueOf(examAdapter.getDataList().get(position).getId()));
+                    bundle.putString("title",examAdapter.getDataList().get(position).getExam_name());
+                    startActivity(new Intent(getActivity(), ExamDetailsActivity.class).putExtras(bundle));
+                }else {
+                    if (context instanceof MainActivity){
+                        ((MainActivity) context).error("请先登录");
+                    }
+                }
+            }
+        });
+        examAdapter.setHoldExam(new ExamAdapter.HoldExam() {
+            @Override
+            public void onClick(View view,int position) {
+                if (ZkwPreference.getInstance(getContext()).IsFlag()){
+                    hold = (ImageView) view;
+                    examItem = position;
+                    hold.setEnabled(false);
+                    examPresenter.holdExam(String.valueOf(examAdapter.getDataList().get(examItem).getId()));
+                }else {
+                    if (context instanceof MainActivity){
+                        ((MainActivity) context).error("请先登录");
+                    }
+                }
             }
         });
     }
@@ -220,5 +244,21 @@ public class ExamFragment extends Fragment implements IExamView{
                 examDialog.dismiss();
             }
         });
+    }
+
+    @Override
+    public void holdExam() {
+        if (examAdapter.getDataList().get(examItem).getHold() == 0){
+            hold.setImageResource(R.drawable.exam_hold);
+            examAdapter.getDataList().get(examItem).setHold(1);
+        }else {
+            hold.setImageResource(R.drawable.exam_unhold);
+            examAdapter.getDataList().get(examItem).setHold(0);
+        }
+    }
+
+    @Override
+    public void holdFinish() {
+        hold.setEnabled(true);
     }
 }

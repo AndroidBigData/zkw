@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class ExamResultAdapter extends ListBaseAdapter<ExamResultBean> {
     private ViewHolder viewHolder;
     private Map<String, Drawable> drawableMap = new HashMap<>();
     private Drawable drawables;
+    private HoldExamTest holdExamTest;
 
     public ExamResultAdapter(Context context) {
         mLayoutInflater = LayoutInflater.from(context);
@@ -53,23 +55,37 @@ public class ExamResultAdapter extends ListBaseAdapter<ExamResultBean> {
         viewHolder = (ViewHolder) holder;
         if (Build.VERSION.SDK_INT >= 24) {
             viewHolder.exam_result_item_title.setText(Html.fromHtml(item.getContent(), Html.FROM_HTML_MODE_COMPACT, imageGetter, null));
-        }else {
+        } else {
             viewHolder.exam_result_item_title.setText(Html.fromHtml(item.getContent(), imageGetter, null));
         }
         updateCheckBoxView();
-        viewHolder.exam_result_item_right.setText("正确答案:"+item.getAnswer());
+        viewHolder.exam_result_item_right.setText("正确答案:" + item.getAnswer());
         viewHolder.exam_result_item_text.setText(item.getAnalyze());
+        if (item.getHold() == 1) {
+            viewHolder.exam_test_hold.setImageResource(R.drawable.exam_hold);
+        } else {
+            viewHolder.exam_test_hold.setImageResource(R.drawable.exam_unhold);
+        }
+        viewHolder.exam_test_hold.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holdExamTest.setOnClick(view, position);
+            }
+        });
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView exam_result_item_title, exam_result_item_right,exam_result_item_text;
+        private TextView exam_result_item_title, exam_result_item_right, exam_result_item_text;
         private LinearLayout exam_result_item_options;
+        private ImageView exam_test_hold;
+
         public ViewHolder(View itemView) {
             super(itemView);
             exam_result_item_title = itemView.findViewById(R.id.exam_result_item_title);
             exam_result_item_right = itemView.findViewById(R.id.exam_result_item_right);
             exam_result_item_text = itemView.findViewById(R.id.exam_result_item_text);
             exam_result_item_options = itemView.findViewById(R.id.exam_result_item_options);
+            exam_test_hold = itemView.findViewById(R.id.exam_test_hold);
         }
     }
 
@@ -80,7 +96,7 @@ public class ExamResultAdapter extends ListBaseAdapter<ExamResultBean> {
     private void updateCheckBoxView() {
         viewHolder.exam_result_item_options.removeAllViews();
         List<String> op = new ArrayList<>();
-        for (int j=0;j<item.getUanswer().size();j++){
+        for (int j = 0; j < item.getUanswer().size(); j++) {
             op.add(item.getUanswer().get(j).getContent());
         }
         for (int i = 0; i < item.getOptions().size(); i++) {
@@ -89,8 +105,8 @@ public class ExamResultAdapter extends ListBaseAdapter<ExamResultBean> {
             checkboxView.setText(QuestionAnswerUtils.getAnswerStr(i) + "：" + option.getContent());
             checkboxView.setEnabled(false);
             checkboxView.setTextColor(mContext.getResources().getColor(R.color.black));
-            if (op.contains(QuestionAnswerUtils.getAnswerStr(i))){
-                if (item.getIsright() == 0){
+            if (op.contains(QuestionAnswerUtils.getAnswerStr(i))) {
+                if (item.getIsright() == 0) {
                     checkboxView.setButtonDrawable(R.drawable.answer_result_wrong);
                 }
                 checkboxView.setChecked(true);
@@ -100,7 +116,6 @@ public class ExamResultAdapter extends ListBaseAdapter<ExamResultBean> {
             viewHolder.exam_result_item_options.addView(checkboxView);
         }
     }
-
 
 
     Html.ImageGetter imageGetter = new Html.ImageGetter() {
@@ -141,4 +156,13 @@ public class ExamResultAdapter extends ListBaseAdapter<ExamResultBean> {
             }
         }).start();
     }
+
+    public void setHoldExamTest(HoldExamTest holdExamTest) {
+        this.holdExamTest = holdExamTest;
+    }
+
+    public interface HoldExamTest {
+        void setOnClick(View view, int positon);
+    }
+
 }

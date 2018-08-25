@@ -4,8 +4,9 @@ import java.util.List;
 
 public class ExamResultBean {
     private String answer,content,analyze;
-    private long id;
-    private int flag,isright;
+     //  id：题目id；eid:试卷id；
+    private long id,eid;
+    private int flag,isright,hold;
     private List<Options> options;
     private List<Uanswer> uanswer;
 
@@ -25,12 +26,24 @@ public class ExamResultBean {
         return id;
     }
 
+    public long getEid() {
+        return eid;
+    }
+
     public int getFlag() {
         return flag;
     }
 
     public int getIsright() {
         return isright;
+    }
+
+    public int getHold() {
+        return hold;
+    }
+
+    public void setHold(int hold) {
+        this.hold = hold;
     }
 
     public List<Options> getOptions() {

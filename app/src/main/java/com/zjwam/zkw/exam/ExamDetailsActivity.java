@@ -116,11 +116,16 @@ public class ExamDetailsActivity extends BaseActivity implements QuestionFragmen
      */
     private synchronized void nextQuestion() {
         int currentItem = questionViewPager.getCurrentItem();
-        currentItem = currentItem + 1;
-        if (currentItem < 0) {
-            currentItem = 0;
+        if (currentItem == (dataBeans.size()-1) ){
+            error("没有更多了！");
+        }else {
+            currentItem = currentItem + 1;
+            if (currentItem < 0) {
+                currentItem = 0;
+            }
+            questionViewPager.setCurrentItem(currentItem);
         }
-        questionViewPager.setCurrentItem(currentItem);
+
     }
 
     @Override
@@ -218,6 +223,7 @@ public class ExamDetailsActivity extends BaseActivity implements QuestionFragmen
         bundle.putString("eid", resultId);
         bundle.putString("id", id);
         startActivity(new Intent(getBaseContext(), ExamResultActivity.class).putExtras(bundle));
+        finish();
     }
 
     @Override

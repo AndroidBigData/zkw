@@ -7,4 +7,6 @@ public interface IExamResultView {
     void showMsg(String msg);
     void refresh();
     void freshComplete();
+    void holdExamTest();
+    void holdFinish();
 }

@@ -12,4 +12,6 @@ public interface IExamView {
     void refreshComplele();
     void loadMoreError();
     void getExamFL(ClassSearchBean classSearchBean);
+    void holdExam();
+    void holdFinish();
 }
