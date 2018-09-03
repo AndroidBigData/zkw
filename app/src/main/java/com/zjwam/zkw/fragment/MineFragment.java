@@ -37,6 +37,7 @@ import com.zjwam.zkw.personalcenter.MineCollectionActivity;
 import com.zjwam.zkw.personalcenter.MineCommentActivity;
 import com.zjwam.zkw.personalcenter.MineExamBankActivity;
 import com.zjwam.zkw.personalcenter.MineIntegralActivity;
+import com.zjwam.zkw.personalcenter.MineJobActivity;
 import com.zjwam.zkw.personalcenter.MineLearnCardActivity;
 import com.zjwam.zkw.personalcenter.MineNoteBookActivity;
 import com.zjwam.zkw.personalcenter.MineOrderActivity;
@@ -137,7 +138,12 @@ public class MineFragment extends Fragment {
         item.put("img", R.drawable.personal_learncard);
         item.put("title", "我的学习卡");
         data.add(item);
-//
+
+        item = new HashMap<>();
+        item.put("img", R.drawable.personal_qiuzhi);
+        item.put("title", "我的求职");
+        data.add(item);
+
 //        item = new HashMap<>();
 //        item.put("img", R.drawable.personal_baoming);
 //        item.put("title", "考试报名");
@@ -218,6 +224,13 @@ public class MineFragment extends Fragment {
                     case 6:
                         if (isFlag) {
                             startActivity(new Intent(getActivity(), MineLearnCardActivity.class));
+                        } else {
+                            showDialog();
+                        }
+                        break;
+                    case 7:
+                        if (isFlag) {
+                            startActivity(new Intent(getActivity(), MineJobActivity.class));
                         } else {
                             showDialog();
                         }

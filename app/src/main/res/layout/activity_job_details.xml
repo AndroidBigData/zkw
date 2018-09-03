@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/register_choice_background"
+    android:orientation="vertical"
+    tools:context=".job.JobDetailsActivity">
+
+    <include layout="@layout/base_title" />
+
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:id="@+id/job_details_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/submit_resume"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:text="投递简历"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+</LinearLayout>

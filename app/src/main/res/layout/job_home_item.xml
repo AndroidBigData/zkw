@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginStart="10dp"
+    android:background="@drawable/ggmm_shape"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/job_item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/job_item_money"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="攻城狮程序媛"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/job_item_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="6K--10K"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp">
+
+        <TextView
+            android:id="@+id/job_item_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="民营企业|应届毕业生|本科"
+            android:textColor="@color/text_color_gray"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/job_item_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="郑州-郑东新区"
+            android:textColor="@color/text_color_gray"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <com.zjwam.zkw.customview.FlowLayout
+        android:id="@+id/job_item_benefit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="6dp">
+
+    </com.zjwam.zkw.customview.FlowLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/job_item_company"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/job_item_time"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="中教网盟科技有限公司"
+            android:textColor="@color/personal_header"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/job_item_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="2018.8.27  11:20"
+            android:textColor="@color/text_color_gray"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -161,7 +161,6 @@ public class AddStudentInformationActivity extends BaseActivity {
                     addInfo.setSubject(add_student_subject.getText().toString().trim());
 
                     data = new AddInfoData2Json().addInfoData2Json(addInfo,getBaseContext());
-                    Log.i("---data:",data.toString());
                     upData(Config.URL + "api/info/complete");
 
                     break;
@@ -219,33 +218,6 @@ public class AddStudentInformationActivity extends BaseActivity {
                         progress_add_student.setVisibility(View.GONE);
                     }
                 });
-//        RequestParams params = new RequestParams(url);
-//        params.setAsJsonContent(true);
-//        params.setBodyContent(data.toString());
-//        x.http().post(params, new Callback.CommonCallback<String>() {
-//            @Override
-//            public void onSuccess(String result) {
-//                DialogInfo dialogInfo = Dialog2Json.getDialogInfo(result);
-//                if ("1".equals(dialogInfo.getCode())){
-//                    Toast.makeText(getBaseContext(),dialogInfo.getMsg(),Toast.LENGTH_SHORT).show();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onError(Throwable ex, boolean isOnCallback) {
-//            }
-//
-//            @Override
-//            public void onCancelled(CancelledException cex) {
-//
-//            }
-//
-//            @Override
-//            public void onFinished() {
-//                progress_add_student.setVisibility(View.GONE);
-//            }
-//        });
     }
 
     /**
@@ -368,7 +340,6 @@ public class AddStudentInformationActivity extends BaseActivity {
             switch (msg.what) {
                 case MSG_LOAD_DATA:
                     if (thread == null) {//如果已创建就不再重新创建子线程了
-
                         thread = new Thread(new Runnable() {
                             @Override
                             public void run() {

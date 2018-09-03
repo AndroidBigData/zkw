@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/ggmm_shape"
+    android:padding="10dp"
+    android:layout_marginBottom="10dp">
+
+    <TextView
+        android:id="@+id/resume_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="简历名称"
+        android:textSize="18sp"
+        android:textColor="@color/personal_header"/>
+    <TextView
+        android:id="@+id/resume_to"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="求职意向:"
+        android:textSize="14sp"
+        android:textColor="@color/personal_header"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="10dp"/>
+    <TextView
+        android:id="@+id/resume_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="发布时间："
+        android:textSize="12sp"
+        android:textColor="@color/text_color_gray"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:id="@+id/delete_resume"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:text="删 除"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:background="@drawable/curriculun_checked_item_shape"
+            android:layout_alignParentEnd="true"/>
+        <TextView
+            android:id="@+id/edit_resume"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:text="编 辑"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:background="@drawable/curriculun_checked_item_shape"
+            android:layout_toStartOf="@+id/delete_resume"
+            android:layout_marginEnd="10dp"/>
+    </RelativeLayout>
+</LinearLayout>

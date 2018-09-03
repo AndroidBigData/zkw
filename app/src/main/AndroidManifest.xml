@@ -16,6 +16,10 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+
     <application
         android:name=".ZkwApplication"
         android:allowBackup="true"
@@ -147,10 +151,23 @@
         <activity
             android:name=".exam.ExamResultActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".personalcenter.ExamRecordActivity" />
-        <activity android:name=".personalcenter.MineExamBankActivity" />
-        <activity android:name=".personalcenter.CollectionExamActivity" />
-        <activity android:name=".personalcenter.CollectionTestActivity"></activity>
+        <activity
+            android:name=".personalcenter.ExamRecordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".personalcenter.MineExamBankActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".personalcenter.CollectionExamActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".personalcenter.CollectionTestActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".job.JobHomePageActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".job.JobDetailsActivity" />
+        <activity android:name=".personalcenter.MineJobActivity"></activity>
     </application>
 
 </manifest>

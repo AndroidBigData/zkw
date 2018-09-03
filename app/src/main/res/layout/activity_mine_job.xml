@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/register_choice_background"
+    tools:context=".personalcenter.MineJobActivity">
+
+    <include
+        android:id="@+id/mine_job_title"
+        layout="@layout/base_title" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/mine_job_tab"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/mine_job_title"
+        android:background="@color/white"
+        app:tabIndicatorColor="@color/colorAccent"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/colorAccent"
+        app:tabTextColor="@color/text_color_gray" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/mine_job_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/mine_job_tab"/>
+
+
+</RelativeLayout>

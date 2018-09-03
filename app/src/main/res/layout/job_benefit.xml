@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:id="@+id/fenefit_item"
+    android:layout_height="20dp"
+    android:text="   6666   "
+    android:textColor="@color/text_color_gray"
+    android:gravity="center"
+    android:textSize="12sp"
+    android:background="@drawable/curriculun_checked_item_shape"/>
