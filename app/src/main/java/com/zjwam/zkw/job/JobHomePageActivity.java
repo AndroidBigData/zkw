@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
@@ -18,17 +20,26 @@ import com.zjwam.zkw.BaseActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.JobRecommendAdapter;
 import com.zjwam.zkw.callback.PermissionListener;
+import com.zjwam.zkw.customview.CityPicker;
+import com.zjwam.zkw.entity.City;
+import com.zjwam.zkw.entity.HotCity;
+import com.zjwam.zkw.entity.HotCityBean;
 import com.zjwam.zkw.entity.JobHomeBean;
+import com.zjwam.zkw.entity.LocateState;
+import com.zjwam.zkw.entity.LocatedCity;
+import com.zjwam.zkw.listener.OnPickListener;
 import com.zjwam.zkw.mvp.presenter.JobHomePresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.IJobHomePresenter;
 import com.zjwam.zkw.mvp.view.IJobHomeView;
 import com.zjwam.zkw.util.LocationCity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
 
     private TextView job_hr, job_zd, job_test, job_gh, search_fl;
+    private LinearLayout search_title_job;
     private ImageView job_home_back, job_home_nodata;
     private LRecyclerView job_home_recycler;
     private LRecyclerViewAdapter lRecyclerViewAdapter;
@@ -37,14 +48,12 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
     private boolean isRefresh;
     private IJobHomePresenter jobHomePresenter;
     private String city;
+    private List<HotCity> hotCities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_home_page);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            permission();
-        }
         initView();
         initData();
     }
@@ -58,6 +67,7 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
         job_gh.setOnClickListener(onClickListener);
         search_fl.setOnClickListener(onClickListener);
         job_home_back.setOnClickListener(onClickListener);
+        search_title_job.setOnClickListener(onClickListener);
         jobRecommendAdapter = new JobRecommendAdapter(this);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(jobRecommendAdapter);
         job_home_recycler.setAdapter(lRecyclerViewAdapter);
@@ -71,7 +81,7 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
                 isRefresh = true;
                 page = 1;
                 mCurrentCounter = 0;
-                jobHomePresenter.getJobItem(String.valueOf(page), isRefresh);
+                jobHomePresenter.getJobItem(String.valueOf(page),city, isRefresh);
             }
         });
         job_home_recycler.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -80,13 +90,12 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
                 isRefresh = false;
                 if (mCurrentCounter < max_items) {
                     page++;
-                    jobHomePresenter.getJobItem(String.valueOf(page), isRefresh);
+                    jobHomePresenter.getJobItem(String.valueOf(page),city, isRefresh);
                 } else {
                     job_home_recycler.setNoMore(true);
                 }
             }
         });
-        job_home_recycler.refresh();
         lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -95,6 +104,8 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
                 startActivity(new Intent(getBaseContext(), JobDetailsActivity.class).putExtras(bundle));
             }
         });
+
+        jobHomePresenter.getHotCity();
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -110,9 +121,15 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
                 case R.id.job_gh:
                     break;
                 case R.id.search_fl:
+                    showCityPicker();
                     break;
                 case R.id.job_home_back:
                     finish();
+                    break;
+                case R.id.search_title_job:
+                    Bundle bundle = new Bundle();
+                    bundle.putString("city",search_fl.getText().toString());
+                    startActivity(new Intent(getBaseContext(),SearchJobActivity.class).putExtras(bundle));
                     break;
             }
         }
@@ -127,6 +144,7 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
         job_home_back = findViewById(R.id.job_home_back);
         job_home_recycler = findViewById(R.id.job_home_recycler);
         job_home_nodata = findViewById(R.id.job_home_nodata);
+        search_title_job = findViewById(R.id.search_title_job);
     }
 
     @Override
@@ -158,6 +176,57 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
 
     }
 
+    @Override
+    public void setHotCity(List<HotCityBean> list) {
+        hotCities = new ArrayList<>();
+        for (HotCityBean city : list) {
+            hotCities.add(new HotCity(city.getCity()));
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            permission();
+        }else {
+            city = new LocationCity(JobHomePageActivity.this).getLocation();
+            if (city != null){
+                search_fl.setText(city);
+                job_home_recycler.refresh();
+            }else {
+                showCityPicker();
+            }
+        }
+    }
+
+    private void showCityPicker(){
+        if (city != null){
+            CityPicker.getInstance().setLocatedCity(new LocatedCity(city));
+        }else {
+            CityPicker.getInstance().setLocatedCity(null);
+        }
+        CityPicker.getInstance()
+                .setFragmentManager(getSupportFragmentManager())
+                .enableAnimation(true)
+                .setHotCities(hotCities)
+                .setOnPickListener(new OnPickListener() {
+                    @Override
+                    public void onPick(int position, City data) {
+                        if (data != null) {
+                            city = data.getName();
+                            search_fl.setText(city);
+                            job_home_recycler.refresh();
+                        }
+                    }
+                    @Override
+                    public void onLocate() {
+                        city = new LocationCity(JobHomePageActivity.this).getLocation();
+                        if (city != null){
+                            CityPicker.getInstance().locateComplete(new LocatedCity(city), LocateState.SUCCESS);
+                        }else {
+                            CityPicker.getInstance().locateComplete(new LocatedCity(city), LocateState.FAILURE);
+                        }
+                    }
+                })
+                .show();
+    }
 
     private void permission() {
         requestRunPermisssion(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, new PermissionListener() {
@@ -165,6 +234,13 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
             public void onGranted() {
                 //表示所有权限都授权了
                 city = new LocationCity(JobHomePageActivity.this).getLocation();
+                if (city != null){
+                    search_fl.setText(city);
+                    job_home_recycler.refresh();
+                }else {
+                    showCityPicker();
+                }
+
             }
 
             @Override

@@ -48,8 +48,6 @@ public class LocationCity {
         Location location = getLastKnownLocation();
         if (location != null) {
             city= updateVersion(location);
-        }else {
-            city = "点我";
         }
         return city;
     }
