@@ -202,30 +202,33 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
         }else {
             CityPicker.getInstance().setLocatedCity(null);
         }
-        CityPicker.getInstance()
-                .setFragmentManager(getSupportFragmentManager())
-                .enableAnimation(true)
-                .setHotCities(hotCities)
-                .setOnPickListener(new OnPickListener() {
-                    @Override
-                    public void onPick(int position, City data) {
-                        if (data != null) {
-                            city = data.getName();
-                            search_fl.setText(city);
-                            job_home_recycler.refresh();
+        if (!JobHomePageActivity.this.isFinishing()){
+            CityPicker.getInstance()
+                    .setFragmentManager(getSupportFragmentManager())
+                    .enableAnimation(true)
+                    .setHotCities(hotCities)
+                    .setOnPickListener(new OnPickListener() {
+                        @Override
+                        public void onPick(int position, City data) {
+                            if (data != null) {
+                                city = data.getName();
+                                search_fl.setText(city);
+                                job_home_recycler.refresh();
+                            }
                         }
-                    }
-                    @Override
-                    public void onLocate() {
-                        city = new LocationCity(JobHomePageActivity.this).getLocation();
-                        if (city != null){
-                            CityPicker.getInstance().locateComplete(new LocatedCity(city), LocateState.SUCCESS);
-                        }else {
-                            CityPicker.getInstance().locateComplete(new LocatedCity(city), LocateState.FAILURE);
+                        @Override
+                        public void onLocate() {
+                            city = new LocationCity(JobHomePageActivity.this).getLocation();
+                            if (city != null){
+                                CityPicker.getInstance().locateComplete(new LocatedCity(city), LocateState.SUCCESS);
+                            }else {
+                                CityPicker.getInstance().locateComplete(new LocatedCity(city), LocateState.FAILURE);
+                            }
                         }
-                    }
-                })
-                .show();
+                    })
+                    .show();
+        }
+
     }
 
     private void permission() {

@@ -86,6 +86,17 @@ public class SearchJobActivity extends BaseActivity implements ISearchJobHotCity
                     startActivityForResult(new Intent(getBaseContext(),ProfessionChoiceActivity.class),2);
                     break;
                 case R.id.search_job:
+                    if (job_city.getText().toString().length()>0){
+                        Bundle bundle = new Bundle();
+                        bundle.putString("city",city);
+                        bundle.putString("name",search_job_text.getText().toString());
+                        bundle.putString("industry",selectIndustry);
+                        bundle.putString("profession",selectProfession);
+                        startActivity(new Intent(getBaseContext(),SearchJobDetailsActivity.class).putExtras(bundle));
+                    }else {
+                        error("请选择城市");
+                    }
+
                     break;
 
             }

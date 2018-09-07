@@ -165,17 +165,23 @@
             android:name=".job.JobHomePageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomTheme" />
-        <activity android:name=".job.JobDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".personalcenter.MineJobActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".job.SearchJobActivity"
-            android:theme="@style/CustomTheme"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".job.IndustryChoiceActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".job.ProfessionChoiceActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".job.JobDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".personalcenter.MineJobActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".job.SearchJobActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomTheme" />
+        <activity
+            android:name=".job.IndustryChoiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".job.ProfessionChoiceActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".job.SearchJobDetailsActivity"></activity>
     </application>
 
 </manifest>

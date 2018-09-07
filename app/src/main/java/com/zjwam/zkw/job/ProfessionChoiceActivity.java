@@ -94,7 +94,7 @@ public class ProfessionChoiceActivity extends BaseActivity implements IProfessio
         List<TreeNode> selectedIds = treeView.getSelectedNodes();
         for (int i = 0; i < selectedIds.size(); i++) {
             if (selectedIds.get(i).getValue() instanceof IndustrySelectBean){
-                stringBuilder.append(((IndustrySelectBean)selectedIds.get(i).getValue()).getCate() + "_");
+                stringBuilder.append(((IndustrySelectBean)selectedIds.get(i).getValue()).getCate() + ",");
             }
         }
         return stringBuilder.toString();
