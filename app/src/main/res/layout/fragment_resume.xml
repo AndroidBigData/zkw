@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.personalcenter.ResumeFragment"
     android:background="@color/register_choice_background">
 
@@ -18,4 +19,12 @@
     android:src="@drawable/no_data"
     android:layout_gravity="center"
     android:visibility="gone"/>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/resume_fab"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:src="@drawable/answer_plus"
+        app:backgroundTint="@color/colorAccent"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="10dp"/>
 </FrameLayout>

@@ -181,7 +181,9 @@
         <activity
             android:name=".job.ProfessionChoiceActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".job.SearchJobDetailsActivity"></activity>
+        <activity android:name=".job.SearchJobDetailsActivity" />
+        <activity android:name=".personalcenter.CreateResumeActivity" />
+        <activity android:name=".personalcenter.AddJobEducationalActivity"></activity>
     </application>
 
 </manifest>

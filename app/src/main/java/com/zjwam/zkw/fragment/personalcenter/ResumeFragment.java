@@ -2,9 +2,11 @@ package com.zjwam.zkw.fragment.personalcenter;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ import com.zjwam.zkw.entity.MineJobResumeBean;
 import com.zjwam.zkw.mvp.presenter.MineJobResumePresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.IMineJobResumePresenter;
 import com.zjwam.zkw.mvp.view.IMineJobResumeView;
+import com.zjwam.zkw.personalcenter.CreateResumeActivity;
 import com.zjwam.zkw.personalcenter.MineJobActivity;
 
 import java.util.List;
@@ -36,6 +39,7 @@ public class ResumeFragment extends Fragment implements IMineJobResumeView{
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private ImageView resume_nodata;
     private IMineJobResumePresenter mineJobResumePresenter;
+    private FloatingActionButton resume_fab;
 
     public ResumeFragment() {
         // Required empty public constructor
@@ -92,11 +96,18 @@ public class ResumeFragment extends Fragment implements IMineJobResumeView{
                 }
             }
         });
+        resume_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), CreateResumeActivity.class));
+            }
+        });
     }
 
     private void initView() {
         resume_recyclerview = getActivity().findViewById(R.id.resume_recyclerview);
         resume_nodata = getActivity().findViewById(R.id.resume_nodata);
+        resume_fab = getActivity().findViewById(R.id.resume_fab);
     }
 
     @Override
