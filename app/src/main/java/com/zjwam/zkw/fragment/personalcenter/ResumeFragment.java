@@ -122,6 +122,12 @@ public class ResumeFragment extends Fragment implements IMineJobResumeView{
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        resume_recyclerview.refresh();
+    }
+
+    @Override
     public void showMsg(String msg) {
         if (context instanceof MineJobActivity){
             ((MineJobActivity) context).error(msg);

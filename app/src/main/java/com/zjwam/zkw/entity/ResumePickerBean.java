@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ResumePickerBean {
 
-    private List<BasicInfo> job_type,hiredate,education;
+    private List<BasicInfo> job_type,hiredate,education,nature;
 
     public List<BasicInfo> getJob_type() {
         return job_type;
@@ -16,6 +16,10 @@ public class ResumePickerBean {
 
     public List<BasicInfo> getEducation() {
         return education;
+    }
+
+    public List<BasicInfo> getNature() {
+        return nature;
     }
 
     public class BasicInfo{

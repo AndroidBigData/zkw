@@ -34,8 +34,8 @@ public class DateUtil {
      * @param pattern
      * @return
      */
-    public static String getDateToString(long milSecond, String pattern) {
-        Date date = new Date(milSecond);
+    public static String getDateToString(Date date, String pattern) {
+//        Date date = new Date(milSecond);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         return simpleDateFormat.format(date);
     }

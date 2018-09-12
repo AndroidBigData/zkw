@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".personalcenter.AddJobEducationalActivity"
-    android:background="@color/register_choice_background"
-    android:orientation="vertical">
+    tools:context=".personalcenter.AddJobExperienceActivity"
+    android:background="@color/register_choice_background">
 
     <include
         layout="@layout/base_title"
-        android:id="@+id/add_education_title"/>
+        android:id="@+id/add_experience_title"/>
     <TextView
-        android:id="@+id/add_education_go"
+        android:id="@+id/add_experience_go"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:text="下一步"
@@ -21,7 +19,7 @@
         android:gravity="center"
         android:layout_alignParentEnd="true"/>
     <TextView
-        android:id="@+id/add_education_jump"
+        android:id="@+id/add_experience_jump"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:text="跳过"
@@ -29,25 +27,25 @@
         android:textColor="@color/colorAccent"
         android:gravity="center"/>
     <LinearLayout
-        android:id="@+id/add_education_LinearLayout1"
+        android:id="@+id/add_experience_LinearLayout1"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@drawable/add_informationl"
         android:gravity="center_vertical"
         android:padding="12dp"
         android:orientation="horizontal"
-        android:layout_below="@+id/add_education_title"
+        android:layout_below="@+id/add_experience_title"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="学校"
+            android:text="公司名称"
             android:textColor="@color/text_color_gray"
             android:textSize="14sp"/>
         <EditText
-            android:id="@+id/add_school_name"
+            android:id="@+id/add_company_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
@@ -58,52 +56,54 @@
             android:inputType="text"/>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/add_education_LinearLayout2"
+        android:id="@+id/add_begintime"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@drawable/add_informationl"
         android:gravity="center_vertical"
         android:padding="12dp"
         android:orientation="horizontal"
-        android:layout_below="@+id/add_education_LinearLayout1"
+        android:layout_below="@+id/add_experience_LinearLayout1"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="专业"
+            android:text="开始时间"
             android:textColor="@color/text_color_gray"
             android:textSize="14sp"/>
-        <EditText
-            android:id="@+id/add_major_name"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:layout_marginStart="10dp"
+        <TextView
+            android:id="@+id/add_work_begintime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textColor="@color/personal_header"
             android:textSize="14sp"
-            android:gravity="center_vertical"
-            android:inputType="text"/>
+            android:layout_marginStart="10dp"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/more"/>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/add_education"
+        android:id="@+id/add_endtime"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@drawable/add_informationl"
         android:gravity="center_vertical"
         android:padding="12dp"
         android:orientation="horizontal"
-        android:layout_below="@+id/add_education_LinearLayout2"
+        android:layout_below="@+id/add_begintime"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="学历"
+            android:text="结束时间"
             android:textColor="@color/text_color_gray"
             android:textSize="14sp"/>
         <TextView
-            android:id="@+id/add_education_name"
+            android:id="@+id/add_work_endtime"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -117,68 +117,123 @@
             android:src="@drawable/more"/>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/add_enrolment"
+        android:id="@+id/add_company_type"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@drawable/add_informationl"
         android:gravity="center_vertical"
         android:padding="12dp"
         android:orientation="horizontal"
-        android:layout_below="@+id/add_education"
+        android:layout_below="@+id/add_endtime"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="入学时间"
+            android:text="公司类别"
             android:textColor="@color/text_color_gray"
             android:textSize="14sp"/>
         <TextView
-            android:id="@+id/add_enrolment_time"
+            android:id="@+id/add_type"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:layout_marginStart="10dp"
             android:textColor="@color/personal_header"
             android:textSize="14sp"
-            android:layout_marginStart="10dp"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/more"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/add_graduation"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/add_informationl"
-        android:gravity="center_vertical"
-        android:padding="12dp"
-        android:orientation="horizontal"
-        android:layout_below="@+id/add_enrolment"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="毕业时间"
-            android:textColor="@color/text_color_gray"
-            android:textSize="14sp"/>
-        <TextView
-            android:id="@+id/add_graduation_time"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/personal_header"
-            android:textSize="14sp"
-            android:layout_marginStart="10dp"/>
+            android:gravity="center_vertical"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:src="@drawable/more"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/add_experience_LinearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/add_informationl"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/add_company_type"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="职位名称"
+            android:textColor="@color/text_color_gray"
+            android:textSize="14sp"/>
+        <EditText
+            android:id="@+id/add_experience_job"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/personal_header"
+            android:textSize="14sp"
+            android:gravity="center_vertical"
+            android:inputType="text"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/add_experience_LinearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/add_informationl"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/add_experience_LinearLayout3"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="职位薪资"
+            android:textColor="@color/text_color_gray"
+            android:textSize="14sp"/>
+        <EditText
+            android:id="@+id/add_experience_money"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/personal_header"
+            android:textSize="14sp"
+            android:gravity="center_vertical"
+            android:inputType="text"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/add_experience_LinearLayout4"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/ggmm_shape"
+        android:padding="12dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="工作描述"
+            android:textColor="@color/text_color_gray"
+            android:textSize="14sp"/>
+        <EditText
+            android:id="@+id/add_experience_describe"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:textSize="14sp"
+            android:textColor="@color/personal_header"
+            android:background="@null"
+            android:gravity="top" />
     </LinearLayout>
     <Button
-        android:id="@+id/addEducation"
+        android:id="@+id/addExperience"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@drawable/btn_bule_shap"
@@ -187,4 +242,5 @@
         android:textSize="16sp"
         android:layout_margin="20dp"
         android:layout_alignParentBottom="true"/>
+
 </RelativeLayout>

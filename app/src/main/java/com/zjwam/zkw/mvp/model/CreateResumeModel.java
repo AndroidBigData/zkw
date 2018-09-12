@@ -8,6 +8,7 @@ import com.zjwam.zkw.callback.JsonCallback;
 import com.zjwam.zkw.entity.CurriculumSelectBean;
 import com.zjwam.zkw.entity.ProfessionChoiceBean;
 import com.zjwam.zkw.entity.ResponseBean;
+import com.zjwam.zkw.entity.ResumeIdBean;
 import com.zjwam.zkw.entity.ResumePickerBean;
 import com.zjwam.zkw.httputils.OkGoUtils;
 import com.zjwam.zkw.mvp.model.imodel.ICreateResumeModel;
@@ -66,15 +67,15 @@ public class CreateResumeModel implements ICreateResumeModel {
     }
 
     @Override
-    public void saveResume(String url, Object context, Map<String, String> param, final BasicCallback<ResponseBean<CurriculumSelectBean>> basicCallback) {
-        JsonCallback<ResponseBean<CurriculumSelectBean>> jsonCallback = new JsonCallback<ResponseBean<CurriculumSelectBean>>() {
+    public void saveResume(String url, Object context, Map<String, String> param, final BasicCallback<ResponseBean<ResumeIdBean>> basicCallback) {
+        JsonCallback<ResponseBean<ResumeIdBean>> jsonCallback = new JsonCallback<ResponseBean<ResumeIdBean>>() {
             @Override
-            public void onSuccess(Response<ResponseBean<CurriculumSelectBean>> response) {
+            public void onSuccess(Response<ResponseBean<ResumeIdBean>> response) {
                 basicCallback.onSuccess(response);
             }
 
             @Override
-            public void onError(Response<ResponseBean<CurriculumSelectBean>> response) {
+            public void onError(Response<ResponseBean<ResumeIdBean>> response) {
                 super.onError(response);
                 basicCallback.onError(response);
             }

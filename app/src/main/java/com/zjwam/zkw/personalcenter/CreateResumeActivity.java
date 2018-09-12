@@ -41,7 +41,7 @@ public class CreateResumeActivity extends BaseActivity implements ICreateResumeV
     private List<List<String>> itemTwo = new ArrayList<>();
     private List<List<List<String>>> itemThree = new ArrayList<>();
     private List<String> sex;
-    private String ResumeId,job_type,industry_id,hiredate,gender;
+    private String ResumeId, job_type, industry_id, hiredate, gender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,26 +123,30 @@ public class CreateResumeActivity extends BaseActivity implements ICreateResumeV
                     break;
                 case R.id.create_sexPicker:
                     KeyboardUtils.hideKeyboard(create_sexPicker);
-                    initPicker(sex,null,null);
+                    initPicker(sex, null, null);
                     pickerView.getSelctor(new BasicPickerView.Selctor() {
                         @Override
                         public void Options(int options1, int options2, int options3, View view) {
                             create_sex.setText(sex.get(options1));
-                            if ("女".equals(sex.get(options1))){
+                            if ("女".equals(sex.get(options1))) {
                                 gender = "2";
-                            }else {
+                            } else {
                                 gender = "1";
                             }
                         }
                     });
                     break;
                 case R.id.createResume:
-                    if (create_resume_name.getText().toString().trim().length()>0){
+                    if (create_resume_name.getText().toString().trim().length() > 0) {
+                        if (create_resume_jobType.getText().toString().length() > 0) {
+                            resumePresenter.saveResume(create_resume_name.getText().toString(), job_type, industry_id, hiredate, create_resume_moneyMin.getText().toString(),
+                                    create_resume_moneyMax.getText().toString(), create_name.getText().toString(), gender, create_age.getText().toString(),
+                                    create_phone.getText().toString(), create_comment.getText().toString(), create_skill.getText().toString());
+                        } else {
+                            error("请选择求职类型！");
+                        }
 
-                        resumePresenter.saveResume(create_resume_name.getText().toString(),job_type,industry_id,hiredate,create_resume_moneyMin.getText().toString(),
-                                create_resume_moneyMax.getText().toString(),create_name.getText().toString(),gender,create_age.getText().toString(),
-                                create_phone.getText().toString(),create_comment.getText().toString(),create_skill.getText().toString());
-                    }else {
+                    } else {
                         error("简历名称不得为空！");
                         create_resume_name.setEnabled(true);
                     }
@@ -195,7 +199,7 @@ public class CreateResumeActivity extends BaseActivity implements ICreateResumeV
         for (int i = 0; i < list.size(); i++) {
             CurriculumSelectBean industrySelectBean1 = new CurriculumSelectBean();
             industrySelectBean1.setName(list.get(i).getName());
-            industrySelectBean1.setId((int)list.get(i).getId());
+            industrySelectBean1.setId((int) list.get(i).getId());
             item1.add(industrySelectBean1);
             itemOne.add(item1.get(i).getName());
             List<CurriculumSelectBean> listTwo = new ArrayList<>();
@@ -206,7 +210,7 @@ public class CreateResumeActivity extends BaseActivity implements ICreateResumeV
                 if (list.get(i).getChild().get(j).getName() != null && list.get(i).getChild().get(j).getName().length() > 0) {
                     CurriculumSelectBean industrySelectBean2 = new CurriculumSelectBean();
                     industrySelectBean2.setName(list.get(i).getName());
-                    industrySelectBean2.setId((int)list.get(i).getId());
+                    industrySelectBean2.setId((int) list.get(i).getId());
                     listTwo.add(industrySelectBean2);
                     list_a.add(industrySelectBean2.getName());
                 }
@@ -216,7 +220,7 @@ public class CreateResumeActivity extends BaseActivity implements ICreateResumeV
                     if (list.get(i).getChild().get(j).getChild().get(k).getName() != null && list.get(i).getChild().get(j).getChild().get(k).getName().length() > 0) {
                         CurriculumSelectBean industrySelectBean3 = new CurriculumSelectBean();
                         industrySelectBean3.setName(list.get(i).getChild().get(j).getChild().get(k).getName());
-                        industrySelectBean3.setId((int)list.get(i).getChild().get(j).getChild().get(k).getId());
+                        industrySelectBean3.setId((int) list.get(i).getChild().get(j).getChild().get(k).getId());
                         lists.add(industrySelectBean3);
                         list_b.add(industrySelectBean3.getName());
                     }
@@ -232,10 +236,11 @@ public class CreateResumeActivity extends BaseActivity implements ICreateResumeV
     }
 
     @Override
-    public void saveResume(int id) {
+    public void saveResume(long id) {
         ResumeId = String.valueOf(id);
         Bundle bundle = new Bundle();
-        bundle.putString("resumeId",ResumeId);
-        startActivity(new Intent(getBaseContext(),AddJobEducationalActivity.class).putExtras(bundle));
+        bundle.putString("resumeId", ResumeId);
+        startActivity(new Intent(getBaseContext(), AddJobEducationalActivity.class).putExtras(bundle));
+        finish();
     }
 }

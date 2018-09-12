@@ -7,6 +7,7 @@ import com.zjwam.zkw.callback.BasicCallback;
 import com.zjwam.zkw.entity.CurriculumSelectBean;
 import com.zjwam.zkw.entity.ProfessionChoiceBean;
 import com.zjwam.zkw.entity.ResponseBean;
+import com.zjwam.zkw.entity.ResumeIdBean;
 import com.zjwam.zkw.entity.ResumePickerBean;
 import com.zjwam.zkw.httputils.HttpErrorMsg;
 import com.zjwam.zkw.mvp.model.CreateResumeModel;
@@ -96,14 +97,14 @@ public class CreateResumePresenter implements ICreateResumePresenter {
         param.put("phone",phone);
         param.put("evaluate",evaluate);
         param.put("skill",skill);
-        createResumeModel.saveResume(Config.URL + "api/resume/saveResume", context, param ,new BasicCallback<ResponseBean<CurriculumSelectBean>>() {
+        createResumeModel.saveResume(Config.URL + "api/resume/saveResume", context, param ,new BasicCallback<ResponseBean<ResumeIdBean>>() {
             @Override
-            public void onSuccess(Response<ResponseBean<CurriculumSelectBean>> response) {
+            public void onSuccess(Response<ResponseBean<ResumeIdBean>> response) {
                 createResumeView.saveResume(response.body().data.getId());
             }
 
             @Override
-            public void onError(Response<ResponseBean<CurriculumSelectBean>> response) {
+            public void onError(Response<ResponseBean<ResumeIdBean>> response) {
                 Throwable exception = response.getException();
                 String error = HttpErrorMsg.getErrorMsg(exception);
                 createResumeView.showMsg(error);
