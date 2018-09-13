@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
@@ -24,8 +25,9 @@ import com.zjwam.zkw.entity.MineJobResumeBean;
 import com.zjwam.zkw.mvp.presenter.MineJobResumePresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.IMineJobResumePresenter;
 import com.zjwam.zkw.mvp.view.IMineJobResumeView;
-import com.zjwam.zkw.personalcenter.CreateResumeActivity;
-import com.zjwam.zkw.personalcenter.MineJobActivity;
+import com.zjwam.zkw.personalcenter.job.CreateResumeActivity;
+import com.zjwam.zkw.personalcenter.job.MineJobActivity;
+import com.zjwam.zkw.personalcenter.job.ResumeDetailsActivity;
 
 import java.util.List;
 
@@ -94,6 +96,14 @@ public class ResumeFragment extends Fragment implements IMineJobResumeView{
                 if (context instanceof MineJobActivity){
                     ((MineJobActivity) context).error(String.valueOf(position));
                 }
+            }
+        });
+        lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString("id", String.valueOf(jobResumeAdapter.getDataList().get(position).getId()));
+                startActivity(new Intent(getActivity(), ResumeDetailsActivity.class).putExtras(bundle));
             }
         });
         resume_fab.setOnClickListener(new View.OnClickListener() {

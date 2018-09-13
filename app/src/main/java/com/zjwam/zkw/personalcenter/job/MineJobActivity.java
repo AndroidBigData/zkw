@@ -1,4 +1,4 @@
-package com.zjwam.zkw.personalcenter;
+package com.zjwam.zkw.personalcenter.job;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;

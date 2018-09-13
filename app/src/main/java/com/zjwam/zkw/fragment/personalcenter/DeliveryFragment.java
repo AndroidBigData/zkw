@@ -23,7 +23,7 @@ import com.zjwam.zkw.entity.MineJobDeliveryBean;
 import com.zjwam.zkw.mvp.presenter.MineJobDeliveryPresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.IMineJobDeliveryPresenter;
 import com.zjwam.zkw.mvp.view.IMineJobDeliveryView;
-import com.zjwam.zkw.personalcenter.MineJobActivity;
+import com.zjwam.zkw.personalcenter.job.MineJobActivity;
 
 import java.util.List;
 

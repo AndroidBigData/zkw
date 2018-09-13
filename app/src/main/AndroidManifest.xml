@@ -169,7 +169,7 @@
             android:name=".job.JobDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".personalcenter.MineJobActivity"
+            android:name=".personalcenter.job.MineJobActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".job.SearchJobActivity"
@@ -182,10 +182,11 @@
             android:name=".job.ProfessionChoiceActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".job.SearchJobDetailsActivity" />
-        <activity android:name=".personalcenter.CreateResumeActivity" />
-        <activity android:name=".personalcenter.AddJobEducationalActivity" />
-        <activity android:name=".personalcenter.AddJobExperienceActivity" />
-        <activity android:name=".personalcenter.AddJobProjectActivity"></activity>
+        <activity android:name=".personalcenter.job.CreateResumeActivity" />
+        <activity android:name=".personalcenter.job.AddJobEducationalActivity" />
+        <activity android:name=".personalcenter.job.AddJobExperienceActivity" />
+        <activity android:name=".personalcenter.job.AddJobProjectActivity" />
+        <activity android:name=".personalcenter.job.ResumeDetailsActivity"></activity>
     </application>
 
 </manifest>

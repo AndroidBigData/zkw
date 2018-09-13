@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".personalcenter.CreateResumeActivity"
+    tools:context=".personalcenter.job.CreateResumeActivity"
     android:orientation="vertical"
     android:background="@color/register_choice_background">
 

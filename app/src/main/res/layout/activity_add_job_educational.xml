@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".personalcenter.AddJobEducationalActivity"
+    tools:context=".personalcenter.job.AddJobEducationalActivity"
     android:background="@color/register_choice_background"
     android:orientation="vertical">
 

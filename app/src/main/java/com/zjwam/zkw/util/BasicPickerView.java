@@ -1,7 +1,6 @@
 package com.zjwam.zkw.util;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
@@ -11,7 +10,6 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.zjwam.zkw.R;
-import com.zjwam.zkw.personalcenter.AddJobEducationalActivity;
 
 import java.util.Date;
 import java.util.List;

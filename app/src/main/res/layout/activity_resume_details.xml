@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/register_choice_background"
+    android:orientation="vertical"
+    tools:context=".personalcenter.job.ResumeDetailsActivity">
+
+    <include layout="@layout/base_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                style="@style/resumeLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="简历名称"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/resume_name"
+                    style="@style/resumeStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/personal_header"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/resumeLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="求职类型"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/resume_details_type"
+                    style="@style/resumeStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/personal_header"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/resumeLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="职位类别"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/resume_details_job"
+                    style="@style/resumeStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/personal_header"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/resumeLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="到岗时间"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/resume_details_time"
+                    style="@style/resumeStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/personal_header"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/resumeLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="期望薪资"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/resume_details_money"
+                    style="@style/resumeStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/personal_header"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/resumeLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="姓名"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/resume_details_name"
+                    style="@style/resumeStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/personal_header"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/resumeLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="性别"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/resume_details_sex"
+                    style="@style/resumeStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/personal_header"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/resumeLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="年龄"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/resume_details_age"
+                    style="@style/resumeStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/personal_header"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/resumeLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="电话"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/resume_details_phone"
+                    style="@style/resumeStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/personal_header"/>
+            </LinearLayout>
+
+            <com.github.jdsjlzx.recyclerview.LRecyclerView
+                android:id="@+id/resume_details_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/ggmm_shape"
+                android:orientation="vertical"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="自我评价"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/resume_details_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="top"
+                    android:textColor="@color/personal_header"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/ggmm_shape"
+                android:orientation="vertical"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="专业技能"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/resume_details_skill"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="top"
+                    android:textColor="@color/personal_header"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

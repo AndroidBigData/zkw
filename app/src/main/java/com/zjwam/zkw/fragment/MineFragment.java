@@ -37,7 +37,7 @@ import com.zjwam.zkw.personalcenter.MineCollectionActivity;
 import com.zjwam.zkw.personalcenter.MineCommentActivity;
 import com.zjwam.zkw.personalcenter.MineExamBankActivity;
 import com.zjwam.zkw.personalcenter.MineIntegralActivity;
-import com.zjwam.zkw.personalcenter.MineJobActivity;
+import com.zjwam.zkw.personalcenter.job.MineJobActivity;
 import com.zjwam.zkw.personalcenter.MineLearnCardActivity;
 import com.zjwam.zkw.personalcenter.MineNoteBookActivity;
 import com.zjwam.zkw.personalcenter.MineOrderActivity;
