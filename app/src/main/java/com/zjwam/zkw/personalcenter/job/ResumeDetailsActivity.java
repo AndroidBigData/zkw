@@ -1,5 +1,6 @@
 package com.zjwam.zkw.personalcenter.job;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.zjwam.zkw.BaseActivity;
@@ -51,6 +53,15 @@ public class ResumeDetailsActivity extends BaseActivity implements IResumeDetail
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+        lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString("type", String.valueOf(resumeDetailsAdapter.getDataList().get(position).getType()));
+                bundle.putString("id", String.valueOf(resumeDetailsAdapter.getDataList().get(position).getId()));
+                startActivity(new Intent(getBaseContext(),ResumePreviewActivity.class).putExtras(bundle));
             }
         });
     }
