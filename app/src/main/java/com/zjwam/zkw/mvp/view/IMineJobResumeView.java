@@ -9,4 +9,5 @@ public interface IMineJobResumeView {
     void showMsg(String msg);
     void refresh();
     void refreshComplete();
+    void deleteResume();
 }

@@ -42,6 +42,7 @@ public class ResumeFragment extends Fragment implements IMineJobResumeView{
     private ImageView resume_nodata;
     private IMineJobResumePresenter mineJobResumePresenter;
     private FloatingActionButton resume_fab;
+    private int deletePosition;
 
     public ResumeFragment() {
         // Required empty public constructor
@@ -87,7 +88,9 @@ public class ResumeFragment extends Fragment implements IMineJobResumeView{
             @Override
             public void deleteResume(int position) {
                 if (context instanceof MineJobActivity){
-                    ((MineJobActivity) context).error(String.valueOf(position));
+//                    ((MineJobActivity) context).error(String.valueOf(position));
+                    deletePosition = position;
+                    mineJobResumePresenter.deleteResume(String.valueOf(jobResumeAdapter.getDataList().get(deletePosition).getId()));
                 }
             }
 
@@ -153,5 +156,10 @@ public class ResumeFragment extends Fragment implements IMineJobResumeView{
     public void refreshComplete() {
         resume_recyclerview.refreshComplete(10);
         lRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void deleteResume() {
+        jobResumeAdapter.remove(deletePosition);
     }
 }

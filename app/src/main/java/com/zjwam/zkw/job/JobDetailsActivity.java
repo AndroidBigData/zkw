@@ -19,12 +19,17 @@ import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.zjwam.zkw.BaseActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.JobDetailsAdapter;
+import com.zjwam.zkw.customview.ChoiceResumeDialog;
 import com.zjwam.zkw.customview.FlowLayout;
 import com.zjwam.zkw.entity.JobDetailsBean;
+import com.zjwam.zkw.entity.MineJobResumeBean;
 import com.zjwam.zkw.mvp.presenter.JobDeatailsPresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.IJobDetailsPresenter;
 import com.zjwam.zkw.mvp.view.IJobDetailsView;
 import com.zjwam.zkw.util.GlideImageUtil;
+import com.zjwam.zkw.util.ZkwPreference;
+
+import java.util.List;
 
 public class JobDetailsActivity extends BaseActivity implements IJobDetailsView{
 
@@ -40,6 +45,8 @@ public class JobDetailsActivity extends BaseActivity implements IJobDetailsView{
     private JobDetailsAdapter jobDetailsAdapter;
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private boolean isHold = false;
+    private String jid,cid;
+    private ChoiceResumeDialog choiceResumeDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +61,11 @@ public class JobDetailsActivity extends BaseActivity implements IJobDetailsView{
         submit_resume.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (ZkwPreference.getInstance(getBaseContext()).IsFlag()){
+                    jobDetailsPresenter.getResume();
+                }else {
+                    error("请先登录");
+                }
 
             }
         });
@@ -144,6 +156,8 @@ public class JobDetailsActivity extends BaseActivity implements IJobDetailsView{
         job_dedails_companyNum.setText("在招职位"+jobDetailsBean.getCount()+"个");
         initBenefit();
         jobDetailsAdapter.addAll(jobDetailsBean.getRecommend());
+        cid = String.valueOf(jobDetailsBean.getCompany_id());
+        jid = String.valueOf(jobDetailsBean.getId());
     }
 
     private void isHold(){
@@ -197,6 +211,28 @@ public class JobDetailsActivity extends BaseActivity implements IJobDetailsView{
     @Override
     public void holdFinish() {
         job_dedails_hold.setEnabled(true);
+    }
+
+    @Override
+    public void showDialog(List<MineJobResumeBean> data) {
+        if (data.size()>0){
+            choiceResumeDialog = new ChoiceResumeDialog(JobDetailsActivity.this,data);
+            choiceResumeDialog.show();
+            choiceResumeDialog.setSendResume(new ChoiceResumeDialog.SendResume() {
+                @Override
+                public void getId(String rid) {
+                    jobDetailsPresenter.sendResume(rid,jid,cid);
+                }
+            });
+        }else {
+            error("请前往个人中心创建简历");
+        }
+
+    }
+
+    @Override
+    public void sendResume() {
+        choiceResumeDialog.dismiss();
     }
 
 }

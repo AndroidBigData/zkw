@@ -5,6 +5,7 @@ import android.content.Context;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.callback.BasicCallback;
 import com.zjwam.zkw.callback.JsonCallback;
+import com.zjwam.zkw.entity.EmptyBean;
 import com.zjwam.zkw.entity.MineJobResumeBean;
 import com.zjwam.zkw.entity.ResponseBean;
 import com.zjwam.zkw.httputils.OkGoUtils;
@@ -41,5 +42,28 @@ public class MineJobResumeModel implements IMineJobResumeModel {
     @Override
     public String uid(Context context) {
         return ZkwPreference.getInstance(context).getUid();
+    }
+
+    @Override
+    public void deleteResume(String url, Object context, Map<String, String> param, final BasicCallback<ResponseBean<List<EmptyBean>>> basicCallback) {
+        JsonCallback<ResponseBean<List<EmptyBean>>> jsonCallback = new JsonCallback<ResponseBean<List<EmptyBean>>>() {
+            @Override
+            public void onSuccess(Response<ResponseBean<List<EmptyBean>>> response) {
+                basicCallback.onSuccess(response);
+            }
+
+            @Override
+            public void onError(Response<ResponseBean<List<EmptyBean>>> response) {
+                super.onError(response);
+                basicCallback.onError(response);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                basicCallback.onFinish();
+            }
+        };
+        OkGoUtils.postRequets(url,context,param,jsonCallback);
     }
 }
