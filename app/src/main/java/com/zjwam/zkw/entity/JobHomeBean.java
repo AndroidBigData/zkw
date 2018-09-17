@@ -17,7 +17,7 @@ public class JobHomeBean {
     public class Resume{
         private String job_name,create_time,company_name,salary,area,type;
         private List<Benefit> benefit;
-        private long id;
+        private long id,hold_id;
 
         public String getJob_name() {
             return job_name;
@@ -37,6 +37,10 @@ public class JobHomeBean {
 
         public long getId() {
             return id;
+        }
+
+        public long getHold_id() {
+            return hold_id;
         }
 
         public String getArea() {

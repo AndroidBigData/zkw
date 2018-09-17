@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:orientation="horizontal"
+    android:background="@drawable/ggmm_shape"
+    android:layout_marginBottom="10dp">
+
+    <ImageView
+        android:id="@+id/employment_item_img"
+        android:layout_width="144dp"
+        android:layout_height="80dp"
+        android:src="@drawable/homepage_background"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginStart="10dp">
+        <TextView
+            android:id="@+id/employment_item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="求职招聘就业指导求职招聘就业指导求职招聘就业指导求职招聘就业指导"
+            android:textSize="16sp"
+            android:textColor="@color/personal_header"/>
+        <TextView
+            android:id="@+id/employment_item_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_gray"
+            android:layout_alignParentBottom="true"
+            android:text="2018.9.17"
+            android:textSize="12sp"/>
+        <TextView
+            android:id="@+id/employment_item_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color_gray"
+            android:layout_alignParentBottom="true"
+            android:text=" 2018"
+            android:textSize="12sp"
+            android:layout_alignParentEnd="true"
+            android:drawableStart="@drawable/look_num"/>
+        <TextView
+            android:id="@+id/employment_item_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/employment_item_time"
+            android:layout_toEndOf="@+id/employment_item_time"
+            android:layout_marginStart="10dp"
+            android:drawableStart="@drawable/from"
+            android:text=" 中教网盟"
+            android:textSize="12sp"
+            android:textColor="@color/text_color_gray"/>
+    </RelativeLayout>
+</LinearLayout>

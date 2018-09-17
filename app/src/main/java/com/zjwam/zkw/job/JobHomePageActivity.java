@@ -115,10 +115,14 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
                 case R.id.job_hr:
                     break;
                 case R.id.job_zd:
+                    startActivity(new Intent(getBaseContext(),JobEmploymentActivity.class));
                     break;
                 case R.id.job_test:
                     break;
                 case R.id.job_gh:
+                    Bundle bundle = new Bundle();
+                    bundle.putString("city",search_fl.getText().toString());
+                    startActivity(new Intent(getBaseContext(),SearchJobActivity.class).putExtras(bundle));
                     break;
                 case R.id.search_fl:
                     showCityPicker();
@@ -127,9 +131,14 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
                     finish();
                     break;
                 case R.id.search_title_job:
-                    Bundle bundle = new Bundle();
-                    bundle.putString("city",search_fl.getText().toString());
-                    startActivity(new Intent(getBaseContext(),SearchJobActivity.class).putExtras(bundle));
+                    if (search_fl.getText().toString().length()>0){
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString("city",search_fl.getText().toString());
+                        startActivity(new Intent(getBaseContext(),SearchJobDetailsActivity.class).putExtras(bundle1));
+                    }else {
+                        error("请选择城市！");
+                        showCityPicker();
+                    }
                     break;
             }
         }

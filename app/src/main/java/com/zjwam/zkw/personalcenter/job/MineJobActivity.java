@@ -1,5 +1,6 @@
 package com.zjwam.zkw.personalcenter.job;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -23,7 +24,7 @@ public class MineJobActivity extends BaseActivity {
 
     private TabLayout mine_job_tab;
     private TextView title;
-    private ImageView back;
+    private ImageView back,job_hold;
     private ResumeFragment resumeFragment;
     private DeliveryFragment deliveryFragment;
     private List<String> titleList;
@@ -59,6 +60,12 @@ public class MineJobActivity extends BaseActivity {
                 finish();
             }
         });
+        job_hold.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getBaseContext(),JobHoldActivity.class));
+            }
+        });
     }
 
     private void initView() {
@@ -66,6 +73,7 @@ public class MineJobActivity extends BaseActivity {
         title = findViewById(R.id.title);
         back = findViewById(R.id.back);
         mine_job_viewpager = findViewById(R.id.mine_job_viewpager);
+        job_hold = findViewById(R.id.job_hold);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

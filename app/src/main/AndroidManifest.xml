@@ -187,7 +187,9 @@
         <activity android:name=".personalcenter.job.AddJobExperienceActivity" />
         <activity android:name=".personalcenter.job.AddJobProjectActivity" />
         <activity android:name=".personalcenter.job.ResumeDetailsActivity" />
-        <activity android:name=".personalcenter.job.ResumePreviewActivity"></activity>
+        <activity android:name=".personalcenter.job.ResumePreviewActivity" />
+        <activity android:name=".job.JobEmploymentActivity" />
+        <activity android:name=".personalcenter.job.JobHoldActivity"></activity>
     </application>
 
 </manifest>
