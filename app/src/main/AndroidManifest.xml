@@ -189,7 +189,8 @@
         <activity android:name=".personalcenter.job.ResumeDetailsActivity" />
         <activity android:name=".personalcenter.job.ResumePreviewActivity" />
         <activity android:name=".job.JobEmploymentActivity" />
-        <activity android:name=".personalcenter.job.JobHoldActivity"></activity>
+        <activity android:name=".personalcenter.job.JobHoldActivity" />
+        <activity android:name=".personalcenter.job.MineDeliveryActivity"></activity>
     </application>
 
 </manifest>
