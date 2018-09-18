@@ -66,7 +66,6 @@ public class SearchJobDetailsActivity extends BaseActivity implements ISearchJob
         jobRecommendAdapter = new JobRecommendAdapter(this);
         lRecyclerViewAdapter = new LRecyclerViewAdapter(jobRecommendAdapter);
         search_details_recyclerview.setAdapter(lRecyclerViewAdapter);
-        search_details_recyclerview.setAdapter(lRecyclerViewAdapter);
         search_details_recyclerview.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         search_details_recyclerview.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
         search_details_recyclerview.setFooterViewColor(R.color.colorAccent, R.color.black, android.R.color.white);
