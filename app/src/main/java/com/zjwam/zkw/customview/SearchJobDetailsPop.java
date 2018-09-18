@@ -34,7 +34,7 @@ public class SearchJobDetailsPop extends PopupWindow {
         setWidth(-1);
         setHeight(-2);
         //设置PopupWindow的焦点
-        setFocusable(false);
+        setFocusable(true);
         //设置窗口以外的地方点击可关闭pop
         setOutsideTouchable(false);
         //设置背景透明

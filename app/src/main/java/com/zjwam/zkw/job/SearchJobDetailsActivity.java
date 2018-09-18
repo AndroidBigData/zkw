@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
@@ -34,11 +35,11 @@ public class SearchJobDetailsActivity extends BaseActivity implements ISearchJob
     private SearchJobDetailsPop searchJobDetailsPop;
     private View search_details_view;
     private TextView search_details_dq, search_details_xz, search_details_xl, search_details_gl;
-    private ImageView search_details_back,search_details_nodata;
+    private ImageView search_details_back, search_details_nodata;
     private EditText search_details_edit;
     private List<SearchJobDetailsPopBean.BasicBean> areaList, educationList, workyearList, moneyList;
     private ISearchJobDetailsPresenter searchJobDetailsPresenter;
-    private String city,name,industry,profession,dqId,xzId,xlId,glId,searchText="";
+    private String city, name, industry, profession, dqId, xzId, xlId, glId, searchText = "";
     private JobRecommendAdapter jobRecommendAdapter;
     private int mCurrentCounter, max_items, page;
     private boolean isRefresh;
@@ -76,10 +77,10 @@ public class SearchJobDetailsActivity extends BaseActivity implements ISearchJob
                 isRefresh = true;
                 page = 1;
                 mCurrentCounter = 0;
-                if (searchText.length()>0){
-                    searchJobDetailsPresenter.getSearchJobText(searchText,city,dqId,xzId,xlId,glId,isRefresh, String.valueOf(page));
-                }else {
-                    searchJobDetailsPresenter.getSearchJob(name,city,industry,profession,dqId,xzId,xlId,glId,isRefresh, String.valueOf(page));
+                if (searchText.length() > 0) {
+                    searchJobDetailsPresenter.getSearchJobText(searchText, city, dqId, xzId, xlId, glId, isRefresh, String.valueOf(page));
+                } else {
+                    searchJobDetailsPresenter.getSearchJob(name, city, industry, profession, dqId, xzId, xlId, glId, isRefresh, String.valueOf(page));
                 }
             }
         });
@@ -89,10 +90,10 @@ public class SearchJobDetailsActivity extends BaseActivity implements ISearchJob
                 isRefresh = false;
                 if (mCurrentCounter < max_items) {
                     page++;
-                    if (searchText.length()>0){
-                        searchJobDetailsPresenter.getSearchJobText(searchText,city,dqId,xzId,xlId,glId,isRefresh, String.valueOf(page));
-                    }else {
-                        searchJobDetailsPresenter.getSearchJob(name,city,industry,profession,dqId,xzId,xlId,glId,isRefresh, String.valueOf(page));
+                    if (searchText.length() > 0) {
+                        searchJobDetailsPresenter.getSearchJobText(searchText, city, dqId, xzId, xlId, glId, isRefresh, String.valueOf(page));
+                    } else {
+                        searchJobDetailsPresenter.getSearchJob(name, city, industry, profession, dqId, xzId, xlId, glId, isRefresh, String.valueOf(page));
                     }
                 } else {
                     search_details_recyclerview.setNoMore(true);
@@ -120,10 +121,10 @@ public class SearchJobDetailsActivity extends BaseActivity implements ISearchJob
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i == EditorInfo.IME_ACTION_SEARCH) {
-                    if (search_details_edit.getText().toString().trim().length()>0){
+                    if (search_details_edit.getText().toString().trim().length() > 0) {
                         searchText = search_details_edit.getText().toString();
                         search_details_recyclerview.refresh();
-                    }else {
+                    } else {
                         error("输入内容不得为空！");
                     }
                     KeyboardUtils.hideKeyboard(search_details_edit);
@@ -141,32 +142,60 @@ public class SearchJobDetailsActivity extends BaseActivity implements ISearchJob
                     if (areaList != null && areaList.size() > 0) {
                         searchJobDetailsPop = new SearchJobDetailsPop(SearchJobDetailsActivity.this, areaList);
                         search_details_dq.setTextColor(getResources().getColor(R.color.colorAccent));
-                        search_details_dq.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.jt_up),null);
+                        search_details_dq.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.jt_up), null);
                         popListener();
+                        searchJobDetailsPop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                            @Override
+                            public void onDismiss() {
+                                search_details_dq.setTextColor(getResources().getColor(R.color.personal_header));
+                                search_details_dq.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.jt_down), null);
+                            }
+                        });
                     }
                     break;
                 case R.id.search_details_xz:
                     if (educationList != null && educationList.size() > 0) {
-                        searchJobDetailsPop = new SearchJobDetailsPop(SearchJobDetailsActivity.this,moneyList );
+                        searchJobDetailsPop = new SearchJobDetailsPop(SearchJobDetailsActivity.this, moneyList);
                         search_details_xz.setTextColor(getResources().getColor(R.color.colorAccent));
-                        search_details_xz.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.jt_up),null);
+                        search_details_xz.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.jt_up), null);
                         popListener();
+                        searchJobDetailsPop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                            @Override
+                            public void onDismiss() {
+                                search_details_xz.setTextColor(getResources().getColor(R.color.personal_header));
+                                search_details_xz.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.jt_down), null);
+                            }
+                        });
                     }
                     break;
                 case R.id.search_details_xl:
                     if (moneyList != null && moneyList.size() > 0) {
                         searchJobDetailsPop = new SearchJobDetailsPop(SearchJobDetailsActivity.this, educationList);
                         search_details_xl.setTextColor(getResources().getColor(R.color.colorAccent));
-                        search_details_xl.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.jt_up),null);
+                        search_details_xl.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.jt_up), null);
                         popListener();
+                        searchJobDetailsPop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                            @Override
+                            public void onDismiss() {
+                                search_details_xl.setTextColor(getResources().getColor(R.color.personal_header));
+                                search_details_xl.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.jt_down), null);
+                            }
+                        });
                     }
                     break;
                 case R.id.search_details_gl:
                     if (workyearList != null && workyearList.size() > 0) {
                         searchJobDetailsPop = new SearchJobDetailsPop(SearchJobDetailsActivity.this, workyearList);
                         search_details_gl.setTextColor(getResources().getColor(R.color.colorAccent));
-                        search_details_gl.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.jt_up),null);
+                        search_details_gl.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.jt_up), null);
                         popListener();
+                        searchJobDetailsPop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                            @Override
+                            public void onDismiss() {
+                                search_details_gl.setTextColor(getResources().getColor(R.color.personal_header));
+                                search_details_gl.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.jt_down), null);
+                            }
+                        });
                     }
                     break;
                 case R.id.search_details_back:
@@ -177,33 +206,33 @@ public class SearchJobDetailsActivity extends BaseActivity implements ISearchJob
         }
     };
 
-    private void popListener(){
+    private void popListener() {
         searchJobDetailsPop.showAsDropDown(search_details_view);
         searchJobDetailsPop.setItemClickListener(new SearchJobDetailsPop.OnItemClickListener() {
             @Override
             public void onItemClick(int position, List<SearchJobDetailsPopBean.BasicBean> list) {
-                if (list.containsAll(areaList)){
+                if (list.containsAll(areaList)) {
                     search_details_dq.setText(list.get(position).getName());
                     dqId = String.valueOf(list.get(position).getId());
-                }else if (list.containsAll(moneyList)){
+                } else if (list.containsAll(moneyList)) {
                     search_details_xz.setText(list.get(position).getName());
                     xzId = String.valueOf(list.get(position).getId());
-                }else if (list.containsAll(educationList)){
+                } else if (list.containsAll(educationList)) {
                     search_details_xl.setText(list.get(position).getName());
                     xlId = String.valueOf(list.get(position).getId());
-                }else if (list.containsAll(workyearList)){
+                } else if (list.containsAll(workyearList)) {
                     search_details_gl.setText(list.get(position).getName());
                     glId = String.valueOf(list.get(position).getId());
                 }
                 search_details_recyclerview.refresh();
                 search_details_dq.setTextColor(getResources().getColor(R.color.personal_header));
-                search_details_dq.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.jt_down),null);
+                search_details_dq.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.jt_down), null);
                 search_details_xz.setTextColor(getResources().getColor(R.color.personal_header));
-                search_details_xz.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.jt_down),null);
+                search_details_xz.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.jt_down), null);
                 search_details_xl.setTextColor(getResources().getColor(R.color.personal_header));
-                search_details_xl.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.jt_down),null);
+                search_details_xl.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.jt_down), null);
                 search_details_gl.setTextColor(getResources().getColor(R.color.personal_header));
-                search_details_gl.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.jt_down),null);
+                search_details_gl.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.jt_down), null);
             }
         });
     }
@@ -236,11 +265,11 @@ public class SearchJobDetailsActivity extends BaseActivity implements ISearchJob
     @Override
     public void setSearchJob(List<JobHomeBean.Resume> list, int count) {
         max_items = count;
-        if (count>0){
+        if (count > 0) {
             jobRecommendAdapter.addAll(list);
             mCurrentCounter += list.size();
             search_details_nodata.setVisibility(View.GONE);
-        }else {
+        } else {
             search_details_nodata.setVisibility(View.VISIBLE);
         }
 
