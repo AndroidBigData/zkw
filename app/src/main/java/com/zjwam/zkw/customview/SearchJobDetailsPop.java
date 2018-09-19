@@ -17,6 +17,7 @@ public class SearchJobDetailsPop extends PopupWindow {
     private SearchJobDetailsPopAdapter jobDetailsPopAdapter;
     private List<SearchJobDetailsPopBean.BasicBean> list;
     private OnItemClickListener itemClickListener;
+    private View search_pop_view;
 
 
     public SearchJobDetailsPop(Context context, List<SearchJobDetailsPopBean.BasicBean> list) {
@@ -58,10 +59,17 @@ public class SearchJobDetailsPop extends PopupWindow {
                 }
             }
         });
+        search_pop_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
     }
 
     private void initView(View popView) {
         search_pop_recyclerview = popView.findViewById(R.id.search_pop_recyclerview);
+        search_pop_view = popView.findViewById(R.id.search_pop_view);
     }
 
     public void setItemClickListener(OnItemClickListener itemClickListener) {
