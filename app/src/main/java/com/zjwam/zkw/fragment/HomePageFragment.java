@@ -47,6 +47,7 @@ import com.zjwam.zkw.fragment.HomePageYJS.Item2Fragment;
 import com.zjwam.zkw.fragment.HomePageYJS.Iten1Fragment;
 import com.zjwam.zkw.job.JobHomePageActivity;
 import com.zjwam.zkw.jsondata.HomePageJson2Class;
+import com.zjwam.zkw.news.NewsActivity;
 import com.zjwam.zkw.search.SearchActivity;
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.GlideImageUtil;
@@ -80,7 +81,7 @@ public class HomePageFragment extends Fragment {
     private List<LunboBean> lunboBean;
     private List<HomePageKCTJInfo> homePageKCTJInfos;
     private RelativeLayout homepage_search;
-    private LinearLayout dh_xzx,dh_zkw,dh_mnw,dh_yjs,dh_jyqz;
+    private LinearLayout dh_xzx,dh_zkw,dh_mnw,dh_yjs,dh_jyqz,dh_xwzx;
     private List<ClassInfo> data;
     private boolean isInitCache = false;
     private onJumpListener onJumpListener;
@@ -163,6 +164,7 @@ public class HomePageFragment extends Fragment {
         dh_mnw.setOnClickListener(onClickListener);
         dh_yjs.setOnClickListener(onClickListener);
         dh_jyqz.setOnClickListener(onClickListener);
+        dh_xwzx.setOnClickListener(onClickListener);
         list_more.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -224,6 +226,9 @@ private View.OnClickListener onClickListener = new View.OnClickListener() {
                 break;
             case R.id.dh_jyqz:
                 startActivity(new Intent(getActivity(), JobHomePageActivity.class));
+                break;
+            case R.id.dh_xwzx:
+                startActivity(new Intent(getActivity(), NewsActivity.class));
                 break;
             case R.id.yjs_item_bg:
                 wid = itemImgstest.get(0).getWid();
@@ -529,6 +534,7 @@ private View.OnClickListener onClickListener = new View.OnClickListener() {
         dh_mnw = getActivity().findViewById(R.id.dh_mnw);
         dh_yjs = getActivity().findViewById(R.id.dh_yjs);
         dh_jyqz = getActivity().findViewById(R.id.dh_jyqz);
+        dh_xwzx = getActivity().findViewById(R.id.dh_xwzx);
         list_more = getActivity().findViewById(R.id.list_more);
 
 

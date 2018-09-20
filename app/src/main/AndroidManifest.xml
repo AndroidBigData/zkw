@@ -190,7 +190,9 @@
         <activity android:name=".personalcenter.job.ResumePreviewActivity" />
         <activity android:name=".job.JobEmploymentActivity" />
         <activity android:name=".personalcenter.job.JobHoldActivity" />
-        <activity android:name=".personalcenter.job.MineDeliveryActivity"></activity>
+        <activity android:name=".personalcenter.job.MineDeliveryActivity" />
+        <activity android:name=".news.NewsActivity" />
+        <activity android:name=".news.NewsMoreActivity"></activity>
     </application>
 
 </manifest>
