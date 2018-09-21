@@ -192,7 +192,8 @@
         <activity android:name=".personalcenter.job.JobHoldActivity" />
         <activity android:name=".personalcenter.job.MineDeliveryActivity" />
         <activity android:name=".news.NewsActivity" />
-        <activity android:name=".news.NewsMoreActivity"></activity>
+        <activity android:name=".news.NewsMoreActivity" />
+        <activity android:name=".news.TeacherMoreActivity"></activity>
     </application>
 
 </manifest>
