@@ -31,7 +31,7 @@ public class NewsMorePresenter implements INewsMorePresenter {
     @Override
     public void getNews(String id, String page, final boolean isRefresh) {
         param = new HashMap<>();
-        param.put("id",id);
+        param.put("cid",id);
         param.put("page",page);
         newsMoreModel.getNews(Config.URL + "api/news/news_lists", context, param, new BasicCallback<ResponseBean<NewsMoreBean>>() {
             @Override

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".news.ClassNewsMoreActivity"
+    android:orientation="vertical"
+    android:background="@color/register_choice_background">
+
+    <include
+        layout="@layout/base_title"
+        android:id="@+id/class_news_more_title"/>
+
+    <com.github.jdsjlzx.recyclerview.LRecyclerView
+        android:id="@+id/class_news_more_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/class_news_more_title"/>
+
+    <ImageView
+        android:id="@+id/class_news_more_nodata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/no_data"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+</RelativeLayout>

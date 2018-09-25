@@ -24,6 +24,7 @@ import com.zjwam.zkw.entity.ClassNewsBean;
 import com.zjwam.zkw.mvp.presenter.ClassNewsPresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.IClassNewsPresenter;
 import com.zjwam.zkw.mvp.view.IClassNewsView;
+import com.zjwam.zkw.news.ClassNewsMoreActivity;
 import com.zjwam.zkw.news.NewsActivity;
 import com.zjwam.zkw.news.TeacherMoreActivity;
 import com.zjwam.zkw.videoplayer.Video2PlayActivity;
@@ -39,7 +40,7 @@ public class ClassNewsFragment extends Fragment implements IClassNewsView{
     private RecyclerView updata_recyclerview,teacher_recyclerview,fine_recyclerview,hot_recyclerview;
     private TextView updata_more,fine_more,hot_more;
     private IClassNewsPresenter classNewsPresenter;
-
+    private String updata_id,fine_id,hot_id;
 
     public ClassNewsFragment() {
         // Required empty public constructor
@@ -127,6 +128,31 @@ public class ClassNewsFragment extends Fragment implements IClassNewsView{
                 jump2Class(hotClassAdapter,position);
             }
         });
+        updata_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                jump2More(updata_id,"课程更新");
+            }
+        });
+        fine_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                jump2More(fine_id,"精品课程");
+            }
+        });
+        hot_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                jump2More(hot_id,"热播课程");
+            }
+        });
+    }
+
+    private void jump2More(String id,String title){
+        Bundle bundle = new Bundle();
+        bundle.putString("id",id);
+        bundle.putString("title",title);
+        startActivity(new Intent(getActivity(),ClassNewsMoreActivity.class).putExtras(bundle));
     }
 
     private void jump2Class(ClassNewsAdapter adapter,int position){
@@ -154,6 +180,15 @@ public class ClassNewsFragment extends Fragment implements IClassNewsView{
         teacherAdapter.addAll(teacher);
         fineClassAdapter.addAll(fineClass);
         hotClassAdapter.addAll(hotClass);
+        if (newClass.size()>0){
+            updata_id = String.valueOf(newClass.get(0).getCate_id());
+        }
+        if (fineClass.size()>0){
+            fine_id = String.valueOf(fineClass.get(0).getCate_id());
+        }
+        if (hotClass.size()>0){
+            hot_id = String.valueOf(hotClass.get(0).getCate_id());
+        }
     }
 
     @Override
