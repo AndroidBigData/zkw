@@ -37,7 +37,7 @@ public class ClassNewsFragment extends Fragment implements IClassNewsView{
     private Context context;
     private ClassNewsAdapter newClassAdapter,teacherAdapter,fineClassAdapter,hotClassAdapter;
     private RecyclerView updata_recyclerview,teacher_recyclerview,fine_recyclerview,hot_recyclerview;
-    private TextView updata_more,teacher_more,fine_more,hot_more;
+    private TextView updata_more,fine_more,hot_more;
     private IClassNewsPresenter classNewsPresenter;
 
 
@@ -144,7 +144,6 @@ public class ClassNewsFragment extends Fragment implements IClassNewsView{
         fine_recyclerview = getActivity().findViewById(R.id.fine_recyclerview);
         hot_recyclerview = getActivity().findViewById(R.id.hot_recyclerview);
         updata_more = getActivity().findViewById(R.id.updata_more);
-        teacher_more = getActivity().findViewById(R.id.teacher_more);
         fine_more = getActivity().findViewById(R.id.fine_more);
         hot_more = getActivity().findViewById(R.id.hot_more);
     }

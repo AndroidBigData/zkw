@@ -62,16 +62,6 @@
                 android:textColor="@color/personal_header"
                 android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/teacher_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:drawableEnd="@drawable/more"
-                android:text="更多  "
-                android:textColor="@color/personal_header"
-                android:textSize="12sp" />
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/teacher_recyclerview"
                 android:layout_width="match_parent"

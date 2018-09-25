@@ -2,7 +2,10 @@ package com.zjwam.zkw.news;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.zjwam.zkw.BaseActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.TeacherMoreAdapter;
+import com.zjwam.zkw.adapter.TeacherMoreRYAdapter;
 import com.zjwam.zkw.entity.TeacherMoreBean;
 import com.zjwam.zkw.mvp.presenter.TeacherMorePresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.ITeacherMorePresenter;
@@ -29,6 +33,7 @@ public class TeacherMoreActivity extends BaseActivity implements ITeacherMoreVie
     private TextView title,teacher_more_name,teacher_more_jj,teacher_more_jianjie,teacher_more_rongyu;
     private RecyclerView more_recyclerview_rongyu,teacher_more_class;
     private TeacherMoreAdapter teacherMoreAdapter;
+    private TeacherMoreRYAdapter teacherMoreRYAdapter;
     private String id;
     private ITeacherMorePresenter teacherMorePresenter;
 
@@ -53,6 +58,15 @@ public class TeacherMoreActivity extends BaseActivity implements ITeacherMoreVie
         teacherMoreAdapter = new TeacherMoreAdapter(this);
         teacher_more_class.setAdapter(teacherMoreAdapter);
         teacher_more_class.setLayoutManager(new GridLayoutManager(getBaseContext(),2));
+
+        DividerItemDecoration divider = new DividerItemDecoration(getBaseContext(),DividerItemDecoration.HORIZONTAL);
+        divider.setDrawable(ContextCompat.getDrawable(getBaseContext(),R.drawable.divider_white));
+        teacherMoreRYAdapter = new TeacherMoreRYAdapter(this);
+        more_recyclerview_rongyu.setAdapter(teacherMoreRYAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        more_recyclerview_rongyu.addItemDecoration(divider);
+        more_recyclerview_rongyu.setLayoutManager(linearLayoutManager);
         teacherMorePresenter.getInfo(id);
         teacherMoreAdapter.setOnClickListener(new TeacherMoreAdapter.OnClickListener() {
             @Override
@@ -91,6 +105,7 @@ public class TeacherMoreActivity extends BaseActivity implements ITeacherMoreVie
             teacher_more_jianjie.setText(teacher.getInfo());
         }
         teacher_more_rongyu.setText(teacher.getHonor());
+        teacherMoreRYAdapter.addAll(teacher.getHonor_img());
         teacherMoreAdapter.addAll(classfor);
     }
 
