@@ -2,7 +2,7 @@ package com.zjwam.zkw.entity;
 
 public class NewsBean {
     private String title_img,title,create_time,url;
-    private long id;
+    private long id,cid;
 
     public String getTitle_img() {
         return title_img;
@@ -22,5 +22,9 @@ public class NewsBean {
 
     public long getId() {
         return id;
+    }
+
+    public long getCid() {
+        return cid;
     }
 }

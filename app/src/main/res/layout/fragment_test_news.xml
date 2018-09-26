@@ -1,14 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/register_choice_background"
+    android:scrollbars="none"
     tools:context=".fragment.news.TestNewsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="考试资讯" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ggmm_shape">
+
+            <TextView
+                android:id="@+id/test_query"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/test_query"
+                android:padding="10dp"
+                android:text="  考试查询"
+                android:textColor="@color/personal_header"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/curriculun_checked_item_shape">
+                    <Spinner
+                        android:id="@+id/test_query_spinner"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"/>
+                </RelativeLayout>
+                <TextView
+                    android:id="@+id/query"
+                    android:layout_width="50dp"
+                    android:layout_height="26dp"
+                    android:background="@drawable/btn_bule_shap"
+                    android:text="查询"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    android:layout_marginStart="20dp"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/ggmm_shape"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/class_news_updata"
+                android:padding="10dp"
+                android:text="  行业聚焦"
+                android:textColor="@color/personal_header"
+                android:textSize="14sp" />
+            <com.github.jdsjlzx.recyclerview.LRecyclerView
+                android:id="@+id/test_hyjj_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/test_hyjj_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查看更多 "
+                android:textColor="@color/text_color_gray"
+                android:textSize="12sp"
+                android:drawableEnd="@drawable/news_down"
+                android:layout_gravity="center_horizontal"
+                android:padding="4dp"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/ggmm_shape"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/class_news_fine"
+                android:padding="10dp"
+                android:text="  考试动态"
+                android:textColor="@color/personal_header"
+                android:textSize="14sp" />
+            <com.github.jdsjlzx.recyclerview.LRecyclerView
+                android:id="@+id/test_ksdt_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/test_ksdt_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查看更多 "
+                android:textColor="@color/text_color_gray"
+                android:textSize="12sp"
+                android:drawableEnd="@drawable/news_down"
+                android:layout_gravity="center_horizontal"
+                android:padding="4dp"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/ggmm_shape"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/class_news_teacherhot"
+                android:padding="10dp"
+                android:text="  热点专题"
+                android:textColor="@color/personal_header"
+                android:textSize="14sp" />
+            <com.github.jdsjlzx.recyclerview.LRecyclerView
+                android:id="@+id/test_rdzt_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/test_rdzt_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查看更多 "
+                android:textColor="@color/text_color_gray"
+                android:textSize="12sp"
+                android:drawableEnd="@drawable/news_down"
+                android:layout_gravity="center_horizontal"
+                android:padding="4dp"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/ggmm_shape"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/test_jcdg"
+                android:padding="10dp"
+                android:text="  教材大纲"
+                android:textColor="@color/personal_header"
+                android:textSize="14sp" />
+            <com.github.jdsjlzx.recyclerview.LRecyclerView
+                android:id="@+id/test_jcdg_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/test_jcdg_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查看更多 "
+                android:textColor="@color/text_color_gray"
+                android:textSize="12sp"
+                android:drawableEnd="@drawable/news_down"
+                android:layout_gravity="center_horizontal"
+                android:padding="4dp"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/ggmm_shape"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/test_jqxd"
+                android:padding="10dp"
+                android:text="  技巧心得"
+                android:textColor="@color/personal_header"
+                android:textSize="14sp" />
+            <com.github.jdsjlzx.recyclerview.LRecyclerView
+                android:id="@+id/test_jqxd_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/test_jqxd_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查看更多 "
+                android:textColor="@color/text_color_gray"
+                android:textSize="12sp"
+                android:drawableEnd="@drawable/news_down"
+                android:layout_gravity="center_horizontal"
+                android:padding="4dp"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

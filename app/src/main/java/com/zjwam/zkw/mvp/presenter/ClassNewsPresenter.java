@@ -26,7 +26,7 @@ public class ClassNewsPresenter implements IClassNewsPresenter {
 
     @Override
     public void getNews() {
-        classNewsModel.getNews(Config.URL + "api/news/class", context, null, new BasicCallback<ResponseBean<ClassNewsBean>>() {
+        classNewsModel.getNews(Config.URL + "api/news/classes", context, null, new BasicCallback<ResponseBean<ClassNewsBean>>() {
             @Override
             public void onSuccess(Response<ResponseBean<ClassNewsBean>> response) {
                 ClassNewsBean classNewsBean = response.body().data;
