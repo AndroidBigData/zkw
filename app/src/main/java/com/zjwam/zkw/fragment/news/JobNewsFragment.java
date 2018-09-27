@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,7 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.NewsAdapter;
+import com.zjwam.zkw.adapter.TeacherMoreRYAdapter;
 import com.zjwam.zkw.entity.NewsBean;
 import com.zjwam.zkw.mvp.presenter.JobNewsPresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.IJobNewsPresenter;
@@ -31,10 +35,12 @@ import java.util.List;
  */
 public class JobNewsFragment extends Fragment implements IJobNewsView {
     private Context context;
-    private LRecyclerView job_qzzx_recyclerview,job_zpzx_recyclerview;
-    private TextView job_qzzx_more,job_zpzx_more;
-    private LRecyclerViewAdapter qzzxRecyclerViewAdapter,zpzxRecyclerViewAdapter;
-    private NewsAdapter qzzxAdapter,zpzxAdapter;
+    private RecyclerView mqtj_recyclerview;
+    private TeacherMoreRYAdapter adapter;
+    private LRecyclerView job_qzzx_recyclerview,job_zpzx_recyclerview,job_mqzx_recyclerview;
+    private TextView job_qzzx_more,job_zpzx_more,job_mqzx_more;
+    private LRecyclerViewAdapter qzzxRecyclerViewAdapter,zpzxRecyclerViewAdapter,mqzxRecyclerViewAdapter;
+    private NewsAdapter qzzxAdapter,zpzxAdapter,mqzxAdapter;
     private IJobNewsPresenter jobNewsPresenter;
     public JobNewsFragment() {
         // Required empty public constructor
@@ -66,16 +72,22 @@ public class JobNewsFragment extends Fragment implements IJobNewsView {
         jobNewsPresenter.getNews("");
         qzzxAdapter = new NewsAdapter(context);
         zpzxAdapter = new NewsAdapter(context);
+        mqzxAdapter = new NewsAdapter(context);
         qzzxRecyclerViewAdapter = new LRecyclerViewAdapter(qzzxAdapter);
         zpzxRecyclerViewAdapter = new LRecyclerViewAdapter(zpzxAdapter);
+        mqzxRecyclerViewAdapter = new LRecyclerViewAdapter(mqzxAdapter);
         job_qzzx_recyclerview.setAdapter(qzzxRecyclerViewAdapter);
         job_zpzx_recyclerview.setAdapter(zpzxRecyclerViewAdapter);
+        job_mqzx_recyclerview.setAdapter(mqzxRecyclerViewAdapter);
         job_qzzx_recyclerview.setLayoutManager(new LinearLayoutManager(context));
         job_zpzx_recyclerview.setLayoutManager(new LinearLayoutManager(context));
+        job_mqzx_recyclerview.setLayoutManager(new LinearLayoutManager(context));
         job_qzzx_recyclerview.setPullRefreshEnabled(false);
         job_qzzx_recyclerview.setLoadMoreEnabled(false);
         job_zpzx_recyclerview.setPullRefreshEnabled(false);
         job_zpzx_recyclerview.setLoadMoreEnabled(false);
+        job_mqzx_recyclerview.setPullRefreshEnabled(false);
+        job_mqzx_recyclerview.setLoadMoreEnabled(false);
         job_qzzx_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,19 +110,43 @@ public class JobNewsFragment extends Fragment implements IJobNewsView {
                 }
             }
         });
+        job_mqzx_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mqzxAdapter.getDataList().size()>0){
+                    Bundle bundle = new Bundle();
+                    bundle.putString("id", String.valueOf(zpzxAdapter.getDataList().get(0).getCid()));
+                    bundle.putString("title","名企资讯");
+                    startActivity(new Intent(getActivity(),NewsMoreActivity.class).putExtras(bundle));
+                }
+            }
+        });
+        adapter = new TeacherMoreRYAdapter(context,null);
+        mqtj_recyclerview.setAdapter(adapter);
+        DividerItemDecoration divider = new DividerItemDecoration(context,DividerItemDecoration.HORIZONTAL);
+        divider.setDrawable(ContextCompat.getDrawable(context,R.drawable.divider_white));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mqtj_recyclerview.addItemDecoration(divider);
+        mqtj_recyclerview.setLayoutManager(linearLayoutManager);
     }
 
     private void initView() {
         job_qzzx_recyclerview = getActivity().findViewById(R.id.job_qzzx_recyclerview);
         job_zpzx_recyclerview = getActivity().findViewById(R.id.job_zpzx_recyclerview);
+        job_mqzx_recyclerview = getActivity().findViewById(R.id.job_mqzx_recyclerview);
         job_qzzx_more = getActivity().findViewById(R.id.job_qzzx_more);
         job_zpzx_more = getActivity().findViewById(R.id.job_zpzx_more);
+        job_mqzx_more = getActivity().findViewById(R.id.job_mqzx_more);
+        mqtj_recyclerview = getActivity().findViewById(R.id.mqtj_recyclerview);
     }
 
     @Override
-    public void setNews(List<NewsBean> qzzx, List<NewsBean> zpzx) {
+    public void setNews(List<NewsBean> qzzx, List<NewsBean> zpzx,List<NewsBean> mqzx,List<String> mqtj) {
         qzzxAdapter.addAll(qzzx);
         zpzxAdapter.addAll(zpzx);
+        mqzxAdapter.addAll(mqzx);
+        adapter.addAll(mqtj);
     }
 
     @Override

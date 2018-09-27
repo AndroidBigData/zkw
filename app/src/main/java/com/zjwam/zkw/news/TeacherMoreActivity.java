@@ -61,7 +61,7 @@ public class TeacherMoreActivity extends BaseActivity implements ITeacherMoreVie
 
         DividerItemDecoration divider = new DividerItemDecoration(getBaseContext(),DividerItemDecoration.HORIZONTAL);
         divider.setDrawable(ContextCompat.getDrawable(getBaseContext(),R.drawable.divider_white));
-        teacherMoreRYAdapter = new TeacherMoreRYAdapter(this);
+        teacherMoreRYAdapter = new TeacherMoreRYAdapter(this,null);
         more_recyclerview_rongyu.setAdapter(teacherMoreRYAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);

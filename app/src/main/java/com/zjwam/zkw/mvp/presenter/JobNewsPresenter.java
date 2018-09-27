@@ -5,6 +5,7 @@ import android.content.Context;
 import com.lzy.okgo.model.Response;
 import com.zjwam.zkw.callback.BasicCallback;
 import com.zjwam.zkw.entity.JobNewsBean;
+import com.zjwam.zkw.entity.NewsBean;
 import com.zjwam.zkw.entity.ResponseBean;
 import com.zjwam.zkw.httputils.HttpErrorMsg;
 import com.zjwam.zkw.mvp.model.JobNewsModel;
@@ -13,7 +14,9 @@ import com.zjwam.zkw.mvp.presenter.ipresenter.IJobNewsPresenter;
 import com.zjwam.zkw.mvp.view.IJobNewsView;
 import com.zjwam.zkw.util.Config;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class JobNewsPresenter implements IJobNewsPresenter {
@@ -36,7 +39,11 @@ public class JobNewsPresenter implements IJobNewsPresenter {
             @Override
             public void onSuccess(Response<ResponseBean<JobNewsBean>> response) {
                 JobNewsBean jobNewsBean = response.body().data;
-                jobNewsView.setNews(jobNewsBean.getCate13(),jobNewsBean.getCate14());
+                List<String> img = new ArrayList<>();
+                for (NewsBean item : jobNewsBean.getCate21()) {
+                    img.add(item.getTitle_img());
+                }
+                jobNewsView.setNews(jobNewsBean.getCate13(),jobNewsBean.getCate14(),jobNewsBean.getCate15(),img);
             }
 
             @Override

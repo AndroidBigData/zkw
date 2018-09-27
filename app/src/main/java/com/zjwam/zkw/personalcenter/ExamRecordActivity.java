@@ -102,10 +102,11 @@ public class ExamRecordActivity extends BaseActivity implements IExamRecordView 
         });
         examRecordAdapter.setOpenItem(new ExamRecordAdapter.OpenedItem() {
             @Override
-            public void openItem(View view,ExamRecordBean.Detial options) {
+            public void openItem(View view,ExamRecordBean.Detial options,int position) {
                 Bundle bundle = new Bundle();
                 bundle.putString("id", String.valueOf(options.getId()));
                 bundle.putString("eid", String.valueOf(options.getEid()));
+                bundle.putString("title",examRecordAdapter.getDataList().get(position).getExam_name());
                 startActivity(new Intent(getBaseContext(),ExamResultActivity.class).putExtras(bundle));
             }
         });

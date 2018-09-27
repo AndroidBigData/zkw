@@ -1,5 +1,6 @@
 package com.zjwam.zkw.exam;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -27,7 +28,7 @@ public class ExamResultActivity extends BaseActivity implements IExamResultView{
     private ImageView exam_result_back;
     private TextView exam_result_do,exam_result_rate,exam_result_times,exam_result_deails;
     private LRecyclerView exam_result_recyclerview;
-    private String eid,id;
+    private String eid,id,title;
     private ExamResultAdapter examResultAdapter;
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private IExamResultPresenter examResultPresenter;
@@ -42,6 +43,7 @@ public class ExamResultActivity extends BaseActivity implements IExamResultView{
         setStatusBar();
         eid = getIntent().getExtras().getString("eid");
         id = getIntent().getExtras().getString("id");
+        title = getIntent().getExtras().getString("title");
         initView();
         initData();
     }
@@ -56,7 +58,11 @@ public class ExamResultActivity extends BaseActivity implements IExamResultView{
         exam_result_do.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Bundle bundle = new Bundle();
+                bundle.putString("id",id);
+                bundle.putString("title",title);
+                startActivity(new Intent(getBaseContext(), ExamDetailsActivity.class).putExtras(bundle));
+                finish();
             }
         });
         examResultPresenter = new ExamResultPresenter(this,this);

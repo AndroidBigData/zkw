@@ -41,7 +41,7 @@ public class ExamRecordAdapter extends ListBaseAdapter<ExamRecordBean.Exam> {
         viewHolder.exam_record_item_title.setText(item.getExam_name());
         viewHolder.exam_record_item_fl.setText("分类："+ item.getCate());
         viewHolder.exam_record_item_time.setText("测试时间：" + item.getAddtime());
-        updateCheckBoxView();
+        updateCheckBoxView(position);
         if (item.isOpen()){
             viewHolder.exam_record_item_add.setVisibility(View.VISIBLE);
         }else {
@@ -66,7 +66,7 @@ public class ExamRecordAdapter extends ListBaseAdapter<ExamRecordBean.Exam> {
     /**
      * 添加多选按钮
      */
-    private void updateCheckBoxView() {
+    private void updateCheckBoxView(final int position) {
         viewHolder.exam_record_item_add.removeAllViews();
         for (int i = 0; i < item.getDetial().size(); i++) {
             final ExamRecordBean.Detial option = item.getDetial().get(i);
@@ -81,7 +81,7 @@ public class ExamRecordAdapter extends ListBaseAdapter<ExamRecordBean.Exam> {
             relativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    openedItem.openItem(view,option);
+                    openedItem.openItem(view,option,position);
                 }
             });
             viewHolder.exam_record_item_add.addView(relativeLayout);
@@ -103,6 +103,6 @@ public class ExamRecordAdapter extends ListBaseAdapter<ExamRecordBean.Exam> {
     }
 
     public interface OpenedItem{
-        void openItem(View view,ExamRecordBean.Detial options);
+        void openItem(View view,ExamRecordBean.Detial options,int position);
     }
 }
