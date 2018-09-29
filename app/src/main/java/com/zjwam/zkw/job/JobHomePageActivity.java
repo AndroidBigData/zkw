@@ -230,6 +230,7 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
                             if (data != null) {
                                 city = data.getName();
                                 search_fl.setText(city);
+                                ZkwPreference.getInstance(getBaseContext()).setCity(city);
                                 job_home_recycler.refresh();
                             }
                         }
