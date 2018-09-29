@@ -25,6 +25,7 @@ import com.zjwam.zkw.fragment.news.TestNewsFragment;
 import com.zjwam.zkw.util.BasicPickerView;
 import com.zjwam.zkw.util.GetJsonDataUtil;
 import com.zjwam.zkw.util.Reflex;
+import com.zjwam.zkw.util.ZkwPreference;
 
 import org.json.JSONArray;
 
@@ -110,6 +111,9 @@ public class NewsActivity extends BaseActivity {
 
             }
         });
+        if (ZkwPreference.getInstance(getBaseContext()).getCity() != null && ZkwPreference.getInstance(getBaseContext()).getCity().length()>0){
+            news_city.setText(ZkwPreference.getInstance(getBaseContext()).getCity());
+        }
         news_city.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,6 +123,7 @@ public class NewsActivity extends BaseActivity {
                     @Override
                     public void Options(int options1, int options2, int options3, View view) {
                         news_city.setText(" "+city_item.get(options1).get(options2));
+                        ZkwPreference.getInstance(getBaseContext()).setCity(city_item.get(options1).get(options2));
                         getCityJob.citys(news_city.getText().toString());
                         getCityTest.citys(news_city.getText().toString());
                     }

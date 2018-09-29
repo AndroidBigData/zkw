@@ -30,6 +30,7 @@ import com.zjwam.zkw.mvp.view.IJobNewsView;
 import com.zjwam.zkw.news.NewsActivity;
 import com.zjwam.zkw.news.NewsMoreActivity;
 import com.zjwam.zkw.news.NewsWebActivity;
+import com.zjwam.zkw.util.ZkwPreference;
 
 import java.util.List;
 
@@ -74,7 +75,7 @@ public class JobNewsFragment extends Fragment implements IJobNewsView {
 
     private void initData() {
         jobNewsPresenter = new JobNewsPresenter(context,this);
-        jobNewsPresenter.getNews("");
+        jobNewsPresenter.getNews(ZkwPreference.getInstance(context).getCity());
         qzzxAdapter = new NewsAdapter(context);
         zpzxAdapter = new NewsAdapter(context);
         mqzxAdapter = new NewsAdapter(context);

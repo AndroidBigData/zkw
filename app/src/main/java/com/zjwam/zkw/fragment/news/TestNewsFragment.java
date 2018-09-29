@@ -35,6 +35,7 @@ import com.zjwam.zkw.mvp.view.ITestNewsView;
 import com.zjwam.zkw.news.NewsActivity;
 import com.zjwam.zkw.news.NewsMoreActivity;
 import com.zjwam.zkw.news.NewsWebActivity;
+import com.zjwam.zkw.util.ZkwPreference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +103,7 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
                 }
             }
         });
-        testNewsPresenter.getNews("");
+        testNewsPresenter.getNews(ZkwPreference.getInstance(context).getCity());
         hyjjAdapter = new NewsAdapter(context);
         ksdtAdapter = new NewsAdapter(context);
         rdztAdapter = new NewsAdapter(context);

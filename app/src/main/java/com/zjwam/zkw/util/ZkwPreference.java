@@ -13,6 +13,7 @@ public class ZkwPreference {
     private static final String CHOICE_INFO = "choiceInfo";//完善个人信息页面，记录用户选择的信息；
     private static final String VIDEO_TIME = "videoTime";//记录播放时长
     private static final String VIDEO_ID = "videoId";//记录当前播放那个的章节id
+    private static final String CITY = "city";//记录选择的城市
 
     private static ZkwPreference preference = null;
     private SharedPreferences sharedPreference;
@@ -119,6 +120,16 @@ public class ZkwPreference {
     public void setVideoId (String id){
         SharedPreferences.Editor editor = sharedPreference.edit();
         editor.putString(VIDEO_ID, id);
+        editor.commit();
+    }
+
+    public String getCity(){
+        String city = sharedPreference.getString(CITY,"");
+        return city;
+    }
+    public void setCity (String city){
+        SharedPreferences.Editor editor = sharedPreference.edit();
+        editor.putString(CITY, city);
         editor.commit();
     }
 }
