@@ -1,6 +1,5 @@
 package com.zjwam.zkw.news;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -30,7 +29,7 @@ public class NewsMoreActivity extends BaseActivity implements INewsMoreView{
     private LRecyclerViewAdapter lRecyclerViewAdapter;
     private int page = 1, mCurrentCounter, max_items;
     private boolean isRefresh;
-    private String id,titleName;
+    private String id,titleName,city;
     private INewsMorePresenter newsMorePresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +42,7 @@ public class NewsMoreActivity extends BaseActivity implements INewsMoreView{
     private void initData() {
         id = getIntent().getExtras().getString("id");
         titleName = getIntent().getExtras().getString("title");
+        city = getIntent().getExtras().getString("city");
         newsMorePresenter = new NewsMorePresenter(this,this);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +64,7 @@ public class NewsMoreActivity extends BaseActivity implements INewsMoreView{
                 page = 1;
                 mCurrentCounter = 0;
                 isRefresh = true;
-                newsMorePresenter.getNews(id, String.valueOf(page),isRefresh);
+                newsMorePresenter.getNews(id, String.valueOf(page),city,isRefresh);
             }
         });
         news_more_recyclerview.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -72,7 +72,7 @@ public class NewsMoreActivity extends BaseActivity implements INewsMoreView{
             public void onLoadMore() {
                 if (mCurrentCounter<max_items){
                     page++;
-                    newsMorePresenter.getNews(id, String.valueOf(page),isRefresh);
+                    newsMorePresenter.getNews(id, String.valueOf(page),city,isRefresh);
                 }else {
                     news_more_recyclerview.setNoMore(true);
                 }

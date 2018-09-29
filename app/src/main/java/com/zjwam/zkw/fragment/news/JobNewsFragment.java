@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -42,6 +43,8 @@ public class JobNewsFragment extends Fragment implements IJobNewsView {
     private LRecyclerViewAdapter qzzxRecyclerViewAdapter,zpzxRecyclerViewAdapter,mqzxRecyclerViewAdapter;
     private NewsAdapter qzzxAdapter,zpzxAdapter,mqzxAdapter;
     private IJobNewsPresenter jobNewsPresenter;
+    private String citys;
+    private ImageView qzzx_nodata,zpzx_nodata,mqzx_nodata;
     public JobNewsFragment() {
         // Required empty public constructor
     }
@@ -95,6 +98,7 @@ public class JobNewsFragment extends Fragment implements IJobNewsView {
                     Bundle bundle = new Bundle();
                     bundle.putString("id", String.valueOf(qzzxAdapter.getDataList().get(0).getCid()));
                     bundle.putString("title","求职资讯");
+                    bundle.putString("city",citys);
                     startActivity(new Intent(getActivity(),NewsMoreActivity.class).putExtras(bundle));
                 }
             }
@@ -106,6 +110,7 @@ public class JobNewsFragment extends Fragment implements IJobNewsView {
                     Bundle bundle = new Bundle();
                     bundle.putString("id", String.valueOf(zpzxAdapter.getDataList().get(0).getCid()));
                     bundle.putString("title","招聘资讯");
+                    bundle.putString("city",citys);
                     startActivity(new Intent(getActivity(),NewsMoreActivity.class).putExtras(bundle));
                 }
             }
@@ -115,8 +120,9 @@ public class JobNewsFragment extends Fragment implements IJobNewsView {
             public void onClick(View view) {
                 if (mqzxAdapter.getDataList().size()>0){
                     Bundle bundle = new Bundle();
-                    bundle.putString("id", String.valueOf(zpzxAdapter.getDataList().get(0).getCid()));
+                    bundle.putString("id", String.valueOf(mqzxAdapter.getDataList().get(0).getCid()));
                     bundle.putString("title","名企资讯");
+                    bundle.putString("city",citys);
                     startActivity(new Intent(getActivity(),NewsMoreActivity.class).putExtras(bundle));
                 }
             }
@@ -139,20 +145,59 @@ public class JobNewsFragment extends Fragment implements IJobNewsView {
         job_zpzx_more = getActivity().findViewById(R.id.job_zpzx_more);
         job_mqzx_more = getActivity().findViewById(R.id.job_mqzx_more);
         mqtj_recyclerview = getActivity().findViewById(R.id.mqtj_recyclerview);
+        qzzx_nodata = getActivity().findViewById(R.id.qzzx_nodata);
+        zpzx_nodata = getActivity().findViewById(R.id.zpzx_nodata);
+        mqzx_nodata = getActivity().findViewById(R.id.mqzx_nodata);
     }
 
     @Override
     public void setNews(List<NewsBean> qzzx, List<NewsBean> zpzx,List<NewsBean> mqzx,List<String> mqtj) {
-        qzzxAdapter.addAll(qzzx);
-        zpzxAdapter.addAll(zpzx);
-        mqzxAdapter.addAll(mqzx);
-        adapter.addAll(mqtj);
+        if (qzzx.size()>0){
+            qzzxAdapter.addAll(qzzx);
+            qzzx_nodata.setVisibility(View.GONE);
+        }else {
+            qzzx_nodata.setVisibility(View.VISIBLE);
+        }
+        if (zpzx.size()>0){
+            zpzxAdapter.addAll(zpzx);
+            zpzx_nodata.setVisibility(View.GONE);
+        }else {
+            zpzx_nodata.setVisibility(View.VISIBLE);
+        }
+        if (mqzx.size()>0){
+            mqzxAdapter.addAll(mqzx);
+            mqzx_nodata.setVisibility(View.GONE);
+        }else {
+            mqzx_nodata.setVisibility(View.VISIBLE);
+        }
+
+//        adapter.addAll(mqtj);
     }
 
     @Override
     public void showMsg(String msg) {
         if (context instanceof NewsActivity){
             ((NewsActivity) context).error(msg);
+        }
+    }
+
+    @Override
+    public void refresh() {
+        qzzxAdapter.clear();
+        zpzxAdapter.clear();
+        mqzxAdapter.clear();
+    }
+
+    @Override
+    public void setUserVisibleHint(final boolean isVisibleToUser) {
+        if (context instanceof NewsActivity){
+            ((NewsActivity) context).GetCityListenerJob(new NewsActivity.GetCityJob() {
+                @Override
+                public void citys(String city) {
+                    jobNewsPresenter.getNews(city);
+                    citys = city;
+                }
+            });
         }
     }
 }

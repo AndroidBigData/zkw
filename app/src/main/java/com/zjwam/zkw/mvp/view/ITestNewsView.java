@@ -11,4 +11,5 @@ public interface ITestNewsView {
     void setInfo(List<ClassTypeInfo> newsInfo);
     void showMsg(String msg);
     void showDialog(List<TestQueryResultDialogBean> data);
+    void refresh();
 }

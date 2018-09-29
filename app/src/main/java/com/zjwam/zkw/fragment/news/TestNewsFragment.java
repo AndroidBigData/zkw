@@ -8,12 +8,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -41,14 +44,15 @@ import java.util.List;
 public class TestNewsFragment extends Fragment implements ITestNewsView {
     private Context context;
     private Spinner test_query_spinner;
-    private LRecyclerView test_hyjj_recyclerview,test_ksdt_recyclerview,test_rdzt_recyclerview,test_jcdg_recyclerview,test_jqxd_recyclerview;
-    private TextView test_hyjj_more,test_ksdt_more,test_rdzt_more,test_jcdg_more,test_jqxd_more,query;
-    private NewsAdapter hyjjAdapter,ksdtAdapter,rdztAdapter,jcdgAdapter,jqxdAdapter;
-    private LRecyclerViewAdapter hyjjRecyclerViewAdapter,ksdtRecyclerViewAdapter,rdztRecyclerViewAdapter,jcdgRecyclerViewAdapter,jqxdRecyclerViewAdapter;
+    private LRecyclerView test_hyjj_recyclerview, test_ksdt_recyclerview, test_rdzt_recyclerview, test_jcdg_recyclerview, test_jqxd_recyclerview;
+    private TextView test_hyjj_more, test_ksdt_more, test_rdzt_more, test_jcdg_more, test_jqxd_more, query;
+    private NewsAdapter hyjjAdapter, ksdtAdapter, rdztAdapter, jcdgAdapter, jqxdAdapter;
+    private LRecyclerViewAdapter hyjjRecyclerViewAdapter, ksdtRecyclerViewAdapter, rdztRecyclerViewAdapter, jcdgRecyclerViewAdapter, jqxdRecyclerViewAdapter;
     private ITestNewsPresenter testNewsPresenter;
-    private String cid;
+    private String cid,citys;
     private List<ClassTypeInfo> newsInfo;
     private TestQueryResultDialog queryResultDialog;
+    private ImageView test_hyjj_nodata,test_ksdt_nodata,test_rdzt_nodata,test_jcdg_nodata,test_jqxd_nodata;
 
     public TestNewsFragment() {
         // Required empty public constructor
@@ -76,7 +80,7 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
     }
 
     private void initData() {
-        testNewsPresenter = new TestNewsPresenter(context,this);
+        testNewsPresenter = new TestNewsPresenter(context, this);
         testNewsPresenter.getInfo();
         test_query_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -92,7 +96,7 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
         query.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (cid != null){
+                if (cid != null) {
                     testNewsPresenter.queryResult(cid);
                 }
             }
@@ -108,6 +112,7 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
         rdztRecyclerViewAdapter = new LRecyclerViewAdapter(rdztAdapter);
         jcdgRecyclerViewAdapter = new LRecyclerViewAdapter(jcdgAdapter);
         jqxdRecyclerViewAdapter = new LRecyclerViewAdapter(jqxdAdapter);
+        test_hyjj_recyclerview.setFocusable(false);
         test_hyjj_recyclerview.setAdapter(hyjjRecyclerViewAdapter);
         test_ksdt_recyclerview.setAdapter(ksdtRecyclerViewAdapter);
         test_rdzt_recyclerview.setAdapter(rdztRecyclerViewAdapter);
@@ -131,41 +136,42 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
         hyjjRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.i("position:",""+position);
+                Log.i("position:", "" + position);
             }
         });
         ksdtRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.i("position:",""+position);
+                Log.i("position:", "" + position);
             }
         });
         rdztRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.i("position:",""+position);
+                Log.i("position:", "" + position);
             }
         });
         jcdgRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.i("position:",""+position);
+                Log.i("position:", "" + position);
             }
         });
         jqxdRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.i("position:",""+position);
+                Log.i("position:", "" + position);
             }
         });
         test_hyjj_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (hyjjAdapter.getDataList().size()>0){
+                if (hyjjAdapter.getDataList().size() > 0) {
                     Bundle bundle = new Bundle();
                     bundle.putString("id", String.valueOf(hyjjAdapter.getDataList().get(0).getCid()));
-                    bundle.putString("title","行业焦点");
-                    startActivity(new Intent(getActivity(),NewsMoreActivity.class).putExtras(bundle));
+                    bundle.putString("title", "行业焦点");
+                    bundle.putString("city",citys);
+                    startActivity(new Intent(getActivity(), NewsMoreActivity.class).putExtras(bundle));
                 }
 
             }
@@ -173,11 +179,12 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
         test_ksdt_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (hyjjAdapter.getDataList().size()>0){
+                if (ksdtAdapter.getDataList().size() > 0) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("id", String.valueOf(hyjjAdapter.getDataList().get(0).getCid()));
-                    bundle.putString("title","考试动态");
-                    startActivity(new Intent(getActivity(),NewsMoreActivity.class).putExtras(bundle));
+                    bundle.putString("id", String.valueOf(ksdtAdapter.getDataList().get(0).getCid()));
+                    bundle.putString("title", "考试动态");
+                    bundle.putString("city",citys);
+                    startActivity(new Intent(getActivity(), NewsMoreActivity.class).putExtras(bundle));
                 }
 
             }
@@ -185,11 +192,11 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
         test_rdzt_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (hyjjAdapter.getDataList().size()>0){
+                if (rdztAdapter.getDataList().size() > 0) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("id", String.valueOf(hyjjAdapter.getDataList().get(0).getCid()));
-                    bundle.putString("title","热点专题");
-                    startActivity(new Intent(getActivity(),NewsMoreActivity.class).putExtras(bundle));
+                    bundle.putString("id", String.valueOf(rdztAdapter.getDataList().get(0).getCid()));
+                    bundle.putString("title", "热点专题");
+                    startActivity(new Intent(getActivity(), NewsMoreActivity.class).putExtras(bundle));
                 }
 
             }
@@ -197,11 +204,12 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
         test_jcdg_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (hyjjAdapter.getDataList().size()>0){
+                if (jcdgAdapter.getDataList().size() > 0) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("id", String.valueOf(hyjjAdapter.getDataList().get(0).getCid()));
-                    bundle.putString("title","教材大纲");
-                    startActivity(new Intent(getActivity(),NewsMoreActivity.class).putExtras(bundle));
+                    bundle.putString("id", String.valueOf(jcdgAdapter.getDataList().get(0).getCid()));
+                    bundle.putString("title", "教材大纲");
+                    bundle.putString("city",citys);
+                    startActivity(new Intent(getActivity(), NewsMoreActivity.class).putExtras(bundle));
                 }
 
             }
@@ -209,16 +217,18 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
         test_jqxd_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (hyjjAdapter.getDataList().size()>0){
+                if (jqxdAdapter.getDataList().size() > 0) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("id", String.valueOf(hyjjAdapter.getDataList().get(0).getCid()));
-                    bundle.putString("title","技巧心得");
-                    startActivity(new Intent(getActivity(),NewsMoreActivity.class).putExtras(bundle));
+                    bundle.putString("id", String.valueOf(jqxdAdapter.getDataList().get(0).getCid()));
+                    bundle.putString("title", "技巧心得");
+                    bundle.putString("city",citys);
+                    startActivity(new Intent(getActivity(), NewsMoreActivity.class).putExtras(bundle));
                 }
 
             }
         });
     }
+
     private void initView() {
         test_query_spinner = getActivity().findViewById(R.id.test_query_spinner);
         test_hyjj_recyclerview = getActivity().findViewById(R.id.test_hyjj_recyclerview);
@@ -232,25 +242,56 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
         test_rdzt_more = getActivity().findViewById(R.id.test_rdzt_more);
         test_jcdg_more = getActivity().findViewById(R.id.test_jcdg_more);
         test_jqxd_more = getActivity().findViewById(R.id.test_jqxd_more);
+        test_hyjj_nodata = getActivity().findViewById(R.id.test_hyjj_nodata);
+        test_ksdt_nodata = getActivity().findViewById(R.id.test_ksdt_nodata);
+        test_rdzt_nodata = getActivity().findViewById(R.id.test_rdzt_nodata);
+        test_jcdg_nodata = getActivity().findViewById(R.id.test_jcdg_nodata);
+        test_jqxd_nodata = getActivity().findViewById(R.id.test_jqxd_nodata);
     }
 
     @Override
     public void setNews(List<NewsBean> hyjj, List<NewsBean> ksdt, List<NewsBean> rdzt, List<NewsBean> jcdg, List<NewsBean> jqxd) {
-        hyjjAdapter.addAll(hyjj);
-        ksdtAdapter.addAll(ksdt);
-        rdztAdapter.addAll(rdzt);
-        jcdgAdapter.addAll(jcdg);
-        jqxdAdapter.addAll(jqxd);
+        hyjjAdapter.setDataList(hyjj);
+        if (hyjj.size()>0){
+            test_hyjj_nodata.setVisibility(View.GONE);
+        }else {
+            test_hyjj_nodata.setVisibility(View.VISIBLE);
+        }
+        ksdtAdapter.setDataList(ksdt);
+        if (ksdt.size()>0){
+            test_ksdt_nodata.setVisibility(View.GONE);
+        }else {
+            test_ksdt_nodata.setVisibility(View.VISIBLE);
+        }
+        rdztAdapter.setDataList(rdzt);
+        if (rdzt.size()>0){
+            test_rdzt_nodata.setVisibility(View.GONE);
+        }else {
+            test_rdzt_nodata.setVisibility(View.VISIBLE);
+        }
+        jcdgAdapter.setDataList(jcdg);
+        if (jcdg.size()>0){
+            test_jcdg_nodata.setVisibility(View.GONE);
+        }else {
+            test_jcdg_nodata.setVisibility(View.VISIBLE);
+        }
+        jqxdAdapter.setDataList(jqxd);
+        if (jqxd.size()>0){
+            test_jqxd_nodata.setVisibility(View.GONE);
+        }else {
+            test_jqxd_nodata.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
     public void setInfo(List<ClassTypeInfo> newsInfo) {
         List<String> data = new ArrayList<>();
         this.newsInfo = newsInfo;
-        for (ClassTypeInfo item:newsInfo) {
+        for (ClassTypeInfo item : newsInfo) {
             data.add(item.getName());
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item,data);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         test_query_spinner.setAdapter(adapter);
         test_query_spinner.setSelection(0);
@@ -258,14 +299,36 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
 
     @Override
     public void showMsg(String msg) {
-        if (context instanceof NewsActivity){
+        if (context instanceof NewsActivity) {
             ((NewsActivity) context).error(msg);
         }
     }
 
     @Override
     public void showDialog(List<TestQueryResultDialogBean> data) {
-        queryResultDialog = new TestQueryResultDialog(context,data);
+        queryResultDialog = new TestQueryResultDialog(context, data);
         queryResultDialog.show();
+    }
+
+    @Override
+    public void refresh() {
+        hyjjAdapter.clear();
+        ksdtAdapter.clear();
+        rdztAdapter.clear();
+        jcdgAdapter.clear();
+        jqxdAdapter.clear();
+    }
+
+    @Override
+    public void setUserVisibleHint(final boolean isVisibleToUser) {
+        if (context instanceof NewsActivity){
+            ((NewsActivity) context).GetCityListenerTest(new NewsActivity.GetCityTest() {
+                @Override
+                public void citys(String city) {
+                    testNewsPresenter.getNews(city);
+                    citys = city;
+                }
+            });
+        }
     }
 }

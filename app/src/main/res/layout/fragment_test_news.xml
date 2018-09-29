@@ -73,6 +73,13 @@
                 android:id="@+id/test_hyjj_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/test_hyjj_nodata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/no_data"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/test_hyjj_more"
                 android:layout_width="wrap_content"
@@ -103,6 +110,13 @@
                 android:id="@+id/test_ksdt_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/test_ksdt_nodata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/no_data"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/test_ksdt_more"
                 android:layout_width="wrap_content"
@@ -133,6 +147,13 @@
                 android:id="@+id/test_rdzt_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/test_rdzt_nodata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/no_data"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/test_rdzt_more"
                 android:layout_width="wrap_content"
@@ -163,6 +184,13 @@
                 android:id="@+id/test_jcdg_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/test_jcdg_nodata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/no_data"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/test_jcdg_more"
                 android:layout_width="wrap_content"
@@ -193,6 +221,13 @@
                 android:id="@+id/test_jqxd_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/test_jqxd_nodata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/no_data"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/test_jqxd_more"
                 android:layout_width="wrap_content"

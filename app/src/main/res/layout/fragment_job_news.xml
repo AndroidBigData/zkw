@@ -29,6 +29,12 @@
                 android:id="@+id/job_qzzx_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/qzzx_nodata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/no_data"
+                android:layout_gravity="center_horizontal"/>
             <TextView
                 android:id="@+id/job_qzzx_more"
                 android:layout_width="wrap_content"
@@ -60,6 +66,12 @@
                 android:id="@+id/job_zpzx_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/zpzx_nodata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/no_data"
+                android:layout_gravity="center_horizontal"/>
             <TextView
                 android:id="@+id/job_zpzx_more"
                 android:layout_width="wrap_content"
@@ -91,6 +103,12 @@
                 android:id="@+id/job_mqzx_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/mqzx_nodata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/no_data"
+                android:layout_gravity="center_horizontal"/>
             <TextView
                 android:id="@+id/job_mqzx_more"
                 android:layout_width="wrap_content"
@@ -109,7 +127,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

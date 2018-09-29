@@ -84,6 +84,7 @@ public class TestNewsPresenter implements ITestNewsPresenter {
         testNewsModel.getNews(Config.URL + "api/news/exam_first", context, param, new BasicCallback<ResponseBean<TestNewsBean>>() {
             @Override
             public void onSuccess(Response<ResponseBean<TestNewsBean>> response) {
+                testNewsView.refresh();
                 TestNewsBean testNewsBean = response.body().data;
                 testNewsView.setNews(testNewsBean.getCate8(),testNewsBean.getCate9(),testNewsBean.getCate10(),testNewsBean.getCate11(),testNewsBean.getCate12());
             }

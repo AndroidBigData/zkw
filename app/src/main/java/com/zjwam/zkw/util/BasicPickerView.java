@@ -14,10 +14,10 @@ import com.zjwam.zkw.R;
 import java.util.Date;
 import java.util.List;
 
-public class BasicPickerView {
+public class BasicPickerView<T> {
     private Selctor selctor;
     private TimePicker timePicker;
-    public <T>void pickerVIew(Context context, String title, final List<T> item1, List<List<T>> item2, List<List<List<T>>> item3){
+    public void pickerVIew(Context context, String title, final List<T> item1, List<List<T>> item2, List<List<List<T>>> item3){
         OptionsPickerView pvOptions =  new OptionsPickerBuilder(context, new OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
