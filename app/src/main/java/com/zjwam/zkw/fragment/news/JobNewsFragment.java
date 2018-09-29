@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.zjwam.zkw.R;
@@ -28,6 +29,7 @@ import com.zjwam.zkw.mvp.presenter.ipresenter.IJobNewsPresenter;
 import com.zjwam.zkw.mvp.view.IJobNewsView;
 import com.zjwam.zkw.news.NewsActivity;
 import com.zjwam.zkw.news.NewsMoreActivity;
+import com.zjwam.zkw.news.NewsWebActivity;
 
 import java.util.List;
 
@@ -91,6 +93,30 @@ public class JobNewsFragment extends Fragment implements IJobNewsView {
         job_zpzx_recyclerview.setLoadMoreEnabled(false);
         job_mqzx_recyclerview.setPullRefreshEnabled(false);
         job_mqzx_recyclerview.setLoadMoreEnabled(false);
+        qzzxRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString("url",qzzxAdapter.getDataList().get(position).getUrl());
+                startActivity(new Intent(getActivity(),NewsWebActivity.class).putExtras(bundle));
+            }
+        });
+        zpzxRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString("url",zpzxAdapter.getDataList().get(position).getUrl());
+                startActivity(new Intent(getActivity(),NewsWebActivity.class).putExtras(bundle));
+            }
+        });
+        mqzxRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString("url",mqzxAdapter.getDataList().get(position).getUrl());
+                startActivity(new Intent(getActivity(),NewsWebActivity.class).putExtras(bundle));
+            }
+        });
         job_qzzx_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -11,8 +11,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.zjwam.zkw.R;
@@ -23,6 +25,7 @@ import com.zjwam.zkw.mvp.presenter.ipresenter.IBusinessNewsPresenter;
 import com.zjwam.zkw.mvp.view.IBusinessNewsView;
 import com.zjwam.zkw.news.NewsActivity;
 import com.zjwam.zkw.news.NewsMoreActivity;
+import com.zjwam.zkw.news.NewsWebActivity;
 
 import java.util.List;
 
@@ -36,6 +39,7 @@ public class BusinessNewsFragment extends Fragment implements IBusinessNewsView 
     private NewsAdapter zmfhqAdapter, zmftAdapter, yxxmAdapter, lxxmAdapter, ldxmAdapter;
     private LRecyclerViewAdapter zmfhqRecyclerViewAdapter, zmftRecyclerViewAdapter, yxxmRecyclerViewAdapter, lxxmRecyclerViewAdapter, ldxmRecyclerViewAdapter;
     private IBusinessNewsPresenter businessNewsPresenter;
+    private ImageView zmfhq_nodata,zmft_nodata,yxxm_nodata,lxxm_nodata,ldxm_nodata;
     public BusinessNewsFragment() {
         // Required empty public constructor
     }
@@ -93,6 +97,48 @@ public class BusinessNewsFragment extends Fragment implements IBusinessNewsView 
         business_lxxm_recyclerview.setLoadMoreEnabled(false);
         business_ldxm_recyclerview.setPullRefreshEnabled(false);
         business_ldxm_recyclerview.setLoadMoreEnabled(false);
+
+        zmfhqRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString("url",zmfhqAdapter.getDataList().get(position).getUrl());
+                startActivity(new Intent(getActivity(),NewsWebActivity.class).putExtras(bundle));
+            }
+        });
+        zmftRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString("url",zmftAdapter.getDataList().get(position).getUrl());
+                startActivity(new Intent(getActivity(),NewsWebActivity.class).putExtras(bundle));
+            }
+        });
+        yxxmRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString("url",yxxmAdapter.getDataList().get(position).getUrl());
+                startActivity(new Intent(getActivity(),NewsWebActivity.class).putExtras(bundle));
+            }
+        });
+        lxxmRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString("url",lxxmAdapter.getDataList().get(position).getUrl());
+                startActivity(new Intent(getActivity(),NewsWebActivity.class).putExtras(bundle));
+            }
+        });
+        ldxmRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString("url",ldxmAdapter.getDataList().get(position).getUrl());
+                startActivity(new Intent(getActivity(),NewsWebActivity.class).putExtras(bundle));
+            }
+        });
+
         business_zmfhq_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,15 +207,45 @@ public class BusinessNewsFragment extends Fragment implements IBusinessNewsView 
         business_yxxm_more = getActivity().findViewById(R.id.business_yxxm_more);
         business_lxxm_more = getActivity().findViewById(R.id.business_lxxm_more);
         business_ldxm_more = getActivity().findViewById(R.id.business_ldxm_more);
+        zmfhq_nodata = getActivity().findViewById(R.id.zmfhq_nodata);
+        zmft_nodata = getActivity().findViewById(R.id.zmft_nodata);
+        yxxm_nodata = getActivity().findViewById(R.id.yxxm_nodata);
+        lxxm_nodata = getActivity().findViewById(R.id.lxxm_nodata);
+        ldxm_nodata = getActivity().findViewById(R.id.ldxm_nodata);
     }
 
     @Override
     public void setNews(List<NewsBean> zmfhq, List<NewsBean> zmft, List<NewsBean> yxxm, List<NewsBean> lxxm, List<NewsBean> ldxm) {
-        zmfhqAdapter.addAll(zmfhq);
-        zmftAdapter.addAll(zmft);
-        yxxmAdapter.addAll(yxxm);
-        lxxmAdapter.addAll(lxxm);
-        ldxmAdapter.addAll(ldxm);
+        if (zmfhq.size()>0){
+            zmfhqAdapter.addAll(zmfhq);
+            zmfhq_nodata.setVisibility(View.GONE);
+        }else {
+            zmfhq_nodata.setVisibility(View.VISIBLE);
+        }
+        if (zmft.size()>0){
+            zmftAdapter.addAll(zmft);
+            zmft_nodata.setVisibility(View.GONE);
+        }else {
+            zmft_nodata.setVisibility(View.VISIBLE);
+        }
+        if (yxxm.size()>0){
+            yxxmAdapter.addAll(yxxm);
+            yxxm_nodata.setVisibility(View.GONE);
+        }else {
+            yxxm_nodata.setVisibility(View.VISIBLE);
+        }
+        if (lxxm.size()>0){
+            lxxmAdapter.addAll(lxxm);
+            lxxm_nodata.setVisibility(View.GONE);
+        }else {
+            lxxm_nodata.setVisibility(View.VISIBLE);
+        }
+        if (ldxm.size()>0){
+            ldxmAdapter.addAll(ldxm);
+            ldxm_nodata.setVisibility(View.GONE);
+        }else {
+            ldxm_nodata.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

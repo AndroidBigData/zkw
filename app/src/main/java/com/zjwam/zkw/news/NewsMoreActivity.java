@@ -1,11 +1,13 @@
 package com.zjwam.zkw.news;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -79,6 +81,14 @@ public class NewsMoreActivity extends BaseActivity implements INewsMoreView{
             }
         });
         news_more_recyclerview.refresh();
+        lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString("url",newsAdapter.getDataList().get(position).getUrl());
+                startActivity(new Intent(getBaseContext(),NewsWebActivity.class).putExtras(bundle));
+            }
+        });
     }
 
     private void initView() {

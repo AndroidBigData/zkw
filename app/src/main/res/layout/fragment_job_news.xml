@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.news.JobNewsFragment"
-    android:background="@color/register_choice_background">
+    android:background="@color/register_choice_background"
+    android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,7 +35,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/no_data"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/job_qzzx_more"
                 android:layout_width="wrap_content"
@@ -71,7 +73,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/no_data"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/job_zpzx_more"
                 android:layout_width="wrap_content"
@@ -108,7 +111,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/no_data"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/job_mqzx_more"
                 android:layout_width="wrap_content"

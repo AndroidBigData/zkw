@@ -34,6 +34,7 @@ import com.zjwam.zkw.mvp.presenter.ipresenter.ITestNewsPresenter;
 import com.zjwam.zkw.mvp.view.ITestNewsView;
 import com.zjwam.zkw.news.NewsActivity;
 import com.zjwam.zkw.news.NewsMoreActivity;
+import com.zjwam.zkw.news.NewsWebActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,31 +137,41 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
         hyjjRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.i("position:", "" + position);
+               Bundle bundle = new Bundle();
+                bundle.putString("url",hyjjAdapter.getDataList().get(position).getUrl());
+                startActivity(new Intent(getActivity(),NewsWebActivity.class).putExtras(bundle));
             }
         });
         ksdtRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.i("position:", "" + position);
+                Bundle bundle = new Bundle();
+                bundle.putString("url",ksdtAdapter.getDataList().get(position).getUrl());
+                startActivity(new Intent(getActivity(),NewsWebActivity.class).putExtras(bundle));
             }
         });
         rdztRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.i("position:", "" + position);
+                Bundle bundle = new Bundle();
+                bundle.putString("url",rdztAdapter.getDataList().get(position).getUrl());
+                startActivity(new Intent(getActivity(),NewsWebActivity.class).putExtras(bundle));
             }
         });
         jcdgRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.i("position:", "" + position);
+                Bundle bundle = new Bundle();
+                bundle.putString("url",jcdgAdapter.getDataList().get(position).getUrl());
+                startActivity(new Intent(getActivity(),NewsWebActivity.class).putExtras(bundle));
             }
         });
         jqxdRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.i("position:", "" + position);
+                Bundle bundle = new Bundle();
+                bundle.putString("url",jqxdAdapter.getDataList().get(position).getUrl());
+                startActivity(new Intent(getActivity(),NewsWebActivity.class).putExtras(bundle));
             }
         });
         test_hyjj_more.setOnClickListener(new View.OnClickListener() {

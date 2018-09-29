@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.zjwam.zkw.R;
@@ -24,6 +25,7 @@ import com.zjwam.zkw.mvp.presenter.ipresenter.IMainNewsPresenter;
 import com.zjwam.zkw.mvp.view.IMainNewsView;
 import com.zjwam.zkw.news.NewsActivity;
 import com.zjwam.zkw.news.NewsMoreActivity;
+import com.zjwam.zkw.news.NewsWebActivity;
 
 import java.util.List;
 
@@ -94,6 +96,22 @@ public class MainNewsFragment extends Fragment implements IMainNewsView{
                 bundle.putString("id","4");
                 bundle.putString("title","国外教育动态");
                 startActivity(new Intent(getActivity(), NewsMoreActivity.class).putExtras(bundle));
+            }
+        });
+        lRecyclerViewAdapter_n.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString("url",newsAdapter_n.getDataList().get(position).getUrl());
+                startActivity(new Intent(getActivity(),NewsWebActivity.class).putExtras(bundle));
+            }
+        });
+        lRecyclerViewAdapter_w.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString("url",newsAdapter_w.getDataList().get(position).getUrl());
+                startActivity(new Intent(getActivity(),NewsWebActivity.class).putExtras(bundle));
             }
         });
     }
