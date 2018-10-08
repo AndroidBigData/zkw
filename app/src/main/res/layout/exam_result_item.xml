@@ -16,7 +16,7 @@
     android:src="@drawable/exam_unhold"
     android:scaleType="centerInside"
     android:layout_marginTop="10dp"/>
-    <TextView
+    <org.sufficientlysecure.htmltextview.HtmlTextView
         android:id="@+id/exam_result_item_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             android:textColor="@color/black"
             android:text="解析："
             android:layout_below="@+id/exam_result_item_right"/>
-        <TextView
+        <org.sufficientlysecure.htmltextview.HtmlTextView
             android:id="@+id/exam_result_item_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

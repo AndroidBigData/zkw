@@ -46,4 +46,5 @@ dependencies {
     implementation files('libs/alipaySdk-20180601.jar')
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     implementation 'me.texy.treeview:treeview_lib:1.0.4'
+    implementation 'org.sufficientlysecure:html-textview:3.6'
 }

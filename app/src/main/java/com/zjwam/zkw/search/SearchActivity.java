@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -52,6 +53,7 @@ public class SearchActivity extends BaseActivity {
     private boolean isInitCache = false,isRefresh = true;
     private SearchViewHttp searchHttp;
     private int mCurrentCounter = 0,max_items;
+    private ImageView search_nodata;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,7 +144,13 @@ public class SearchActivity extends BaseActivity {
             searchListAdapter.clear();
         }
         data = response.body().getClass_list();
-        addItems(data);
+        if (max_items>0){
+            addItems(data);
+            search_nodata.setVisibility(View.GONE);
+        }else {
+            search_nodata.setVisibility(View.VISIBLE);
+        }
+
         if (response.body().getWeb() != null){
             setClassType(response.body().getWeb());
         }
@@ -200,6 +208,7 @@ public class SearchActivity extends BaseActivity {
         search_qx = findViewById(R.id.search_qx);
         search_recycler = findViewById(R.id.search_lrecyclerview);
         all_class_none = findViewById(R.id.all_class_none);
+        search_nodata = findViewById(R.id.search_nodata);
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {

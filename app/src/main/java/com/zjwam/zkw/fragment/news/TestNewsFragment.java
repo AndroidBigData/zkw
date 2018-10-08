@@ -8,15 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -34,7 +31,7 @@ import com.zjwam.zkw.mvp.presenter.ipresenter.ITestNewsPresenter;
 import com.zjwam.zkw.mvp.view.ITestNewsView;
 import com.zjwam.zkw.news.NewsActivity;
 import com.zjwam.zkw.news.NewsMoreActivity;
-import com.zjwam.zkw.news.NewsWebActivity;
+import com.zjwam.zkw.webview.NewsWebActivity;
 import com.zjwam.zkw.util.ZkwPreference;
 
 import java.util.ArrayList;
@@ -84,6 +81,7 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
     private void initData() {
         testNewsPresenter = new TestNewsPresenter(context, this);
         testNewsPresenter.getInfo();
+        test_query_spinner.setDropDownVerticalOffset(30);
         test_query_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -103,7 +101,8 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
                 }
             }
         });
-        testNewsPresenter.getNews(ZkwPreference.getInstance(context).getCity());
+        citys = ZkwPreference.getInstance(context).getCity();
+        testNewsPresenter.getNews(citys);
         hyjjAdapter = new NewsAdapter(context);
         ksdtAdapter = new NewsAdapter(context);
         rdztAdapter = new NewsAdapter(context);

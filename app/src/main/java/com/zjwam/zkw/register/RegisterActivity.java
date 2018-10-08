@@ -87,13 +87,6 @@ public class RegisterActivity extends BaseActivity {
                         }
                     }else {
                         Toast.makeText(getBaseContext(),"请完善注册信息",Toast.LENGTH_SHORT).show();
-                        if ("0".equals(type)){
-                            startActivity(new Intent(getBaseContext(), AddStudentInformationActivity.class));
-                        }else if ("1".equals(type)){
-                            startActivity(new Intent(getBaseContext(), AddTeacherInformationActivity.class));
-                        }else if ("2".equals(type)){
-                            startActivity(new Intent(getBaseContext(), AddCompanyInformationActivity.class));
-                        }
                     }
                     break;
                 case R.id.register_back:

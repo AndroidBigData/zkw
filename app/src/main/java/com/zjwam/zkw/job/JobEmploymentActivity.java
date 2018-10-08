@@ -1,11 +1,13 @@
 package com.zjwam.zkw.job;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
@@ -18,6 +20,7 @@ import com.zjwam.zkw.entity.JobEmplomentBean;
 import com.zjwam.zkw.mvp.presenter.JobEmplomentPresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.IJobEmplomentPresenter;
 import com.zjwam.zkw.mvp.view.IJobEmploymentView;
+import com.zjwam.zkw.webview.NewsWebActivity;
 
 import java.util.List;
 
@@ -76,6 +79,14 @@ public class JobEmploymentActivity extends BaseActivity implements IJobEmploymen
             }
         });
         employment_recyclerview.refresh();
+        lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putString("url",jobEmploymentAdapter.getDataList().get(position).getUrl());
+                startActivity(new Intent(getBaseContext(),NewsWebActivity.class).putExtras(bundle));
+            }
+        });
     }
 
     private void initView() {

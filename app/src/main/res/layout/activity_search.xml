@@ -123,6 +123,13 @@
             android:id="@+id/search_lrecyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+        <ImageView
+            android:id="@+id/search_nodata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/no_data"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
         <RelativeLayout
             android:id="@+id/all_class"
             android:layout_width="match_parent"

@@ -25,7 +25,7 @@ import com.zjwam.zkw.mvp.presenter.ipresenter.IMainNewsPresenter;
 import com.zjwam.zkw.mvp.view.IMainNewsView;
 import com.zjwam.zkw.news.NewsActivity;
 import com.zjwam.zkw.news.NewsMoreActivity;
-import com.zjwam.zkw.news.NewsWebActivity;
+import com.zjwam.zkw.webview.NewsWebActivity;
 
 import java.util.List;
 

@@ -195,7 +195,7 @@
         <activity android:name=".news.NewsMoreActivity" />
         <activity android:name=".news.TeacherMoreActivity" />
         <activity android:name=".news.ClassNewsMoreActivity" />
-        <activity android:name=".news.NewsWebActivity"></activity>
+        <activity android:name=".webview.NewsWebActivity"></activity>
     </application>
 
 </manifest>

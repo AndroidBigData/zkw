@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,10 @@ import com.bumptech.glide.Glide;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.entity.ExamTestCollectionBean;
 import com.zjwam.zkw.util.QuestionAnswerUtils;
+
+import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
+import org.sufficientlysecure.htmltextview.HtmlTextView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,14 +56,16 @@ public class ExamTestCollectionAdapter extends ListBaseAdapter<ExamTestCollectio
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         item = mDataList.get(position);
         viewHolder = (ViewHolder) holder;
-        if (Build.VERSION.SDK_INT >= 24) {
-            viewHolder.text_collection_title.setText(Html.fromHtml(item.getContent(), Html.FROM_HTML_MODE_COMPACT, imageGetter, null));
-        }else {
-            viewHolder.text_collection_title.setText(Html.fromHtml(item.getContent(), imageGetter, null));
-        }
+
+        viewHolder.text_collection_title.setHtml((position+1)+"."+item.getContent(),new HtmlHttpImageGetter(viewHolder.text_collection_title));
+
         updateCheckBoxView();
         viewHolder.text_collection_right.setText("正确答案:"+item.getAnswer());
-        viewHolder.text_collection_text.setText(item.getAnalyze());
+        if (item.getAnalyze() != null && item.getAnalyze().length()>0){
+            viewHolder.text_collection_text.setHtml(item.getAnalyze(),new HtmlHttpImageGetter(viewHolder.text_collection_text));
+        }else {
+            viewHolder.text_collection_text.setHtml("略");
+        }
         viewHolder.text_collection_exam_title.setText(item.getName());
         viewHolder.text_collection_addtime.setText(item.getAddtime());
         if (item.isOpen()){
@@ -73,9 +80,10 @@ public class ExamTestCollectionAdapter extends ListBaseAdapter<ExamTestCollectio
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView text_collection_title, text_collection_right,text_collection_text,text_collection_exam_title,text_collection_addtime;
+        private TextView text_collection_right,text_collection_exam_title,text_collection_addtime;
         private LinearLayout text_collection_options;
         private RelativeLayout text_collection_relativeLayout,text_collection_answer;
+        private HtmlTextView text_collection_title,text_collection_text;
         public ViewHolder(View itemView) {
             super(itemView);
             text_collection_title = itemView.findViewById(R.id.text_collection_title);
@@ -111,8 +119,8 @@ public class ExamTestCollectionAdapter extends ListBaseAdapter<ExamTestCollectio
         }
         for (int i = 0; i < item.getOptions().size(); i++) {
             ExamTestCollectionBean.Options option = item.getOptions().get(i);
-            TextView checkboxView = (TextView) LayoutInflater.from(mContext).inflate(R.layout.test_selector, null);
-            checkboxView.setText("   "+QuestionAnswerUtils.getAnswerStr(i) + "：" + option.getContent());
+            HtmlTextView checkboxView = (HtmlTextView) LayoutInflater.from(mContext).inflate(R.layout.test_selector, null);
+            checkboxView.setHtml("   "+QuestionAnswerUtils.getAnswerStr(i) + "：" + option.getContent(),new HtmlHttpImageGetter(checkboxView));
             checkboxView.setTextColor(mContext.getResources().getColor(R.color.black));
             if (op.contains(QuestionAnswerUtils.getAnswerStr(i))){
                 Drawable drawable = mContext.getResources().getDrawable(R.drawable.answer_radio_checked);
@@ -123,44 +131,5 @@ public class ExamTestCollectionAdapter extends ListBaseAdapter<ExamTestCollectio
             }
             viewHolder.text_collection_options.addView(checkboxView);
         }
-    }
-
-    Html.ImageGetter imageGetter = new Html.ImageGetter() {
-        @Override
-        public Drawable getDrawable(String s) {
-            //多张图片情况根据drawableMap.get(s)获取drawable
-            if (drawables != null)
-                return drawableMap.get(s);
-            else
-                initDrawable(s);
-            return null;
-        }
-    };
-
-    private void initDrawable(final String s) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final Drawable drawable = Glide.with(mContext).load(s).submit().get();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (drawable != null) {
-                                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                                drawableMap.put(s, drawable);
-                                drawables = drawable;
-                                if (Build.VERSION.SDK_INT >= 24)
-                                    viewHolder.text_collection_title.setText(Html.fromHtml(item.getContent(), Html.FROM_HTML_MODE_COMPACT, imageGetter, null));
-                                else
-                                    viewHolder.text_collection_title.setText(Html.fromHtml(item.getContent(), imageGetter, null));
-                            }
-                        }
-                    });
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
     }
 }

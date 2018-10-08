@@ -45,6 +45,26 @@ public class VideoPlayerHttp {
             }
         });
     }
+    public void refreshCar (String id,String uid){
+        map = new HashMap<>();
+        map.put("id",id);
+        map.put("uid",uid);
+        OkGoUtils.postRequets(Config.URL + "api/play/get_first_video", context, map, new Json2Callback<VideoMainMsgBean>() {
+            @Override
+            public void onSuccess(Response<VideoMainMsgBean> response) {
+                if (context instanceof Video2PlayActivity){
+                    ((Video2PlayActivity) context).refreshCar(response);
+                }
+            }
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (context instanceof Video2PlayActivity){
+                    ((Video2PlayActivity) context).getFirstFinish();
+                }
+            }
+        });
+    }
     public void setSCMsg (String id,String uid){
         map = new HashMap<>();
         map.put("id",id);

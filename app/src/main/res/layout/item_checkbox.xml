@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheckBox
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="15dp"
-    android:textSize="16sp"
-    android:text="问题答案"
-    android:button="@drawable/radio_draw"
-    android:background="@android:color/transparent" />
+    android:orientation="horizontal"
+    android:paddingStart="15dp">
+    <org.sufficientlysecure.htmltextview.HtmlTextView
+        android:id="@+id/html_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="问题答案"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:paddingStart="30dp"
+        android:textColor="@color/personal_header"/>
+    <CheckBox
+        android:id="@+id/checkboxView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:button="@drawable/radio_draw"
+        android:layout_centerVertical="true"
+        android:padding="15dp"
+        android:background="@android:color/transparent"/>
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package com.zjwam.zkw.httputils;
 
+import com.google.gson.JsonSyntaxException;
 import com.lzy.okgo.exception.HttpException;
 import com.lzy.okgo.exception.StorageException;
 import com.zjwam.zkw.util.MyException;
@@ -25,7 +26,9 @@ public class HttpErrorMsg {
             return "SD卡不存在或者没有权限";
         }else if (exception instanceof MyException){
             return ((MyException) exception).getErrorBean().msg;
-        }else {
+        }else if (exception instanceof JsonSyntaxException){
+            return "数据解析错误";
+        } else {
             return exception.toString();
         }
     }

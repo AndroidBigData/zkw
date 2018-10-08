@@ -44,7 +44,8 @@
                 android:paddingTop="2dp"
                 android:text=" 收藏"
                 android:textColor="@color/text_color_gray"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone"/>
         </RelativeLayout>
 
         <TextView

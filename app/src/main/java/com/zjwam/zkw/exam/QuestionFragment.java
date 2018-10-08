@@ -22,13 +22,19 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zjwam.zkw.R;
+import com.zjwam.zkw.customview.FlowRadioGroup;
 import com.zjwam.zkw.entity.ExamDetailsBean;
 import com.zjwam.zkw.util.DensityUtils;
 import com.zjwam.zkw.util.QuestionAnswerUtils;
+
+import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
+import org.sufficientlysecure.htmltextview.HtmlResImageGetter;
+import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -168,10 +174,19 @@ public class QuestionFragment extends Fragment {
      */
     private void updateCheckBoxView() {
         LinearLayout layout = view.findViewById(R.id.check_options);
+        layout.removeAllViews();
         for (int i = 0; i < subDataBean.getOptions().size(); i++) {
             ExamDetailsBean.Options option = subDataBean.getOptions().get(i);
-            CheckBox checkboxView = (CheckBox) LayoutInflater.from(getActivity()).inflate(R.layout.item_checkbox, null);
-            checkboxView.setText(QuestionAnswerUtils.getAnswerStr(i) + "：" + option.getContent());
+            RelativeLayout checkBox_layout = (RelativeLayout) LayoutInflater.from(getActivity()).inflate(R.layout.item_checkbox, null);
+            CheckBox checkboxView = checkBox_layout.findViewById(R.id.checkboxView);
+            HtmlTextView html_textview = checkBox_layout.findViewById(R.id.html_textview);
+            if (option.getContent().contains("\n")){
+                String item = option.getContent().replace("\n","");
+
+                html_textview.setHtml(QuestionAnswerUtils.getAnswerStr(i) + "：" + item,new HtmlHttpImageGetter(html_textview));
+            }else {
+                html_textview.setHtml(QuestionAnswerUtils.getAnswerStr(i) + "：" + option.getContent(),new HtmlHttpImageGetter(html_textview));
+            }
             checkboxView.setTag(i);
             if (Arrays.asList(subDataBean.getQuestion_select().split("_")).contains(QuestionAnswerUtils.getAnswerStr(i))){
                 checkboxView.setChecked(true);
@@ -201,7 +216,7 @@ public class QuestionFragment extends Fragment {
                     modifyQuestionListener.modifyQuestion(op, position);
                 }
             });
-            layout.addView(checkboxView);
+            layout.addView(checkBox_layout);
         }
     }
 
@@ -209,30 +224,43 @@ public class QuestionFragment extends Fragment {
      * 添加单选按钮
      */
     private void updateRadioView() {
-        final RadioGroup layout = view.findViewById(R.id.rg_options);
+        final FlowRadioGroup layout = view.findViewById(R.id.rg_options);
         layout.removeAllViews();
         int checkId = -1;
         for (int i = 0; i < subDataBean.getOptions().size(); i++) {
             ExamDetailsBean.Options option = subDataBean.getOptions().get(i);
-            final RadioButton radioView = (RadioButton) LayoutInflater.from(getActivity()).inflate(R.layout.item_radio, null, true);
-            RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.WRAP_CONTENT);
-            radioView.setLayoutParams(layoutParams);
-            radioView.setText(QuestionAnswerUtils.getAnswerStr(i) + "：" + option.getContent());
+            final RelativeLayout radioButton_layout = (RelativeLayout) LayoutInflater.from(getActivity()).inflate(R.layout.item_radio, null, true);
+            RadioButton radioView = radioButton_layout.findViewById(R.id.radioView);
+            HtmlTextView html_textview = radioButton_layout.findViewById(R.id.html_textview);
+//            RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.WRAP_CONTENT);
+//            radioView.setLayoutParams(layoutParams);
+            if (option.getContent().contains("\n")){
+                String item = option.getContent().replace("\n","");
+                html_textview.setHtml(QuestionAnswerUtils.getAnswerStr(i) + "：" + item,new HtmlHttpImageGetter(html_textview));
+            }else {
+                html_textview.setHtml(QuestionAnswerUtils.getAnswerStr(i) + "：" + option.getContent(),new HtmlHttpImageGetter(html_textview));
+            }
             radioView.setTag(i);
             radioView.setId(i);
             if (QuestionAnswerUtils.getAnswerStr(i).equals(subDataBean.getQuestion_select())) {
                 checkId = i;
             }
-            radioView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        modifyQuestionListener.modifyQuestion(QuestionAnswerUtils.getAnswerStr((int) buttonView.getTag()), position);
-                    }
-                }
-            });
-            layout.addView(radioView);
+//            radioView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                    if (isChecked) {
+//                        modifyQuestionListener.modifyQuestion(QuestionAnswerUtils.getAnswerStr((int) buttonView.getTag()), position);
+//                    }
+//                }
+//            });
+            layout.addView(radioButton_layout);
         }
+        layout.setOnCheckedChangeListener(new FlowRadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(FlowRadioGroup group, int checkedId) {
+                modifyQuestionListener.modifyQuestion(QuestionAnswerUtils.getAnswerStr(checkedId), position);
+            }
+        });
         if (checkId != -1) {
             layout.check(checkId);
         }

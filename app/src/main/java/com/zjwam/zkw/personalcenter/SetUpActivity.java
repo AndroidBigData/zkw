@@ -67,6 +67,9 @@ private boolean isFalg;
                         ZkwPreference.getInstance(getBaseContext()).SetPassword("");
                         ZkwPreference.getInstance(getBaseContext()).SetUid("");
                         ZkwPreference.getInstance(getBaseContext()).SetRegisterType("");
+                        ZkwPreference.getInstance(getBaseContext()).setCity("");
+                        ZkwPreference.getInstance(getBaseContext()).setVideoId("");
+                        ZkwPreference.getInstance(getBaseContext()).setViteoTime("");
                         finish();
                     }
 

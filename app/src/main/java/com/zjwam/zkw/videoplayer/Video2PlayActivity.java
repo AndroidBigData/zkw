@@ -371,6 +371,16 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
         initViewVideo(path, title);
     }
 
+    public void refreshCar(Response<VideoMainMsgBean> response) {
+        video = response.body();
+        if (video.getCar()>0 && isLogin){
+            video_card_num.setText(String.valueOf(video.getCar()));
+            video_card_num.setVisibility(View.VISIBLE);
+        }else {
+            video_card_num.setVisibility(View.GONE);
+        }
+    }
+
     class viewPagerAdapter extends FragmentPagerAdapter {
         public viewPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -449,6 +459,7 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
         getCurPlay().onVideoResume(false);
         super.onResume();
         isPause = false;
+        videoPlayerHttp.refreshCar(id,uid);
     }
 
     @Override

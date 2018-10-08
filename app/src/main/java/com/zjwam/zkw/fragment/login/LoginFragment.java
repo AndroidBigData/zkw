@@ -106,9 +106,11 @@ public class LoginFragment extends BaseActivity {
                 case R.id.see_passworld:
                     if (isSee) {
                         login_passworld.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                        see_passworld.setImageResource(R.drawable.see_passworld_no);
                         isSee = false;
                     } else {
                         login_passworld.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                        see_passworld.setImageResource(R.drawable.see_passworld);
                         isSee = true;
                     }
                     break;

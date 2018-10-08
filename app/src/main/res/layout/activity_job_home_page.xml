@@ -3,143 +3,156 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".job.JobHomePageActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".job.JobHomePageActivity">
+
     <RelativeLayout
         android:id="@+id/job_relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp">
 
         <ImageView
+            android:id="@+id/job_home_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/title_back_black"
+            android:layout_centerVertical="true"
             android:scaleType="centerInside"
-            android:id="@+id/job_home_back"
-            android:layout_centerVertical="true"/>
+            android:src="@drawable/title_back_black" />
 
         <LinearLayout
             android:id="@+id/search_title_job"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:orientation="horizontal"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/search_fl"
+            android:layout_toEndOf="@+id/job_home_back"
             android:background="@drawable/search_activity_linearlayout"
-            android:layout_toEndOf="@+id/job_home_back">
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/search"
                 android:layout_gravity="center_vertical"
-                android:scaleType="fitXY"/>
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/search" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="搜索试题"
-                android:textColor="@color/text_color_gray"
-                android:textSize="14sp"
                 android:layout_gravity="center_vertical"
-                android:singleLine="true"/>
+                android:hint="搜索职位"
+                android:singleLine="true"
+                android:textColor="@color/text_color_gray"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <TextView
+            android:id="@+id/search_fl"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/search_fl"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
-            android:textSize="12sp"
+            android:layout_marginEnd="10dp"
+            android:drawableEnd="@drawable/search_activity_down"
             android:gravity="center"
             android:text="点我"
-            android:drawableEnd="@drawable/search_activity_down"/>
+            android:textSize="12sp" />
     </RelativeLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/line_gray"
-        android:layout_below="@+id/job_relativeLayout"/>
+        android:layout_below="@+id/job_relativeLayout"
+        android:background="@color/line_gray" />
+
     <LinearLayout
         android:id="@+id/job_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_below="@+id/job_relativeLayout"
+        android:orientation="horizontal"
         android:paddingTop="20dp"
         android:paddingBottom="10dp">
+
         <TextView
             android:id="@+id/job_gh"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="职位检索"
-            android:gravity="center"
             android:drawableTop="@drawable/job_gh"
-            android:textSize="14sp"
-            android:textColor="@color/personal_header"/>
+            android:gravity="center"
+            android:text="职位检索"
+            android:textColor="@color/personal_header"
+            android:textSize="14sp" />
+
         <TextView
             android:id="@+id/job_hr"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="HR专场"
-            android:gravity="center"
             android:drawableTop="@drawable/job_hr"
-            android:textSize="14sp"
-            android:textColor="@color/personal_header"/>
+            android:gravity="center"
+            android:text="HR专场"
+            android:textColor="@color/personal_header"
+            android:textSize="14sp" />
+
         <TextView
             android:id="@+id/job_zd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="就业指导"
-            android:gravity="center"
             android:drawableTop="@drawable/job_zd"
-            android:textSize="14sp"
-            android:textColor="@color/personal_header"/>
+            android:gravity="center"
+            android:text="就业指导"
+            android:textColor="@color/personal_header"
+            android:textSize="14sp" />
+
         <TextView
             android:id="@+id/job_test"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="职业测评"
-            android:gravity="center"
             android:drawableTop="@drawable/job_test"
-            android:textSize="14sp"
-            android:textColor="@color/personal_header"/>
+            android:gravity="center"
+            android:text="职业测评"
+            android:textColor="@color/personal_header"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/job_hot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/register_choice_background"
         android:layout_below="@+id/job_linearlayout"
-        android:src="@drawable/job_hot"
-        android:scaleType="centerInside"
+        android:background="@color/register_choice_background"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"/>
+        android:paddingBottom="10dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/job_hot" />
 
-    <com.github.jdsjlzx.recyclerview.LRecyclerView
-        android:id="@+id/job_home_recycler"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/job_hot"
-        android:background="@color/register_choice_background"/>
+        android:layout_below="@+id/job_hot">
 
-    <ImageView
-        android:id="@+id/job_home_nodata"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/no_data"
-        android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        <com.github.jdsjlzx.recyclerview.LRecyclerView
+            android:id="@+id/job_home_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/register_choice_background" />
+
+        <ImageView
+            android:id="@+id/job_home_nodata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/no_data"
+            android:visibility="gone" />
+    </RelativeLayout>
+
 </RelativeLayout>

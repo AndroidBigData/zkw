@@ -4,6 +4,7 @@ package com.zjwam.zkw.fragment.VideoPlayer;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,14 +22,22 @@ import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
 import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
+import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
+import com.zjwam.zkw.callback.JsonCallback;
+import com.zjwam.zkw.customview.BasicDialog;
+import com.zjwam.zkw.entity.AdvertisementBean;
+import com.zjwam.zkw.entity.ResponseBean;
 import com.zjwam.zkw.httputils.VideoPlayerHttp;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.VideoCatalogAdapter;
 import com.zjwam.zkw.entity.VideoCatalogBean;
 
+import com.zjwam.zkw.util.Config;
+import com.zjwam.zkw.util.MyException;
 import com.zjwam.zkw.util.ZkwPreference;
 import com.zjwam.zkw.entity.ClassBean;
+import com.zjwam.zkw.webview.WebViewActivity;
 
 import java.util.List;
 
@@ -45,6 +54,7 @@ public class CatalogFragment extends Fragment {
     private Context context;
     private String uid;
     private ImageView catalog_nodata;
+    private BasicDialog basicDialog;
     private boolean isRefresh = false;
 
     // 2.1 定义用来与外部activity交互，获取到宿主activity
@@ -94,18 +104,35 @@ public class CatalogFragment extends Fragment {
         uid = ZkwPreference.getInstance(getActivity()).getUid();
         video_class_list = getActivity().findViewById(R.id.video_class_list);
         catalog_nodata = getActivity().findViewById(R.id.catalog_nodata);
-        videoCatalogAdapter = new VideoCatalogAdapter(getActivity(),code);
-        lRecyclerViewAdapter = new LRecyclerViewAdapter(videoCatalogAdapter);
-        video_class_list.setAdapter(lRecyclerViewAdapter);
-        video_class_list.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        new VideoPlayerHttp(context).getVideoCatalog(id,uid);
+    }
+
+    public void getVideoCatalog(Response<VideoCatalogBean> response) {
+        data = response.body().getVideo();
+        code = String.valueOf(response.body().getCode());
+        msg = response.body().getMsg();
+        if (data.size()>0){
+
+
+            videoCatalogAdapter = new VideoCatalogAdapter(getActivity(),code);
+
+//            videoCatalogAdapter.clear();
+
+            lRecyclerViewAdapter = new LRecyclerViewAdapter(videoCatalogAdapter);
+            video_class_list.setAdapter(lRecyclerViewAdapter);
+            video_class_list.setLayoutManager(new LinearLayoutManager(getActivity()));
+            video_class_list.setLoadMoreEnabled(false);
+
+            videoCatalogAdapter.setDataList(data);
+            catalog_nodata.setVisibility(View.GONE);
+        }else {
+            catalog_nodata.setVisibility(View.VISIBLE);
+        }
+
+        video_class_list.setPullRefreshEnabled(false);
         video_class_list.setLoadMoreEnabled(false);
-        video_class_list.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                isRefresh = true;
-                new VideoPlayerHttp(context).getVideoCatalog(id,uid);
-            }
-        });
+
         lRecyclerViewAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -123,23 +150,19 @@ public class CatalogFragment extends Fragment {
                             videoCatalogAdapter.setThisPosition(position);
                             lRecyclerViewAdapter.notifyDataSetChanged();
                         }else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setTitle("提示");
-                            builder.setMessage(msg);
-                            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            basicDialog = new BasicDialog(context,"开通学习卡后观看完整版");
+                            basicDialog.show();
+                            basicDialog.setDialog(new BasicDialog.BasicDialogListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
+                                public void confirm() {
+                                    jump2webView();
+                                }
+
+                                @Override
+                                public void cancel() {
+                                    basicDialog.dismiss();
                                 }
                             });
-                            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
                         }
                     }
                 } else {
@@ -147,21 +170,42 @@ public class CatalogFragment extends Fragment {
                 }
             }
         });
-        video_class_list.refresh();
+
     }
 
-    public void getVideoCatalog(Response<VideoCatalogBean> response) {
-        data = response.body().getVideo();
-        code = String.valueOf(response.body().getCode());
-        msg = response.body().getMsg();
-        if (data.size()>0){
-            videoCatalogAdapter.clear();
-            videoCatalogAdapter.setDataList(data);
-            catalog_nodata.setVisibility(View.GONE);
-        }else {
-            catalog_nodata.setVisibility(View.VISIBLE);
-        }
+    private void jump2webView() {
+        OkGo.<ResponseBean<AdvertisementBean>>get(Config.URL + "api/index/get_ads?type=android")
+                .tag(this)
+                .execute(new JsonCallback<ResponseBean<AdvertisementBean>>() {
+                    @Override
+                    public void onSuccess(Response<ResponseBean<AdvertisementBean>> response) {
+                        ResponseBean<AdvertisementBean> data = response.body();
+                        String url = data.data.getAd().getUrl();
+                        String title = data.data.getAd().getTitle();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("title", title);
+                        bundle.putString("url", url);
+                        bundle.putString("type","type");
+                        startActivity(new Intent(getActivity(), WebViewActivity.class).putExtras(bundle));
+                    }
+
+                    @Override
+                    public void onError(Response<ResponseBean<AdvertisementBean>> response) {
+                        super.onError(response);
+                        Throwable exception = response.getException();
+                        if (exception instanceof MyException) {
+                            Toast.makeText(getActivity(), ((MyException) exception).getErrorBean().msg, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        basicDialog.dismiss();
+                    }
+                });
     }
+
     public void getVideoCatalogFinish() {
         video_class_list.refreshComplete(10);
         lRecyclerViewAdapter.notifyDataSetChanged();

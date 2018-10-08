@@ -104,10 +104,11 @@
 
                 <ImageView
                     android:id="@+id/see_passworld"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/see_passworld"/>
+                    android:src="@drawable/see_passworld"
+                    android:scaleType="centerInside"/>
 
             </RelativeLayout>
 

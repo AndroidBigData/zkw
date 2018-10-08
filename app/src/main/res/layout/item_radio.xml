@@ -1,12 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RadioButton
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!--<RadioButton--><!--xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:gravity="center_vertical"--><!--android:padding="10dp"--><!--android:textSize="16sp"--><!--android:button="@drawable/radio_draw"--><!--android:drawablePadding="10dp"--><!--android:text="是短发"--><!--android:background="@android:color/transparent"/>-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:padding="10dp"
-    android:textSize="16sp"
-    android:button="@drawable/radio_draw"
-    android:drawablePadding="10dp"
-    android:text="是短发"
-    android:background="@android:color/transparent"/>
+    android:paddingStart="15dp">
+
+    <org.sufficientlysecure.htmltextview.HtmlTextView
+        android:id="@+id/html_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:paddingStart="30dp"
+        android:text="选项"
+        android:textColor="@color/personal_header" />
+
+    <RadioButton
+        android:id="@+id/radioView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:background="@android:color/transparent"
+        android:button="@drawable/radio_draw"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:textSize="16sp" />
+</RelativeLayout>

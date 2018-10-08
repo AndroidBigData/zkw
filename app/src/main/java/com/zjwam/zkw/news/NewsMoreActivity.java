@@ -20,6 +20,7 @@ import com.zjwam.zkw.entity.NewsBean;
 import com.zjwam.zkw.mvp.presenter.NewsMorePresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.INewsMorePresenter;
 import com.zjwam.zkw.mvp.view.INewsMoreView;
+import com.zjwam.zkw.webview.NewsWebActivity;
 
 import java.util.List;
 

@@ -195,6 +195,7 @@ public class JobDetailsActivity extends BaseActivity implements IJobDetailsView{
     public void refreshComplete() {
         job_details_recyclerview.refreshComplete(10);
         lRecyclerViewAdapter.notifyDataSetChanged();
+        job_dedails_hold.setVisibility(View.VISIBLE);
     }
 
     @Override

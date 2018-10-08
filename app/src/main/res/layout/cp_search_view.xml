@@ -7,7 +7,9 @@
     android:background="@android:color/white"
     android:gravity="center_vertical"
     android:padding="16dp"
-    tools:showIn="@layout/cp_dialog_city_picker">
+    tools:showIn="@layout/cp_dialog_city_picker"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
 
     <EditText
         android:id="@+id/cp_search_box"
@@ -18,7 +20,6 @@
         android:hint="?attr/cpSearchHintText"
         android:maxLength="20"
         android:maxLines="1"
-        android:textCursorDrawable="?attr/cpSearchCursorDrawable"
         android:textColor="?attr/cpSearchTextColor"
         android:textColorHint="?attr/cpSearchHintTextColor"
         android:textSize="?attr/cpSearchTextSize" />

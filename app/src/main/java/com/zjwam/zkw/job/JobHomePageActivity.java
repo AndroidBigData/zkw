@@ -201,7 +201,7 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
             if (loadCity != null&&loadCity.length()>0){
                 search_fl.setText(loadCity);
                 job_home_recycler.refresh();
-            }else if (city != null){
+            }else if (city != null&&city.length()>0){
                 search_fl.setText(city);
                 ZkwPreference.getInstance(getBaseContext()).setCity(city);
                 job_home_recycler.refresh();
@@ -212,9 +212,9 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
     }
 
     private void showCityPicker(){
-        if (loadCity != null){
+        if (loadCity != null&&loadCity.length()>0){
             CityPicker.getInstance().setLocatedCity(new LocatedCity(loadCity));
-        }else if (city != null){
+        }else if (city != null&&city.length()>0){
             CityPicker.getInstance().setLocatedCity(new LocatedCity(city));
         } else {
             CityPicker.getInstance().setLocatedCity(null);
@@ -259,7 +259,7 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
                 if (loadCity != null&&loadCity.length()>0){
                     search_fl.setText(city);
                     job_home_recycler.refresh();
-                }else if (city != null){
+                }else if (city != null&&city.length()>0){
                     search_fl.setText(city);
                     ZkwPreference.getInstance(getBaseContext()).setCity(city);
                     job_home_recycler.refresh();
