@@ -101,6 +101,7 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
                 }
             }
         });
+
         citys = ZkwPreference.getInstance(context).getCity();
         testNewsPresenter.getNews(citys);
         hyjjAdapter = new NewsAdapter(context);
@@ -337,7 +338,6 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
                 @Override
                 public void citys(String city) {
                     testNewsPresenter.getNews(city);
-                    citys = city;
                 }
             });
         }

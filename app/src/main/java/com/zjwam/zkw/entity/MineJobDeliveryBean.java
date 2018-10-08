@@ -15,8 +15,9 @@ public class MineJobDeliveryBean {
     }
 
     public class Resume{
-        private String type,create_time,job_name,company_name,salary;
+        private String type,create_time,job_name,company_name,salary,area,sty;
         private long id;
+        private List<Benefit> benefit;
 
         public String getType() {
             return type;
@@ -40,6 +41,25 @@ public class MineJobDeliveryBean {
 
         public long getId() {
             return id;
+        }
+
+        public String getArea() {
+            return area;
+        }
+
+        public String getSty() {
+            return sty;
+        }
+
+        public List<Benefit> getBenefit() {
+            return benefit;
+        }
+    }
+    public class Benefit{
+        private String type;
+
+        public String getType() {
+            return type;
         }
     }
 }

@@ -223,7 +223,6 @@ public class JobNewsFragment extends Fragment implements IJobNewsView {
                 @Override
                 public void citys(String city) {
                     jobNewsPresenter.getNews(city);
-                    citys = city;
                 }
             });
         }

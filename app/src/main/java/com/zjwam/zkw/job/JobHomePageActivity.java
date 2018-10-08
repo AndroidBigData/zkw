@@ -61,7 +61,6 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
 
     private void initData() {
         jobHomePresenter = new JobHomePresenter(this, this);
-
         job_hr.setOnClickListener(onClickListener);
         job_zd.setOnClickListener(onClickListener);
         job_test.setOnClickListener(onClickListener);
@@ -82,7 +81,7 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
                 isRefresh = true;
                 page = 1;
                 mCurrentCounter = 0;
-                jobHomePresenter.getJobItem(String.valueOf(page),city, isRefresh);
+                jobHomePresenter.getJobItem(String.valueOf(page),search_fl.getText().toString(), isRefresh);
             }
         });
         job_home_recycler.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -91,7 +90,7 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
                 isRefresh = false;
                 if (mCurrentCounter < max_items) {
                     page++;
-                    jobHomePresenter.getJobItem(String.valueOf(page),city, isRefresh);
+                    jobHomePresenter.getJobItem(String.valueOf(page),search_fl.getText().toString(), isRefresh);
                 } else {
                     job_home_recycler.setNoMore(true);
                 }

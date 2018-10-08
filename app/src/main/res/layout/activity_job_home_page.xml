@@ -99,7 +99,8 @@
             android:gravity="center"
             android:text="HR专场"
             android:textColor="@color/personal_header"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/job_zd"
@@ -121,7 +122,8 @@
             android:gravity="center"
             android:text="职业测评"
             android:textColor="@color/personal_header"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <ImageView
