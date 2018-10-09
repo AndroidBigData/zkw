@@ -73,13 +73,13 @@ public class ClassNewsFragment extends Fragment implements IClassNewsView{
         teacherAdapter = new ClassNewsAdapter(context,1);
         fineClassAdapter = new ClassNewsAdapter(context,0);
         hotClassAdapter = new ClassNewsAdapter(context,0);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(context);
         linearLayoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
-        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(context);
         linearLayoutManager2.setOrientation(LinearLayoutManager.HORIZONTAL);
-        LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(context);
         linearLayoutManager3.setOrientation(LinearLayoutManager.HORIZONTAL);
 
 

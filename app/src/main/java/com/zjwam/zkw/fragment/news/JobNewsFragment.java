@@ -86,9 +86,27 @@ public class JobNewsFragment extends Fragment implements IJobNewsView {
         job_qzzx_recyclerview.setAdapter(qzzxRecyclerViewAdapter);
         job_zpzx_recyclerview.setAdapter(zpzxRecyclerViewAdapter);
         job_mqzx_recyclerview.setAdapter(mqzxRecyclerViewAdapter);
-        job_qzzx_recyclerview.setLayoutManager(new LinearLayoutManager(context));
-        job_zpzx_recyclerview.setLayoutManager(new LinearLayoutManager(context));
-        job_mqzx_recyclerview.setLayoutManager(new LinearLayoutManager(context));
+        job_qzzx_recyclerview.setLayoutManager(new LinearLayoutManager(context){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        job_qzzx_recyclerview.setFocusable(false);
+        job_zpzx_recyclerview.setLayoutManager(new LinearLayoutManager(context){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        job_zpzx_recyclerview.setFocusable(false);
+        job_mqzx_recyclerview.setLayoutManager(new LinearLayoutManager(context){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        job_mqzx_recyclerview.setFocusable(false);
         job_qzzx_recyclerview.setPullRefreshEnabled(false);
         job_qzzx_recyclerview.setLoadMoreEnabled(false);
         job_zpzx_recyclerview.setPullRefreshEnabled(false);

@@ -73,8 +73,27 @@ public class MainNewsFragment extends Fragment implements IMainNewsView{
         lRecyclerViewAdapter_w = new LRecyclerViewAdapter(newsAdapter_w);
         main_news_n.setAdapter(lRecyclerViewAdapter_n);
         main_news_w.setAdapter(lRecyclerViewAdapter_w);
-        main_news_n.setLayoutManager(new LinearLayoutManager(getActivity()));
-        main_news_w.setLayoutManager(new LinearLayoutManager(getActivity()));
+        main_news_n.setLayoutManager(new LinearLayoutManager(context){
+            @Override
+            public boolean canScrollVertically() {
+                //解决ScrollView里存在多个RecyclerView时滑动卡顿的问题
+                // 如果你的RecyclerView是水平滑动的话可以重写canScrollHorizontally方法
+                return false;
+            }
+        });
+        main_news_w.setLayoutManager(new LinearLayoutManager(context){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+//        //解决数据加载不完的问题
+//        main_news_w.setNestedScrollingEnabled(false);
+//        main_news_w.setHasFixedSize(true);
+//        // 解决数据加载完成后, 没有停留在顶部的问题
+        main_news_w.setFocusable(false);
+
+
         main_news_n.setPullRefreshEnabled(false);
         main_news_n.setLoadMoreEnabled(false);
         main_news_w.setPullRefreshEnabled(false);

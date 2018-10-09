@@ -82,11 +82,41 @@ public class BusinessNewsFragment extends Fragment implements IBusinessNewsView 
         business_yxxm_recyclerview.setAdapter(yxxmRecyclerViewAdapter);
         business_lxxm_recyclerview.setAdapter(lxxmRecyclerViewAdapter);
         business_ldxm_recyclerview.setAdapter(ldxmRecyclerViewAdapter);
-        business_zmfhq_recyclerview.setLayoutManager(new LinearLayoutManager(context));
-        business_zmft_recyclerview.setLayoutManager(new LinearLayoutManager(context));
-        business_yxxm_recyclerview.setLayoutManager(new LinearLayoutManager(context));
-        business_lxxm_recyclerview.setLayoutManager(new LinearLayoutManager(context));
-        business_ldxm_recyclerview.setLayoutManager(new LinearLayoutManager(context));
+        business_zmfhq_recyclerview.setLayoutManager(new LinearLayoutManager(context){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        business_zmfhq_recyclerview.setFocusable(false);
+        business_zmft_recyclerview.setLayoutManager(new LinearLayoutManager(context){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        business_zmft_recyclerview.setFocusable(false);
+        business_yxxm_recyclerview.setLayoutManager(new LinearLayoutManager(context){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        business_yxxm_recyclerview.setFocusable(false);
+        business_lxxm_recyclerview.setLayoutManager(new LinearLayoutManager(context){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        business_lxxm_recyclerview.setFocusable(false);
+        business_ldxm_recyclerview.setLayoutManager(new LinearLayoutManager(context){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        business_ldxm_recyclerview.setFocusable(false);
         business_zmfhq_recyclerview.setPullRefreshEnabled(false);
         business_zmfhq_recyclerview.setLoadMoreEnabled(false);
         business_zmft_recyclerview.setPullRefreshEnabled(false);

@@ -114,17 +114,46 @@ public class TestNewsFragment extends Fragment implements ITestNewsView {
         rdztRecyclerViewAdapter = new LRecyclerViewAdapter(rdztAdapter);
         jcdgRecyclerViewAdapter = new LRecyclerViewAdapter(jcdgAdapter);
         jqxdRecyclerViewAdapter = new LRecyclerViewAdapter(jqxdAdapter);
-        test_hyjj_recyclerview.setFocusable(false);
         test_hyjj_recyclerview.setAdapter(hyjjRecyclerViewAdapter);
         test_ksdt_recyclerview.setAdapter(ksdtRecyclerViewAdapter);
         test_rdzt_recyclerview.setAdapter(rdztRecyclerViewAdapter);
         test_jcdg_recyclerview.setAdapter(jcdgRecyclerViewAdapter);
         test_jqxd_recyclerview.setAdapter(jqxdRecyclerViewAdapter);
-        test_hyjj_recyclerview.setLayoutManager(new LinearLayoutManager(context));
-        test_ksdt_recyclerview.setLayoutManager(new LinearLayoutManager(context));
-        test_rdzt_recyclerview.setLayoutManager(new LinearLayoutManager(context));
-        test_jcdg_recyclerview.setLayoutManager(new LinearLayoutManager(context));
-        test_jqxd_recyclerview.setLayoutManager(new LinearLayoutManager(context));
+        test_hyjj_recyclerview.setLayoutManager(new LinearLayoutManager(context){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        test_hyjj_recyclerview.setFocusable(false);
+        test_ksdt_recyclerview.setLayoutManager(new LinearLayoutManager(context){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        test_ksdt_recyclerview.setFocusable(false);
+        test_rdzt_recyclerview.setLayoutManager(new LinearLayoutManager(context){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        test_rdzt_recyclerview.setFocusable(false);
+        test_jcdg_recyclerview.setLayoutManager(new LinearLayoutManager(context){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        test_jcdg_recyclerview.setFocusable(false);
+        test_jqxd_recyclerview.setLayoutManager(new LinearLayoutManager(context){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        test_jqxd_recyclerview.setFocusable(false);
         test_hyjj_recyclerview.setPullRefreshEnabled(false);
         test_hyjj_recyclerview.setLoadMoreEnabled(false);
         test_ksdt_recyclerview.setPullRefreshEnabled(false);

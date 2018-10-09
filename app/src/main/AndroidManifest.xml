@@ -181,21 +181,36 @@
         <activity
             android:name=".job.ProfessionChoiceActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".job.SearchJobDetailsActivity" />
-        <activity android:name=".personalcenter.job.CreateResumeActivity" />
-        <activity android:name=".personalcenter.job.AddJobEducationalActivity" />
-        <activity android:name=".personalcenter.job.AddJobExperienceActivity" />
-        <activity android:name=".personalcenter.job.AddJobProjectActivity" />
-        <activity android:name=".personalcenter.job.ResumeDetailsActivity" />
-        <activity android:name=".personalcenter.job.ResumePreviewActivity" />
-        <activity android:name=".job.JobEmploymentActivity" />
-        <activity android:name=".personalcenter.job.JobHoldActivity" />
-        <activity android:name=".personalcenter.job.MineDeliveryActivity" />
-        <activity android:name=".news.NewsActivity" />
-        <activity android:name=".news.NewsMoreActivity" />
-        <activity android:name=".news.TeacherMoreActivity" />
-        <activity android:name=".news.ClassNewsMoreActivity" />
-        <activity android:name=".webview.NewsWebActivity"></activity>
+        <activity android:name=".job.SearchJobDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".personalcenter.job.CreateResumeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".personalcenter.job.AddJobEducationalActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".personalcenter.job.AddJobExperienceActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".personalcenter.job.AddJobProjectActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".personalcenter.job.ResumeDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".personalcenter.job.ResumePreviewActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".job.JobEmploymentActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".personalcenter.job.JobHoldActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".personalcenter.job.MineDeliveryActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".news.NewsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".news.NewsMoreActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".news.TeacherMoreActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".news.ClassNewsMoreActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".webview.NewsWebActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
