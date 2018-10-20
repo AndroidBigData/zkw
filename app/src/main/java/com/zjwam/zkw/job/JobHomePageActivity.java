@@ -10,6 +10,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.github.jdsjlzx.interfaces.OnLoadMoreListener;
 import com.github.jdsjlzx.interfaces.OnRefreshListener;
@@ -48,8 +54,9 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
     private int mCurrentCounter, max_items, page;
     private boolean isRefresh;
     private IJobHomePresenter jobHomePresenter;
-    private String city,loadCity;
+    private String city,loadCity,choiceCity;
     private List<HotCity> hotCities;
+    private LocationClient mLocationClient = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +113,69 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
         });
 
         jobHomePresenter.getHotCity();
+
+        MyLocationListenner myListener = new MyLocationListenner();
+        mLocationClient = new LocationClient(this);
+        LocationClientOption option = new LocationClientOption();
+        option.setIsNeedAddress(true);
+        mLocationClient.setLocOption(option);
+        mLocationClient.registerLocationListener(myListener);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            permission();
+        }else {
+//            loadCity = ZkwPreference.getInstance(getBaseContext()).getCity();
+//            if (loadCity != null&&loadCity.length()>0){
+//                search_fl.setText(loadCity);
+//                job_home_recycler.refresh();
+//            }else if (city != null&&city.length()>0){
+//                search_fl.setText(city);
+//                ZkwPreference.getInstance(getBaseContext()).setCity(city);
+//                job_home_recycler.refresh();
+//            }else {
+//                if (hotCities.size()>0){
+//                    showCityPicker();
+//                }
+//            }
+            mLocationClient.start();
+        }
+
     }
+
+    @Override
+    public void onDestroy() {
+        mLocationClient.stop();
+        super.onDestroy();
+    }
+    private class MyLocationListenner extends BDAbstractLocationListener {
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            try {
+                //当前设备位置所在的市
+                city = location.getCity();
+                loadCity = ZkwPreference.getInstance(getBaseContext()).getCity();
+                if (loadCity != null&&loadCity.length()>0){
+                    search_fl.setText(loadCity);
+                    CityPicker.getInstance().setLocatedCity(new LocatedCity(loadCity));
+                    job_home_recycler.refresh();
+                }else if (city != null&&city.length()>0){
+                    search_fl.setText(city);
+                    ZkwPreference.getInstance(getBaseContext()).setCity(city);
+                    CityPicker.getInstance().setLocatedCity(new LocatedCity(city));
+                    job_home_recycler.refresh();
+                }else {
+                    if (hotCities.size()>0){
+                        showCityPicker();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -192,22 +261,6 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
             hotCities.add(new HotCity(city.getCity()));
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            permission();
-        }else {
-            city = new LocationCity(JobHomePageActivity.this).getLocation();
-            loadCity = ZkwPreference.getInstance(getBaseContext()).getCity();
-            if (loadCity != null&&loadCity.length()>0){
-                search_fl.setText(loadCity);
-                job_home_recycler.refresh();
-            }else if (city != null&&city.length()>0){
-                search_fl.setText(city);
-                ZkwPreference.getInstance(getBaseContext()).setCity(city);
-                job_home_recycler.refresh();
-            }else {
-                showCityPicker();
-            }
-        }
     }
 
     private void showCityPicker(){
@@ -227,20 +280,17 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
                         @Override
                         public void onPick(int position, City data) {
                             if (data != null) {
-                                city = data.getName();
-                                search_fl.setText(city);
-                                ZkwPreference.getInstance(getBaseContext()).setCity(city);
+                                choiceCity = data.getName();
+                                search_fl.setText(choiceCity);
+                                ZkwPreference.getInstance(getBaseContext()).setCity(choiceCity);
                                 job_home_recycler.refresh();
                             }
                         }
                         @Override
                         public void onLocate() {
-                            city = new LocationCity(JobHomePageActivity.this).getLocation();
-                            if (city != null){
-                                CityPicker.getInstance().locateComplete(new LocatedCity(city), LocateState.SUCCESS);
-                            }else {
-                                CityPicker.getInstance().locateComplete(new LocatedCity(city), LocateState.FAILURE);
-                            }
+//                            city = new LocationCity(JobHomePageActivity.this).getLocation();
+                            mLocationClient.restart();
+
                         }
                     })
                     .show();
@@ -253,23 +303,15 @@ public class JobHomePageActivity extends BaseActivity implements IJobHomeView {
             @Override
             public void onGranted() {
                 //表示所有权限都授权了
-                city = new LocationCity(JobHomePageActivity.this).getLocation();
-                loadCity = ZkwPreference.getInstance(getBaseContext()).getCity();
-                if (loadCity != null&&loadCity.length()>0){
-                    search_fl.setText(city);
-                    job_home_recycler.refresh();
-                }else if (city != null&&city.length()>0){
-                    search_fl.setText(city);
-                    ZkwPreference.getInstance(getBaseContext()).setCity(city);
-                    job_home_recycler.refresh();
-                }else {
-                    showCityPicker();
-                }
-
+//                city = new LocationCity(JobHomePageActivity.this).getLocation();
+                mLocationClient.start();
             }
 
             @Override
             public void onDenied(List<String> deniedPermission) {
+                if (hotCities.size()>0){
+                    showCityPicker();
+                }
             }
         });
     }

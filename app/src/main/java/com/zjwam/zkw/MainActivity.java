@@ -1,6 +1,8 @@
 package com.zjwam.zkw;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,22 +15,31 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.FileCallback;
+import com.lzy.okgo.model.Progress;
 import com.lzy.okgo.model.Response;
+import com.zjwam.zkw.customview.VersionDialog;
 import com.zjwam.zkw.entity.ClassSearchBean;
 import com.zjwam.zkw.entity.CurriculumLnitializationBean;
 import com.zjwam.zkw.entity.HomePageBean;
 import com.zjwam.zkw.entity.PersoanlMessage;
 import com.zjwam.zkw.entity.PersonalQDBean;
+import com.zjwam.zkw.entity.VersionBean;
 import com.zjwam.zkw.fragment.CurriculumFragment;
 import com.zjwam.zkw.fragment.ExamFragment;
 import com.zjwam.zkw.fragment.HomePageFragment;
 import com.zjwam.zkw.fragment.MineFragment;
+import com.zjwam.zkw.mvp.presenter.VersionControlPresenter;
+import com.zjwam.zkw.mvp.presenter.ipresenter.IVersionControlPresenter;
+import com.zjwam.zkw.mvp.view.IVersionControlView;
 import com.zjwam.zkw.util.NetworkUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements IVersionControlView {
 
     private LinearLayout index_home, index_curriculum, index_mine,index_exam;
     private ImageView img_home, img_curriculum, img_mine,img_exam;
@@ -45,6 +56,8 @@ public class MainActivity extends BaseActivity {
     //当前显示的fragment
     private static final String CURRENT_FRAGMENT = "STATE_FRAGMENT_SHOW";
     private int currentIndex = 0;
+    private IVersionControlPresenter versionControlPresenter;
+    private VersionDialog versionDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +164,8 @@ public class MainActivity extends BaseActivity {
                 showFragment();
             }
         });
+        versionControlPresenter = new VersionControlPresenter(this,this);
+        versionControlPresenter.versionControl();
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -282,5 +297,47 @@ public class MainActivity extends BaseActivity {
     }
     public void qdMessageFinish(){
         mineFragment.qdMessageFinish();
+    }
+
+    @Override
+    public void versinonControl(final VersionBean versionBean) {
+        String versin_now = null;
+        try {
+            versin_now = getPackageManager().
+                    getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String version_new = versionBean.getNumber();
+        if (!versin_now.equals(version_new)){
+            versionDialog = new VersionDialog(MainActivity.this,versionBean.getContent(),versionBean.getSize());
+            versionDialog.show();
+            versionDialog.setDialogListener(new VersionDialog.DialogListener() {
+                @Override
+                public void confirm() {
+                    OkGo.<File>get(versionBean.getUrl())
+                            .tag(this)
+                            .execute(new FileCallback() {
+                                @Override
+                                public void onSuccess(Response<File> response) {
+                                    File body = response.body();
+                                    String path = body.getPath();
+                                    File App = new File(path);
+                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.setDataAndType(Uri.fromFile(App),
+                                            "application/vnd.android.package-archive");
+                                    startActivity(intent);
+                                }
+                            });
+                    versionDialog.dismiss();
+                }
+
+                @Override
+                public void cancel() {
+                    versionDialog.dismiss();
+                }
+            });
+        }
     }
 }

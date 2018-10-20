@@ -83,7 +83,6 @@
         android:layout_height="40dp"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/btn_bule_shap"
         android:background="@drawable/btn_bule_shap"
         android:textColor="@color/white"
         android:text="提交"/>

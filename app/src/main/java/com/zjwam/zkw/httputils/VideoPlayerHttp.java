@@ -56,13 +56,6 @@ public class VideoPlayerHttp {
                     ((Video2PlayActivity) context).refreshCar(response);
                 }
             }
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                if (context instanceof Video2PlayActivity){
-                    ((Video2PlayActivity) context).getFirstFinish();
-                }
-            }
         });
     }
     public void setSCMsg (String id,String uid){

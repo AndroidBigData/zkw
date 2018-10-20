@@ -211,6 +211,16 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".webview.NewsWebActivity"
             android:screenOrientation="portrait"/>
+
+        <!-- 声明service组件 -->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" >
+        </service>
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="BoP3F4c7zhaskeuGRro8KhaGaS5GmXHp" />  <!-- 百度地图AK -->
     </application>
 
 </manifest>

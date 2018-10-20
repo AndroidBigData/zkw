@@ -137,12 +137,7 @@ public class SearchJobActivity extends BaseActivity implements ISearchJobHotCity
                     }
                     @Override
                     public void onLocate() {
-                        city = new LocationCity(SearchJobActivity.this).getLocation();
-                        if (city != null){
-                            CityPicker.getInstance().locateComplete(new LocatedCity(city), LocateState.SUCCESS);
-                        }else {
-                            CityPicker.getInstance().locateComplete(new LocatedCity(city), LocateState.FAILURE);
-                        }
+
                     }
                 })
                 .show();

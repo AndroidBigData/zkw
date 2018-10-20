@@ -70,6 +70,7 @@ public class JobEmploymentActivity extends BaseActivity implements IJobEmploymen
         employment_recyclerview.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
+                isRefresh = false;
                 if (mCurrentCounter<max_items){
                     page++;
                     emplomentPresenter.getEmploment(isRefresh, String.valueOf(page));
