@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,15 +23,13 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.base.Request;
-import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.view.BaseActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.customview.ChoicePictureDialog;
 import com.zjwam.zkw.entity.AddCompanyInfo;
@@ -54,8 +51,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.media.MediaRecorder.VideoSource.CAMERA;
 
 public class AddCompanyInformationActivity extends BaseActivity {
 

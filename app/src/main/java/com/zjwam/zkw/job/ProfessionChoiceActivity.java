@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.view.BaseActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.customview.FlowLayout;
 import com.zjwam.zkw.entity.IndustrySelectBean;

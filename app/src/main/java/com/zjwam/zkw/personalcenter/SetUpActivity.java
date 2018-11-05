@@ -3,19 +3,20 @@ package com.zjwam.zkw.personalcenter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.view.BaseActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.fragment.login.LoginFragment;
 import com.zjwam.zkw.personalcenter.addinformation.AddCompanyInformationActivity;
 import com.zjwam.zkw.personalcenter.addinformation.AddStudentInformationActivity;
 import com.zjwam.zkw.personalcenter.addinformation.AddTeacherInformationActivity;
 import com.zjwam.zkw.util.ZkwPreference;
+
+import cn.jpush.android.api.JPushInterface;
 
 public class SetUpActivity extends BaseActivity {
 private TextView mine_setup,setup_safe,logout;
@@ -70,6 +71,8 @@ private boolean isFalg;
                         ZkwPreference.getInstance(getBaseContext()).setCity("");
                         ZkwPreference.getInstance(getBaseContext()).setVideoId("");
                         ZkwPreference.getInstance(getBaseContext()).setViteoTime("");
+                        JPushInterface.setAlias(getBaseContext(), 1, "");
+                        JPushInterface.deleteAlias(getBaseContext(),1);
                         finish();
                     }
 

@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <application
         android:name=".ZkwApplication"
@@ -28,7 +29,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SplashActivity"
+            android:name=".view.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -63,7 +64,7 @@
             android:name=".personalcenter.XGPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".fragment.login.LoginFragment"
@@ -110,7 +111,7 @@
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".AdvertisementActivity"
+            android:name=".view.AdvertisementActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".webview.WebViewActivity"
@@ -181,46 +182,96 @@
         <activity
             android:name=".job.ProfessionChoiceActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".job.SearchJobDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".personalcenter.job.CreateResumeActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".personalcenter.job.AddJobEducationalActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".personalcenter.job.AddJobExperienceActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".personalcenter.job.AddJobProjectActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".personalcenter.job.ResumeDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".personalcenter.job.ResumePreviewActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".job.JobEmploymentActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".personalcenter.job.JobHoldActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".personalcenter.job.MineDeliveryActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".news.NewsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".news.NewsMoreActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".news.TeacherMoreActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".news.ClassNewsMoreActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".webview.NewsWebActivity"
-            android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".job.SearchJobDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".personalcenter.job.CreateResumeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".personalcenter.job.AddJobEducationalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".personalcenter.job.AddJobExperienceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".personalcenter.job.AddJobProjectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".personalcenter.job.ResumeDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".personalcenter.job.ResumePreviewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".job.JobEmploymentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".personalcenter.job.JobHoldActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".personalcenter.job.MineDeliveryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".news.NewsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".news.NewsMoreActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".news.TeacherMoreActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".news.ClassNewsMoreActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".webview.NewsWebActivity"
+            android:screenOrientation="portrait" />
+        <!-- 百度地图定位 -->
         <!-- 声明service组件 -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote" >
-        </service>
+            android:process=":remote"></service>
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="BoP3F4c7zhaskeuGRro8KhaGaS5GmXHp" />  <!-- 百度地图AK -->
+            android:value="BoP3F4c7zhaskeuGRro8KhaGaS5GmXHp" /> <!-- 百度地图AK -->
+        <!-- 极光推送 -->
+        <receiver
+            android:name=".receiver.MyJPushMessageReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+
+                <category android:name="com.zjwam.zkw" />
+            </intent-filter>
+        </receiver>
+
+        <!-- User defined. 用户自定义的广播接收器 -->
+        <receiver
+            android:name=".receiver.MyReceiver"
+            android:enabled="true">
+            <intent-filter>
+
+                <!-- Required 用户注册SDK的intent -->
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <!-- Required 用户接收SDK消息的intent -->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <!-- Required 用户接收SDK通知栏信息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <!-- Required 用户打开自定义通知栏的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                <!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <action android:name="cn.jpush.android.intent.CONNECTION" />
+
+                <category android:name="com.zjwam.zkw" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".view.LogoutNotifiActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activityDialog"/>
     </application>
 
 </manifest>

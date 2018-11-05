@@ -1,10 +1,8 @@
 package com.zjwam.zkw.wxapi;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
@@ -13,7 +11,7 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.view.BaseActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.ZkwPreference;

@@ -16,7 +16,7 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.lzy.okgo.model.Response;
-import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.view.BaseActivity;
 import com.zjwam.zkw.httputils.HttpErrorMsg;
 import com.zjwam.zkw.httputils.VideoAnswersHttp;
 import com.zjwam.zkw.R;

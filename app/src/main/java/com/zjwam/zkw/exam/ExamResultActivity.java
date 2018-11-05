@@ -12,16 +12,13 @@ import com.github.jdsjlzx.recyclerview.LRecyclerView;
 import com.github.jdsjlzx.recyclerview.LRecyclerViewAdapter;
 import com.github.jdsjlzx.recyclerview.ProgressStyle;
 import com.jaeger.library.StatusBarUtil;
-import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.view.BaseActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.ExamResultAdapter;
 import com.zjwam.zkw.entity.ExamBaseResultBean;
-import com.zjwam.zkw.entity.ExamResultBean;
 import com.zjwam.zkw.mvp.presenter.ExamResultPresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.IExamResultPresenter;
 import com.zjwam.zkw.mvp.view.IExamResultView;
-
-import java.util.List;
 
 public class ExamResultActivity extends BaseActivity implements IExamResultView{
 

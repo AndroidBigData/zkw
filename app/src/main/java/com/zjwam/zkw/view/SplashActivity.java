@@ -1,15 +1,10 @@
-package com.zjwam.zkw;
+package com.zjwam.zkw.view;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 
 import com.jaeger.library.StatusBarUtil;
+import com.zjwam.zkw.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,6 +34,9 @@ public class SplashActivity extends BaseActivity {
 
     private void gotoMainPage() {
         Intent intent = (new Intent(this, AdvertisementActivity.class));
+        if(getIntent().getBundleExtra("jpush") != null){
+            intent.putExtra("jpush", getIntent().getBundleExtra("jpush"));
+        }
         startActivity(intent);
         finish();
     }

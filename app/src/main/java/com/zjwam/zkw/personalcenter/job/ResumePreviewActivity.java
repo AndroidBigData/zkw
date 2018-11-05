@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.view.BaseActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.fragment.personalcenter.ResumePreviewEduFragment;
 import com.zjwam.zkw.fragment.personalcenter.ResumePreviewJobFragment;

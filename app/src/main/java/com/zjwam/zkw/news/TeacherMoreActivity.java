@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.request.RequestOptions;
-import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.view.BaseActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.TeacherMoreAdapter;
 import com.zjwam.zkw.adapter.TeacherMoreRYAdapter;
@@ -21,7 +21,6 @@ import com.zjwam.zkw.mvp.presenter.TeacherMorePresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.ITeacherMorePresenter;
 import com.zjwam.zkw.mvp.view.ITeacherMoreView;
 import com.zjwam.zkw.util.GlideImageUtil;
-import com.zjwam.zkw.util.RequestOptionsUtils;
 import com.zjwam.zkw.videoplayer.Video2PlayActivity;
 
 import java.util.List;

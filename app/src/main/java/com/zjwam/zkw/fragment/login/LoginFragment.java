@@ -2,19 +2,13 @@ package com.zjwam.zkw.fragment.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -26,17 +20,23 @@ import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.base.Request;
-import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.callback.JsonCallback;
+import com.zjwam.zkw.entity.EmptyBean;
+import com.zjwam.zkw.entity.ResponseBean;
+import com.zjwam.zkw.httputils.OkGoUtils;
+import com.zjwam.zkw.view.BaseActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.entity.DialogInfo;
 import com.zjwam.zkw.jsondata.Dialog2Json;
-import com.zjwam.zkw.personalcenter.addinformation.AddCompanyInformationActivity;
-import com.zjwam.zkw.personalcenter.addinformation.AddStudentInformationActivity;
-import com.zjwam.zkw.personalcenter.addinformation.AddTeacherInformationActivity;
 import com.zjwam.zkw.register.RegisterChoiceActivity;
 
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.ZkwPreference;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import cn.jpush.android.api.JPushInterface;
 
 
 public class LoginFragment extends BaseActivity {
@@ -44,12 +44,13 @@ public class LoginFragment extends BaseActivity {
     private TextView btn_login;
     private TextView getback_passworld, register_name;
     private EditText login_name, login_passworld;
-    private ImageView see_passworld,login_back;
+    private ImageView see_passworld, login_back;
     private Boolean isSee = false;
     private RelativeLayout progress_login;
     private FragmentManager manager;// Fragment碎片管理器
     private FragmentTransaction transaction;
     private PersonalFragment personalFragment;
+    private String uid;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -139,22 +140,24 @@ public class LoginFragment extends BaseActivity {
                     public void onSuccess(Response<String> response) {
                         DialogInfo dialogInfo = Dialog2Json.getDialogInfo(response.body());
                         if ("1".equals(dialogInfo.getCode())) {
+                            uid = dialogInfo.getUid();
                             //保存登录状态
                             ZkwPreference.getInstance(getBaseContext()).SetIsFlag(true);
                             //保存uid
-                            ZkwPreference.getInstance(getBaseContext()).SetUid(dialogInfo.getUid());
+                            ZkwPreference.getInstance(getBaseContext()).SetUid(uid);
                             ZkwPreference.getInstance(getBaseContext()).SetRegisterType(dialogInfo.getType());
                             ZkwPreference.getInstance(getBaseContext()).SetPassword(login_passworld.getText().toString().trim());
                             login_name.setText("");
                             login_passworld.setText("");
-                            finish();
+                            pushMsg(uid);
+
 //                            //登陆界面替换
 //                            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager()
 //                                    .beginTransaction();
 //                            fragmentTransaction.replace(R.id.fragment_mine, new PersonalFragment()).commit();
-
                         } else {
                             Toast.makeText(getBaseContext(), dialogInfo.getMsg(), Toast.LENGTH_SHORT).show();
+                            progress_login.setVisibility(View.GONE);
                         }
                     }
 
@@ -166,7 +169,8 @@ public class LoginFragment extends BaseActivity {
                     @Override
                     public void onFinish() {
                         super.onFinish();
-                        progress_login.setVisibility(View.GONE);
+//                        progress_login.setVisibility(View.GONE);
+
                     }
                 });
 
@@ -208,6 +212,30 @@ public class LoginFragment extends BaseActivity {
 //                progress_login.setVisibility(View.GONE);
 //            }
 //        });
+    }
+
+    private void pushMsg(final String uid) {
+        Map<String,String> param = new HashMap<>();
+        param.put("uid",uid);
+        OkGoUtils.postRequets(Config.URL + "api/login/push", this, param, new JsonCallback<ResponseBean<EmptyBean>>() {
+            @Override
+            public void onSuccess(Response<ResponseBean<EmptyBean>> response) {
+
+            }
+
+            @Override
+            public void onStart(Request<ResponseBean<EmptyBean>, ? extends Request> request) {
+//                super.onStart(request);
+            }
+
+            @Override
+            public void onFinish() {
+//                super.onFinish();
+                progress_login.setVisibility(View.GONE);
+                JPushInterface.setAlias(getBaseContext(), 1, uid);
+                finish();
+            }
+        });
     }
 
 }

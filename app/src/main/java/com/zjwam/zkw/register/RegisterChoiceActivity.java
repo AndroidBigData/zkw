@@ -3,16 +3,11 @@ package com.zjwam.zkw.register;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
-import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.view.BaseActivity;
 import com.zjwam.zkw.R;
-import com.zjwam.zkw.personalcenter.addinformation.AddCompanyInformationActivity;
 import com.zjwam.zkw.util.ZkwPreference;
 
 public class RegisterChoiceActivity extends BaseActivity {

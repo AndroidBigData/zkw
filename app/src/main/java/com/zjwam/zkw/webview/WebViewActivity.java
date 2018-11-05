@@ -21,10 +21,10 @@ import com.lzy.okgo.model.Response;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.view.BaseActivity;
 import com.zjwam.zkw.httputils.HttpErrorMsg;
 import com.zjwam.zkw.httputils.WebViewHttp;
-import com.zjwam.zkw.MainActivity;
+import com.zjwam.zkw.view.MainActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.customview.LearnCardSuccessDialog;
 import com.zjwam.zkw.entity.PayMsgBean;
@@ -74,7 +74,11 @@ public class WebViewActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (type == null || type.length() == 0) {
-                    startActivity(new Intent(getBaseContext(), MainActivity.class));
+                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                    if(getIntent().getBundleExtra("jpush") != null){
+                        intent.putExtra("jpush", getIntent().getBundleExtra("jpush"));
+                    }
+                    startActivity(intent);
                     finish();
                 } else {
                     finish();
@@ -239,7 +243,11 @@ public class WebViewActivity extends BaseActivity {
             return true;
         } else {
             if (type == null || type.length() == 0) {
-                startActivity(new Intent(getBaseContext(), MainActivity.class));
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                if(getIntent().getBundleExtra("jpush") != null){
+                    intent.putExtra("jpush", getIntent().getBundleExtra("jpush"));
+                }
+                startActivity(intent);
                 finish();
             } else {
                 finish();

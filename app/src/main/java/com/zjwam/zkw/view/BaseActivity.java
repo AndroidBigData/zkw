@@ -1,4 +1,4 @@
-package com.zjwam.zkw;
+package com.zjwam.zkw.view;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
 import com.lzy.okgo.OkGo;
+import com.zjwam.zkw.R;
 import com.zjwam.zkw.callback.PermissionListener;
 
 import java.util.ArrayList;

@@ -1,8 +1,6 @@
 package com.zjwam.zkw.job;
 
-import android.Manifest;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,20 +9,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.view.BaseActivity;
 import com.zjwam.zkw.R;
-import com.zjwam.zkw.callback.PermissionListener;
 import com.zjwam.zkw.customview.CityPicker;
 import com.zjwam.zkw.entity.City;
 import com.zjwam.zkw.entity.HotCity;
 import com.zjwam.zkw.entity.HotCityBean;
-import com.zjwam.zkw.entity.LocateState;
 import com.zjwam.zkw.entity.LocatedCity;
 import com.zjwam.zkw.listener.OnPickListener;
 import com.zjwam.zkw.mvp.presenter.SearchJobHotCityPresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.ISearchJobHotCityPresenter;
 import com.zjwam.zkw.mvp.view.ISearchJobHotCityView;
-import com.zjwam.zkw.util.LocationCity;
 
 import java.util.ArrayList;
 import java.util.List;

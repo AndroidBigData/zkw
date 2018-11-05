@@ -1,30 +1,26 @@
-package com.zjwam.zkw;
+package com.zjwam.zkw.view;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.jaeger.library.StatusBarUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
+import com.zjwam.zkw.R;
 import com.zjwam.zkw.callback.JsonCallback;
 import com.zjwam.zkw.entity.AdvertisementBean;
 import com.zjwam.zkw.entity.ResponseBean;
-import com.zjwam.zkw.register.RegisterActivity;
 import com.zjwam.zkw.util.Config;
-import com.zjwam.zkw.util.GlideImageUtil;
 import com.zjwam.zkw.util.MyException;
-import com.zjwam.zkw.util.RequestOptionsUtils;
 import com.zjwam.zkw.webview.WebViewActivity;
 
 public class AdvertisementActivity extends BaseActivity {
@@ -126,7 +122,11 @@ public class AdvertisementActivity extends BaseActivity {
         @Override
         public void onFinish() {
             if (!isJump){
-                startActivity(new Intent(getBaseContext(), MainActivity.class));
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                if(getIntent().getBundleExtra("jpush") != null){
+                    intent.putExtra("jpush", getIntent().getBundleExtra("jpush"));
+                }
+                startActivity(intent);
                 finish();
             }
         }

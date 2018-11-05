@@ -21,8 +21,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jaeger.library.StatusBarUtil;
-import com.zjwam.zkw.BaseActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.adapter.CityListAdapter;
 import com.zjwam.zkw.adapter.decoration.DividerItemDecoration;
@@ -32,7 +30,6 @@ import com.zjwam.zkw.entity.CityList;
 import com.zjwam.zkw.entity.HotCity;
 import com.zjwam.zkw.entity.LocateState;
 import com.zjwam.zkw.entity.LocatedCity;
-import com.zjwam.zkw.job.JobHomePageActivity;
 import com.zjwam.zkw.listener.InnerListener;
 import com.zjwam.zkw.listener.OnPickListener;
 

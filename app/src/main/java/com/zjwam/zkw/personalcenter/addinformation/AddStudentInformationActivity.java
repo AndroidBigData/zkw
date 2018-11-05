@@ -1,16 +1,12 @@
 package com.zjwam.zkw.personalcenter.addinformation;
 
 
-import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.constraint.ConstraintLayout;
-import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -26,7 +22,7 @@ import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.base.Request;
-import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.view.BaseActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.entity.AddInfo;
 import com.zjwam.zkw.entity.DialogInfo;
@@ -38,10 +34,8 @@ import com.zjwam.zkw.util.AddChoiceInfo;
 import com.zjwam.zkw.util.Config;
 import com.zjwam.zkw.util.GetJsonDataUtil;
 import com.zjwam.zkw.util.KeyboardUtils;
-import com.zjwam.zkw.util.ZkwPreference;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;;
 
 import java.util.ArrayList;

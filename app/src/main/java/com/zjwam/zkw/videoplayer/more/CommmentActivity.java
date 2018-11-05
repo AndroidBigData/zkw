@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lzy.okgo.model.Response;
-import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.view.BaseActivity;
 import com.zjwam.zkw.httputils.CommmentActivityHttp;
 import com.zjwam.zkw.httputils.HttpErrorMsg;
 import com.zjwam.zkw.R;

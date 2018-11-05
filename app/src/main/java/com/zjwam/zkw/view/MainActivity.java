@@ -1,4 +1,4 @@
-package com.zjwam.zkw;
+package com.zjwam.zkw.view;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,8 +16,8 @@ import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.FileCallback;
-import com.lzy.okgo.model.Progress;
 import com.lzy.okgo.model.Response;
+import com.zjwam.zkw.R;
 import com.zjwam.zkw.customview.VersionDialog;
 import com.zjwam.zkw.entity.ClassSearchBean;
 import com.zjwam.zkw.entity.CurriculumLnitializationBean;
@@ -30,14 +29,23 @@ import com.zjwam.zkw.fragment.CurriculumFragment;
 import com.zjwam.zkw.fragment.ExamFragment;
 import com.zjwam.zkw.fragment.HomePageFragment;
 import com.zjwam.zkw.fragment.MineFragment;
+import com.zjwam.zkw.fragment.login.LoginFragment;
 import com.zjwam.zkw.mvp.presenter.VersionControlPresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.IVersionControlPresenter;
 import com.zjwam.zkw.mvp.view.IVersionControlView;
-import com.zjwam.zkw.util.NetworkUtils;
+import com.zjwam.zkw.util.ZkwPreference;
+import com.zjwam.zkw.videoplayer.Video2PlayActivity;
+import com.zjwam.zkw.webview.NewsWebActivity;
+
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.jpush.android.api.JPushInterface;
 
 public class MainActivity extends BaseActivity implements IVersionControlView {
 
@@ -63,6 +71,31 @@ public class MainActivity extends BaseActivity implements IVersionControlView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null){
+            if ("logout".equals(bundle.getString("logout"))){
+                startActivity(new Intent(getBaseContext(),LoginFragment.class));
+            }
+            if (bundle.getBundle("jpush") != null){
+                String data = bundle.getBundle("jpush").getString("info");
+                try {
+                    JSONObject object = new JSONObject(data);
+                    if (object.toString().contains("url")) {
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString("url", object.getString("url"));
+                        Intent i = new Intent(getBaseContext(), NewsWebActivity.class).putExtras(bundle1);
+                        startActivity(i);
+                    } else if (object.toString().contains("id")) {
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString("id", object.getString("id"));
+                        Intent i = new Intent(getBaseContext(), Video2PlayActivity.class).putExtras(bundle1);
+                        startActivity(i);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         initView();
         initData();
 
@@ -166,6 +199,9 @@ public class MainActivity extends BaseActivity implements IVersionControlView {
         });
         versionControlPresenter = new VersionControlPresenter(this,this);
         versionControlPresenter.versionControl();
+        if (ZkwPreference.getInstance(getBaseContext()).getUid().length()>0){
+            JPushInterface.setAlias(getBaseContext(), 1, ZkwPreference.getInstance(getBaseContext()).getUid());
+        }
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {

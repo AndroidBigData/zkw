@@ -19,7 +19,7 @@ import com.lzy.okgo.model.Response;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.view.BaseActivity;
 import com.zjwam.zkw.httputils.HttpErrorMsg;
 import com.zjwam.zkw.httputils.PayPreviewHttp;
 import com.zjwam.zkw.R;

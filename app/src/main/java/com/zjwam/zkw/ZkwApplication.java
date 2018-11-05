@@ -14,6 +14,7 @@ import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 
 
@@ -47,5 +48,10 @@ public class ZkwApplication extends Application {
                 .setCacheMode(CacheMode.FIRST_CACHE_THEN_REQUEST) //全局统一缓存模式，先使用缓存，不管是否存在，仍然请求网络
                 .setCacheTime(CacheEntity.CACHE_NEVER_EXPIRE)   //全局统一缓存时间，默认永不过期，可以不传
                 .setRetryCount(3);
+
+
+        JPushInterface.setDebugMode(false);
+        //初始化极光推送
+        JPushInterface.init(this);
     }
 }

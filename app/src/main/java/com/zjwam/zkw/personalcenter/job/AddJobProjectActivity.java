@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.zjwam.zkw.BaseActivity;
+import com.zjwam.zkw.view.BaseActivity;
 import com.zjwam.zkw.R;
 import com.zjwam.zkw.mvp.presenter.AddJobProjectPresenter;
 import com.zjwam.zkw.mvp.presenter.ipresenter.IAddJobProjectPresenter;

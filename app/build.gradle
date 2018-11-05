@@ -6,9 +6,17 @@ android {
         applicationId "com.zjwam.zkw"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 7
-        versionName "1.0.7"
+        versionCode 9
+        versionName "1.0.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
+        }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: applicationId,
+                JPUSH_APPKEY : "4ccbc7f75bc20707f9112add", //JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
+        ]
     }
     buildTypes {
         release {
@@ -48,4 +56,6 @@ dependencies {
     implementation 'me.texy.treeview:treeview_lib:1.0.4'
     implementation 'org.sufficientlysecure:html-textview:3.6'
     implementation files('libs/BaiduLBS_Android.jar')
+    implementation 'cn.jiguang.sdk:jpush:3.1.6'
+    implementation 'cn.jiguang.sdk:jcore:1.2.5'
 }

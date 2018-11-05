@@ -5,7 +5,7 @@ import android.content.Context;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.model.Response;
-import com.zjwam.zkw.MainActivity;
+import com.zjwam.zkw.view.MainActivity;
 import com.zjwam.zkw.callback.Json2Callback;
 import com.zjwam.zkw.entity.ClassSearchBean;
 import com.zjwam.zkw.entity.CurriculumLnitializationBean;
