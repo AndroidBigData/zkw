@@ -134,7 +134,7 @@ public class Video2PlayActivity extends BaseActivity implements CatalogFragment.
                 .setAutoFullWithSize(true)
                 .setShowFullAnimation(false)
                 .setNeedLockFull(true)
-//                .setCacheWithPlay(false)
+                .setCacheWithPlay(false)
 //                .setUrl(url)
                 .setVideoTitle(title)
                 .setVideoAllCallBack(new GSYSampleCallBack() {

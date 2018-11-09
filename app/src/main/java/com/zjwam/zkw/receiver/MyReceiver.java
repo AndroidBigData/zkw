@@ -43,7 +43,6 @@ public class MyReceiver extends BroadcastReceiver {
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
             Log.e(TAG, "接受到推送下来的通知id: " + notifactionId);
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
-            Log.i("budle1", bundle.getString(JPushInterface.EXTRA_EXTRA));
             String data = bundle.getString(JPushInterface.EXTRA_EXTRA);
             if (AppHelper.isAppAlive(context,context.getPackageName()) == 0){
                 //不存在
@@ -55,8 +54,8 @@ public class MyReceiver extends BroadcastReceiver {
                 args.putString("info", data);
                 launchIntent.putExtra("jpush", args);
                 context.startActivity(launchIntent);
-            }else if (AppHelper.isAppAlive(context,context.getPackageName()) == 1){
-                //前台
+            }else {
+                //前台or后台
                 try {
                     JSONObject object = new JSONObject(data);
                     if (object.toString().contains("url")) {
@@ -75,16 +74,6 @@ public class MyReceiver extends BroadcastReceiver {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }else if (AppHelper.isAppAlive(context,context.getPackageName()) == 2){
-                //后台
-                Intent launchIntent = context.getPackageManager().
-                        getLaunchIntentForPackage(context.getPackageName());
-                launchIntent.setFlags(
-                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                Bundle args = new Bundle();
-                args.putString("info", data);
-                launchIntent.putExtra("jpush", args);
-                context.startActivity(launchIntent);
             }
 
         } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
